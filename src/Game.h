@@ -21,8 +21,6 @@
 #include "Config.h"
 
 #include "ImGuiWindowFrame.h"
-#define WIDTH 800
-#define HEIGHT 600
 
 class Game
 {

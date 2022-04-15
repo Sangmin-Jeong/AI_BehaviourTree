@@ -2,8 +2,10 @@
 #ifndef __DISPLAY_OBJECT__
 #define __DISPLAY_OBJECT__
 
+#include "Animation.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "SpriteSheet.h"
 
 class DisplayObject : public GameObject
 {
@@ -34,6 +36,14 @@ public:
 	 * @param new_order The order within the layer, default is zero
 	 */
 	void setLayerIndex(uint32_t new_index, const uint32_t new_order = 0);
+
+	// getters
+	SpriteSheet* getSpriteSheet();
+	Animation& getAnimation(const std::string& name);
+
+	// setters
+	void setSpriteSheet(SpriteSheet* sprite_sheet);
+	void setAnimation(const Animation& animation);
 	
 
 private:
@@ -41,6 +51,12 @@ private:
 	uint32_t m_layerIndex = 0;
 	uint32_t m_layerOrderIndex;
 	Scene* m_pParentScene{};
+
+	bool m_animationExists(const std::string& id);
+
+	SpriteSheet* m_pSpriteSheet;
+
+	std::unordered_map<std::string, Animation> m_pAnimations;
 };
 
 #endif /* defined (__DISPLAY_OBJECT__) */

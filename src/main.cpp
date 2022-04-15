@@ -8,7 +8,6 @@
 const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
 
-
 int main(int argc, char* args[])
 {
 	Uint32 frameStart, frameTime;
@@ -18,7 +17,7 @@ int main(int argc, char* args[])
 	AllocConsole();
 	freopen("CON", "w", stdout);
 
-	TheGame::Instance().init("SDLEngine v0.27", 100, 100, WIDTH, HEIGHT, false);
+	TheGame::Instance().init("SDLEngine v0.27", 100, 100, 800, 600, false);
 
 	while (TheGame::Instance().isRunning())
 	{

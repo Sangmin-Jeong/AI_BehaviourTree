@@ -5,7 +5,7 @@
 #include "TextureManager.h"
 
 
-/*
+/**
  * @brief Construct a new Button:: Button object
  * 
  * @param image_path 

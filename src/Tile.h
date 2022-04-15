@@ -12,8 +12,10 @@ class Tile : public NavigationObject
 public:
 	// Constructor
 	Tile();
+
 	// Destructor
 	~Tile();
+
 	// DisplayObject Life-Cycle Functions
 	void draw() override;
 	void update() override;
@@ -43,4 +45,3 @@ private:
 };
 
 #endif
-

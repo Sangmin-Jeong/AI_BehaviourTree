@@ -5,11 +5,9 @@
 #include "DisplayObject.h"
 #include "Animation.h"
 #include <unordered_map>
-
-#include "Agent.h"
 #include "SpriteSheet.h"
 
-class Sprite : public Agent
+class Sprite : public DisplayObject
 {
 public:
 	Sprite();

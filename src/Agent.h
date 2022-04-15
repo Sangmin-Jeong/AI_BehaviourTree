@@ -3,9 +3,8 @@
 #define __AGENT__
 
 #include <glm/vec4.hpp>
-
-#include "ActionState.h"
 #include "NavigationObject.h"
+#include "ActionState.h"
 #include "Obstacle.h"
 
 class Agent : public NavigationObject
@@ -53,12 +52,14 @@ public:
 
 	void setActionState(ActionState a) { m_state = a; }
 
-	// Tree actions
+	// New tree actions
 	virtual void Attack() {  };
 	virtual void MoveToLOS() {  };
 	virtual void MoveToPlayer() {  };
 	virtual void MoveToRange() {  };
 	virtual void Patrol() {  };
+
+	// New for lab 7 part 3
 	virtual void Flee() {}
 	virtual void WaitBehindCover() {}
 	virtual void MoveToCover() {}
@@ -92,15 +93,18 @@ private:
 	glm::vec2 m_leftLOSEndPoint;
 	glm::vec2 m_middleLOSEndPoint;
 	glm::vec2 m_rightLOSEndPoint;
+	// Add second left whisker.
+	// Add second right whisker.
 	glm::vec4 m_lineColor[3]; // Change to 5 when you add the two extra whiskers.
 	bool m_collisionWhiskers[3]; // ""
 
 	float m_whiskerAngle;
+	// May want second whiskerAngle for ImGUI - optional
 
 	// action state
 	ActionState m_state;
 
-	// For health
+	// New lab 7 part 3
 	int m_health = 100;
 };
 

@@ -14,32 +14,17 @@ Tile::~Tile() = default;
 
 void Tile::draw()
 {
-	switch (m_status)
-	{
-	case START:
+	if (m_status == START)
 		Util::DrawFilledRect(getTransform()->position, getWidth(), getHeight(), glm::vec4(0.5f, 1.0f, 0.5f, 1.0f));
-		break;
-	case GOAL:
+	else if (m_status == GOAL)
 		Util::DrawFilledRect(getTransform()->position, getWidth(), getHeight(), glm::vec4(1.0f, 0.5f, 0.5f, 1.0f));
-		break;
-	case OPEN:
-		Util::DrawFilledRect(getTransform()->position, getWidth(), getHeight(), glm::vec4(0.83f, 0.83f, 0.83f, 1.0f));
-		break;
-	case CLOSED:
-		Util::DrawFilledRect(getTransform()->position, getWidth(), getHeight(), glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-		break;
-	case IMPASSABLE:
-		Util::DrawFilledRect(getTransform()->position, getWidth(), getHeight(), glm::vec4(0.5f, 0.0f, 0.0f, 1.0f));
-		break;
-	default:
+	else
 		Util::DrawRect(getTransform()->position, getWidth(), getHeight());
-		break;
-	}
 }
 
-void Tile::update() { }
+void Tile::update(){}
 
-void Tile::clean() { }
+void Tile::clean(){}
 
 Tile* Tile::getNeighbourTile(NeighbourTile position)
 {

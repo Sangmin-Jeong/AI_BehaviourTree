@@ -4,20 +4,17 @@
 
 #include "Heuristic.h"
 #include "Scene.h"
-#include "Enemy.h"
-#include "Player.h"
-#include "Tile.h"
-#include "Obstacle.h"
-#include "InvisObstacle.h"
-#include "Label.h"
+#include "Target.h"
 #include "PathNode.h"
-#include "PlayerHealth.h"
-#include "EnemyHealth.h"
-#include "Ladder.h"
-#include "Weapon.h"
-
-#define MELEE_DISTANCE_L 25
-#define MELEE_DISTANCE_R 5
+#include "Obstacle.h"
+// New Lab 7:
+#include "Background.h"
+#include "DecisionTree.h"
+#include "CloseCombatEnemy.h"
+#include "Player.h"
+#include "RangedCombatEnemy.h"
+#include "Torpedo.h"
+#include "TorpedoK.h"
 
 class PlayScene : public Scene
 {
@@ -32,29 +29,30 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 
+	// New lab 8
+	void SpawnEnemyTorpedo();
+
 private:
 	// IMGUI Function
 	void GUI_Function();
 	std::string m_guiTitle;
 	glm::vec2 m_mousePosition;
 	bool m_isGridEnabled;
+	// New for Lab 7
+	int shipPosition[2];
+	int angle;
 
 	// Game Objects
-	Enemy* m_pEnemy;
+	Background* m_pBG;
 	Player* m_pPlayer;
-	PathNode* m_pPlayerClosest;
-	PathNode* m_pEnemyClosest;
-	std::vector<Weapon*> m_pDaggers;
-
-	// Player Health
-	PlayerHealth* m_pPlayerHealth;
-	EnemyHealth* m_pEnemyHealth;
-
-	// LOS Objects and Functions
-	std::vector<PathNode*> m_pGrid;
+	Target* m_pTarget;
+	
 	std::vector<Obstacle*> m_pObstacles;
-	std::vector<InvisObstacle*> m_pInvisObstacles;
-	std::vector<Ladder*> m_pLadders;
+	std::vector<Torpedo*> m_pTorpedos;
+	std::vector<TorpedoK*> m_pTorpedosK;
+
+	// PathNode Objects and Functions
+	std::vector<PathNode*> m_pGrid;
 	void m_buildGrid();
 	void m_toggleGrid(bool state);
 	bool m_checkAgentLOS(Agent* agent, DisplayObject* target_object);
@@ -64,35 +62,11 @@ private:
 	void m_clearNodes();
 	void m_setPathNodeLOSDistance(int dist);
 
-
-	Label* m_pScoreLabel{};
-
-	int m_LOSMode; // 0 = nodes visible to target, 1 = to player, 2 = to both
+	int m_LOSMode; // 0 = nodes visible to target, 1 = nodes visible to player, 2 = nodes visible to both
 	int m_obstacleBuffer;
 	int m_pathNodeLOSDistance;
-	int m_moveAmount;
-	static inline bool m_path_toggle;
-	int m_score = 0;
-	bool m_LOS_Clear;
 
-	// WASD
-	std::vector <char> keyList;
-	char key;
-	bool isRight;
-	bool isMeleeDamageTaken;
-	bool enemyIsDead;
-	bool playerIsDead;
-	bool knifeSound;
-	bool knifeThrowingSound;
-	bool isMoving;
-	bool isPatrolling;
-
-	bool CheckKeyList(char c);
-	bool DeleteKeyList(char c);
-
-	// Time
-	float time;
-	float countTimer;
+	
 };
 
 #endif /* defined (__PLAY_SCENE__) */

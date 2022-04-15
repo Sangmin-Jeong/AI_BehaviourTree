@@ -7,12 +7,10 @@
 #include "MoveToPlayerAction.h"
 #include "PatrolAction.h"
 #include "EventManager.h"
-// New Lab 7 part 3
 #include "FleeAction.h"
 #include "MoveToCoverAction.h"
 #include "MoveToRangeAction.h"
 #include "WaitBehindCoverAction.h"
-// New lab 8
 #include "PlayScene.h" // in cpp is fine. in h can cause a infinity loop
 
 RangedCombatEnemy::RangedCombatEnemy(Scene* scene)

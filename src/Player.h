@@ -1,11 +1,11 @@
 #pragma once
-#ifndef __SPACE_SHIP__
-#define __SPACE_SHIP__
+#ifndef __PLAYER__
+#define __PLAYER__
 
+#include "Agent.h"
 #include "PlayerAnimationState.h"
-#include "Sprite.h"
 
-class Player final : public Sprite
+class Player final : public Agent
 {
 public:
 	Player();
@@ -56,13 +56,13 @@ private:
 	// where we want to go
 	glm::vec2 m_desiredVelocity;
 
+	// private functions
+	void m_move();
+
 	// Animation
 	PlayerAnimationState m_animationState;
 	float m_animationSpeed;
-
-	// private functions
-	void m_move();
 };
 
 
-#endif /* defined (__SPACE_SHIP__) */
+#endif /* defined (__PLAYER__) */

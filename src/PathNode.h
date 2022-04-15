@@ -1,23 +1,19 @@
 #pragma once
-#ifndef __PATH__NODE__
-#define __PATH__NODE__
+#ifndef __PATH_NODE__
+#define __PATH_NODE__
 #include "Agent.h"
 
-class PathNode final : public Agent
+class PathNode : public Agent
 {
 public:
-	// constructors
 	PathNode();
-
-	// destructor
 	~PathNode();
 
-	// life cycle functions
+	// DisplayObject Life Cycle Functions
 	void draw() override;
 	void update() override;
 	void clean() override;
 private:
-
 };
 
-#endif /* defined (__PATH__NODE__) */
+#endif /* defined (__PATH_NODE__) */

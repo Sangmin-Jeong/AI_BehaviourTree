@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "EventManager.h"
 #include "Game.h"
 #include "TextureManager.h"
 #include "Util.h"
@@ -65,12 +64,12 @@ Player::Player() : m_animationState(PLAYER_IDLE_R), m_animationSpeed(1.0f)
 	setCanUp(false);
 
 	// starting motion properties
-	setCurrentHeading(0.0f); 
+	setCurrentHeading(0.0f);
 	setCurrentDirection(glm::vec2(1.0f, 0.0f));
 	m_maxSpeed = 20.0f; // a maximum number of pixels moved per frame
 	m_turnRate = 5.0f; // a maximum number of degrees to turn each time-step
 	m_accelerationRate = 4.0f; // a maximum number of pixels to add to the velocity each frame
-	
+
 	setLOSDistance(200.0f); // Length of the middle ray.
 	setLOSColour(glm::vec4(1, 0, 0, 1));
 
@@ -112,14 +111,14 @@ void Player::draw()
 		TextureManager::Instance().playAnimation("playerRun", getAnimation("run"),
 			x, y, m_animationSpeed, 0, 255, true);
 		break;
-	//case PLAYER_JUMP_R:
-	//	TextureManager::Instance().playAnimation("playerJump", getAnimation("jump"),
-	//		x, y, m_animationSpeed, 0, 255, true);
-	//	break;
-	//case PLAYER_JUMP_L:
-	//	TextureManager::Instance().playAnimation("playerJump", getAnimation("jump"),
-	//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-	//	break;
+		//case PLAYER_JUMP_R:
+		//	TextureManager::Instance().playAnimation("playerJump", getAnimation("jump"),
+		//		x, y, m_animationSpeed, 0, 255, true);
+		//	break;
+		//case PLAYER_JUMP_L:
+		//	TextureManager::Instance().playAnimation("playerJump", getAnimation("jump"),
+		//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+		//	break;
 	case PLAYER_CLIMB_L:
 		TextureManager::Instance().playAnimation("playerClimb", getAnimation("climb"),
 			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
@@ -211,6 +210,15 @@ void Player::setAnimationSheet()
 	setAnimation(range);
 }
 
+void Player::drawLOS()
+{
+	// For detection radius
+	int radius = (int)getLOSDistance();
+	Util::DrawCircle(getTransform()->position, radius, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+	Util::DrawLine(getTransform()->position, getTransform()->position + getCurrentDirection() * getLOSDistance(), getLOSColour());
+}
+
 void Player::update()
 {
 	setMiddleLOSEndPoint(getTransform()->position + getCurrentDirection() * getLOSDistance());
@@ -262,13 +270,15 @@ void Player::setDesiredVelocity(const glm::vec2 target_position)
 
 void Player::Seek()
 {
-	setDesiredVelocity(getTargetPosition());
 
-	const glm::vec2 steering_direction = getDesiredVelocity() - getCurrentDirection();
 
-	LookWhereYoureGoing(steering_direction);
+	//setDesiredVelocity(getTargetPosition());
 
-	getRigidBody()->acceleration = getCurrentDirection() * getAccelerationRate();
+	//const glm::vec2 steering_direction = getDesiredVelocity() - getCurrentDirection();
+
+	//LookWhereYoureGoing(steering_direction);
+
+	//getRigidBody()->acceleration = getCurrentDirection() * getAccelerationRate();
 }
 
 void Player::LookWhereYoureGoing(const glm::vec2 target_direction)
@@ -297,18 +307,8 @@ void Player::LookWhereYoureGoing(const glm::vec2 target_direction)
 		}
 	}
 
-	/*updateWhiskers(getWhiskerAngle());*/
+	updateWhiskers(getWhiskerAngle());
 }
-
-void Player::drawLOS()
-{
-	// For detection radius
-	int radius = (int)getLOSDistance();
-	Util::DrawCircle(getTransform()->position, radius, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-
-	Util::DrawLine(getTransform()->position, getTransform()->position + getCurrentDirection() * getLOSDistance(), getLOSColour());
-}
-
 
 void Player::m_move()
 {

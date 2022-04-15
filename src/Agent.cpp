@@ -1,5 +1,5 @@
 #include "Agent.h"
-
+#include "EventManager.h"
 #include <iostream>
 
 #include "CollisionManager.h"
@@ -176,10 +176,10 @@ bool Agent::checkAgentLOSToTarget(Agent* agent, DisplayObject* target_object, st
 			if (AgentToObjectDistance > AgentToTargetDistance) continue;
 
 			contactList.push_back(static_cast<DisplayObject*>(object)); // TODO : Cast to DisplayObject
-
+			
 		}
 		hasLOS = CollisionManager::LOSCheck(agent, getMiddleLOSEndPoint(), contactList, target_object);
-
+		
 	}
 	agent->setHasLOS(hasLOS);
 	return hasLOS;

@@ -1,11 +1,10 @@
 #include "Obstacle.h"
 #include "SoundManager.h"
 #include "TextureManager.h"
-#include "Util.h"
 
 Obstacle::Obstacle()
 {
-	TextureManager::Instance().load("../Assets/textures/pf.png", "obstacle");
+	TextureManager::Instance().load("../Assets/textures/nebula_cloud.png", "obstacle");
 
 	auto size = TextureManager::Instance().getTextureSize("obstacle");
 	setWidth(size.x);
