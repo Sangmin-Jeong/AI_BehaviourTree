@@ -46,6 +46,8 @@ private:
 	Background* m_pBG;
 	Player* m_pPlayer;
 	std::vector<Enemy*> m_pEnemies;
+	PathNode* m_pPlayerClosest;
+	PathNode* m_pEnemyClosest;
 	
 	std::vector<Obstacle*> m_pObstacles;
 	std::vector<Torpedo*> m_pTorpedos;
@@ -62,9 +64,12 @@ private:
 	void m_clearNodes();
 	void m_setPathNodeLOSDistance(int dist);
 
+	// IMGUI
 	int m_LOSMode; // 0 = nodes visible to target, 1 = nodes visible to player, 2 = nodes visible to both
 	int m_obstacleBuffer;
 	int m_pathNodeLOSDistance;
+	static inline bool m_path_toggle;
+	bool m_LOS_Clear;
 
 	
 };

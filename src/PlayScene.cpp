@@ -19,9 +19,54 @@ PlayScene::~PlayScene()
 
 void PlayScene::draw()
 {
+	for (auto element : m_pObstacles)
+	{
+		Util::DrawRect(glm::vec2(element->getTransform()->position.x - (element->getWidth() / 2), element->getTransform()->position.y - (element->getHeight() / 2)), element->getWidth(), element->getHeight());
+	}
+
+	//for (auto element : m_pInvisObstacles)
+	//{
+	//	Util::DrawRect(glm::vec2(element->getTransform()->position.x - (element->getWidth() / 2), element->getTransform()->position.y - (element->getHeight() / 2)), element->getWidth(), element->getHeight());
+	//}
+
+	//for (auto element : m_pLadders)
+	//{
+	//	Util::DrawRect(glm::vec2(element->getTransform()->position.x - (element->getWidth() / 2), element->getTransform()->position.y - (element->getHeight() / 2)), element->getWidth(), element->getHeight());
+	//}
+
+	Util::DrawRect(glm::vec2(m_pPlayer->getTransform()->position.x - (m_pPlayer->getWidth() / 2), m_pPlayer->getTransform()->position.y - (m_pPlayer->getHeight() / 2)), m_pPlayer->getWidth(), m_pPlayer->getHeight());
+	for (auto enemy : m_pEnemies)
+	{
+		Util::DrawRect(glm::vec2(enemy->getTransform()->position.x - (enemy->getWidth() / 2), enemy->getTransform()->position.y - (enemy->getHeight() / 2)), enemy->getWidth(), enemy->getHeight());
+
+	}
+
 	drawDisplayList();
-	
+
 	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 255, 255, 255, 255);
+
+	if (m_isGridEnabled == true)
+	{
+		m_pPlayer->drawLOS();
+		for (auto enemy : m_pEnemies)
+		{
+			enemy->drawEnemyLOS();
+		}
+		
+	}
+
+	if (m_path_toggle == true)
+	{
+		// for the line that is connected between Player and Closest path_node
+		Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlayerClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		// for the line that is connected between m_pPlayerClosest path_node and m_pEnemyClosest
+		Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pEnemyClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		// for the line that is connected between m_pEnemyClosest path_node and Enemy
+		for (auto enemy : m_pEnemies)
+		{
+			Util::DrawLine(m_pEnemyClosest->getTransform()->position, enemy->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		}
+	}
 }
 
 void PlayScene::update()
@@ -68,9 +113,45 @@ void PlayScene::update()
 		m_checkAllNodesWithBoth();
 		break;
 	}
-	// Make decision. Not necessary every frame. We will experiment.
 
+	//PathNode* temp1 = new PathNode;
+	//PathNode* temp2 = new PathNode;
+	//if (m_pEnemies.size() > 0)
+	//{
+	//	for (auto path_node : m_pGrid)
+	//	{
+	//		if (path_node->hasLOS()) // check if path_node has LOS
+	//		{
+	//			auto T2ODistance = Util::getClosestEdge(m_pEnemies.back()->getTransform()->position, path_node);
+	//			auto A2ODistance = Util::getClosestEdge(m_pPlayer->getTransform()->position, path_node);
 
+	//			if (A2ODistance < temp1->getLOSDistance()) // find what path_node is the m_pPlayerClosest from Player
+	//			{
+	//				temp1->setLOSDistance(A2ODistance);
+	//				m_pPlayerClosest->getTransform()->position = temp1->getTransform()->position = path_node->getTransform()->position;
+	//			}
+	//			else if (T2ODistance < temp2->getLOSDistance()) // find what path_node is the m_pEnemyClosest from Enemy
+	//			{
+	//				temp2->setLOSDistance(T2ODistance);
+	//				m_pEnemyClosest->getTransform()->position = temp2->getTransform()->position = path_node->getTransform()->position;
+	//			}
+	//		}
+
+	//	}
+	//	// If path is clear or not
+	//	if (m_checkPathNodeLOS(m_pPlayerClosest, m_pPlayer) && m_checkPathNodeLOS(m_pPlayerClosest, m_pEnemyClosest) && m_checkPathNodeLOS(m_pPlayerClosest, m_pEnemyClosest))
+	//	{
+	//		m_LOS_Clear = true;
+	//	}
+	//	else
+	//	{
+	//		m_LOS_Clear = false;
+	//	}
+	//}
+	//delete temp1;
+	//delete temp2;
+	//temp1 = nullptr;
+	//temp2 = nullptr;
 }
 
 void PlayScene::clean()
@@ -132,7 +213,7 @@ void PlayScene::start()
 
 	// Intentionally put target here so they can hide in cloud. ;)
 	m_pEnemies.push_back(new Enemy());
-	m_pEnemies.back()->getTransform()->position = glm::vec2(100.f, 400.f);
+	m_pEnemies.back()->getTransform()->position = glm::vec2(600.f, 430.f);
 	addChild(m_pEnemies.back(), 3);
 
 	// New Obstacle creation
@@ -152,7 +233,8 @@ void PlayScene::start()
 
 	/*m_pPlayer = new CloseCombatEnemy();*/
 	m_pPlayer = new Player();
-	m_pPlayer->getTransform()->position = glm::vec2(400.f, 40.f);
+	m_pPlayer->getTransform()->position = glm::vec2(110.f, 550.f);
+	m_pPlayer->setTargetPosition(m_pEnemies.back()->getTransform()->position);
 	addChild(m_pPlayer, 2);
 
 	// Setup a few fields
@@ -281,17 +363,17 @@ void PlayScene::GUI_Function()
 
 	/*ImGui::Separator();*/
 
-	for (unsigned i = 0; i < m_pObstacles.size(); i++)
-	{
-		int obsPosition[] = { m_pObstacles[i]->getTransform()->position.x, m_pObstacles[i]->getTransform()->position.y };
-		std::string label = "Obstacle" + std::to_string(i+1) + " Position";
-		if (ImGui::SliderInt2(label.c_str(), obsPosition, 0, 800))
-		{
-			m_pObstacles[i]->getTransform()->position.x = obsPosition[0];
-			m_pObstacles[i]->getTransform()->position.y = obsPosition[1];
-			m_buildGrid();
-		}
-	}
+	//for (unsigned i = 0; i < m_pObstacles.size(); i++)
+	//{
+	//	int obsPosition[] = { m_pObstacles[i]->getTransform()->position.x, m_pObstacles[i]->getTransform()->position.y };
+	//	std::string label = "Obstacle" + std::to_string(i+1) + " Position";
+	//	if (ImGui::SliderInt2(label.c_str(), obsPosition, 0, 800))
+	//	{
+	//		m_pObstacles[i]->getTransform()->position.x = obsPosition[0];
+	//		m_pObstacles[i]->getTransform()->position.y = obsPosition[1];
+	//		m_buildGrid();
+	//	}
+	//}
 
 	ImGui::Separator();
 
