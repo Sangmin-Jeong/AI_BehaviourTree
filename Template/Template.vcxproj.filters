@@ -34,6 +34,12 @@
     <Filter Include="Data">
       <UniqueIdentifier>{db71f5ba-dd7c-4daa-bb2c-c7654146f7ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Decision">
+      <UniqueIdentifier>{465d8e20-f3f3-48cf-bb00-5e2f525d0762}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Decision\Actions">
+      <UniqueIdentifier>{7c39babd-6f3f-4498-89d2-18398ffe5d1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\StartScene.cpp">
@@ -161,6 +167,30 @@
     </ClCompile>
     <ClCompile Include="..\src\InvisObstacle.cpp">
       <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AttackAction.cpp">
+      <Filter>Decision\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FleeAction.cpp">
+      <Filter>Decision\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MoveToCoverAction.cpp">
+      <Filter>Decision\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MoveToLOSAction.cpp">
+      <Filter>Decision\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MoveToPlayerAction.cpp">
+      <Filter>Decision\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MoveToRangeAction.cpp">
+      <Filter>Decision\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PatrolAction.cpp">
+      <Filter>Decision\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\WaitBehindCoverAction.cpp">
+      <Filter>Decision\Actions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +370,36 @@
     </ClInclude>
     <ClInclude Include="..\src\InvisObstacle.h">
       <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AttackAction.h">
+      <Filter>Decision\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\FleeAction.h">
+      <Filter>Decision\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MoveToCoverAction.h">
+      <Filter>Decision\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MoveToLOSAction.h">
+      <Filter>Decision\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MoveToPlayerAction.h">
+      <Filter>Decision\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MoveToRangeAction.h">
+      <Filter>Decision\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PatrolAction.h">
+      <Filter>Decision\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WaitBehindCoverAction.h">
+      <Filter>Decision\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ActionNode.h">
+      <Filter>Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ActionState.h">
+      <Filter>Enums</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

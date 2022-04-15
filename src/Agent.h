@@ -3,7 +3,10 @@
 #define __AGENT__
 
 #include <glm/vec4.hpp>
+
+#include "ActionState.h"
 #include "NavigationObject.h"
+#include "Obstacle.h"
 
 class Agent : public NavigationObject
 {
@@ -31,6 +34,8 @@ public:
 	glm::vec4 getLineColor(int index);
 	float getWhiskerAngle() const;
 
+	const ActionState getActionState() { return m_state; }
+
 	// setters
 	void setTargetPosition(glm::vec2 new_position);
 	void setCurrentDirection(glm::vec2 new_direction);
@@ -46,6 +51,33 @@ public:
 	void setWhiskerAngle(float a);
 	void updateWhiskers(float a);
 
+	void setActionState(ActionState a) { m_state = a; }
+
+	// Tree actions
+	virtual void Attack() {  };
+	virtual void MoveToLOS() {  };
+	virtual void MoveToPlayer() {  };
+	virtual void MoveToRange() {  };
+	virtual void Patrol() {  };
+	virtual void Flee() {}
+	virtual void WaitBehindCover() {}
+	virtual void MoveToCover() {}
+
+	// New LOS utility
+	bool checkAgentLOSToTarget(Agent* agent, DisplayObject* target_object,
+		std::vector<Obstacle*>& obstacles);
+
+	int getHealth() { return m_health; }
+	void setHealth(int h) { m_health = h; }
+	void takeDamage(int d)
+	{
+		m_health -= d;
+		if (m_health > 100)
+			m_health = 100;
+		if (m_health < 0)
+			m_health = 0;
+	}
+
 private:
 	void m_changeDirection();
 	float m_currentHeading; // angle the ship is looking
@@ -60,13 +92,16 @@ private:
 	glm::vec2 m_leftLOSEndPoint;
 	glm::vec2 m_middleLOSEndPoint;
 	glm::vec2 m_rightLOSEndPoint;
-	// Add second left whisker.
-	// Add second right whisker.
 	glm::vec4 m_lineColor[3]; // Change to 5 when you add the two extra whiskers.
 	bool m_collisionWhiskers[3]; // ""
 
 	float m_whiskerAngle;
-	// May want second whiskerAngle for ImGUI - optional
+
+	// action state
+	ActionState m_state;
+
+	// For health
+	int m_health = 100;
 };
 
 

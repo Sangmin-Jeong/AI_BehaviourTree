@@ -5,6 +5,6 @@ enum Heuristic
 {
 	MANHATTAN,
 	EUCLIDEAN,
-	NUM_OF_HEURISTICS
+	NUM_OF_HEURISTICS 
 };
 #endif /* defined (__HEURISTIC__) */

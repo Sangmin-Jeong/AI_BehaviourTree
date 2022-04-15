@@ -163,15 +163,22 @@
     <ClCompile Include="..\include\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="..\include\IMGUI_SDL\imgui_sdl.cpp" />
     <ClCompile Include="..\src\Agent.cpp" />
+    <ClCompile Include="..\src\AttackAction.cpp" />
     <ClCompile Include="..\src\Button.cpp" />
     <ClCompile Include="..\src\CollisionManager.cpp" />
     <ClCompile Include="..\src\EnemyHealth.cpp" />
+    <ClCompile Include="..\src\FleeAction.cpp" />
     <ClCompile Include="..\src\ImGuiWindowFrame.cpp" />
     <ClCompile Include="..\src\InvisObstacle.cpp" />
     <ClCompile Include="..\src\Ladder.cpp" />
+    <ClCompile Include="..\src\MoveToCoverAction.cpp" />
+    <ClCompile Include="..\src\MoveToLOSAction.cpp" />
+    <ClCompile Include="..\src\MoveToPlayerAction.cpp" />
+    <ClCompile Include="..\src\MoveToRangeAction.cpp" />
     <ClCompile Include="..\src\NavigationObject.cpp" />
     <ClCompile Include="..\src\Obstacle.cpp" />
     <ClCompile Include="..\src\PathNode.cpp" />
+    <ClCompile Include="..\src\PatrolAction.cpp" />
     <ClCompile Include="..\src\PlayerHealth.cpp" />
     <ClCompile Include="..\src\Player.cpp" />
     <ClCompile Include="..\src\Sprite.cpp" />
@@ -197,6 +204,7 @@
     <ClCompile Include="..\src\Enemy.cpp" />
     <ClCompile Include="..\src\TextureManager.cpp" />
     <ClCompile Include="..\src\Util.cpp" />
+    <ClCompile Include="..\src\WaitBehindCoverAction.cpp" />
     <ClCompile Include="..\src\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -207,22 +215,31 @@
     <ClInclude Include="..\include\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\include\IMGUI\imstb_truetype.h" />
     <ClInclude Include="..\include\IMGUI_SDL\imgui_sdl.h" />
+    <ClInclude Include="..\src\ActionNode.h" />
+    <ClInclude Include="..\src\ActionState.h" />
     <ClInclude Include="..\src\Agent.h" />
     <ClInclude Include="..\src\Animation.h" />
+    <ClInclude Include="..\src\AttackAction.h" />
     <ClInclude Include="..\src\Button.h" />
     <ClInclude Include="..\src\CollisionManager.h" />
     <ClInclude Include="..\src\CollisionShape.h" />
     <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\EnemyAnimationState.h" />
     <ClInclude Include="..\src\EnemyHealth.h" />
+    <ClInclude Include="..\src\FleeAction.h" />
     <ClInclude Include="..\src\Heuristic.h" />
     <ClInclude Include="..\src\ImGuiWindowFrame.h" />
     <ClInclude Include="..\src\InvisObstacle.h" />
     <ClInclude Include="..\src\Ladder.h" />
+    <ClInclude Include="..\src\MoveToCoverAction.h" />
+    <ClInclude Include="..\src\MoveToLOSAction.h" />
+    <ClInclude Include="..\src\MoveToPlayerAction.h" />
+    <ClInclude Include="..\src\MoveToRangeAction.h" />
     <ClInclude Include="..\src\NavigationObject.h" />
     <ClInclude Include="..\src\NeighbourTile.h" />
     <ClInclude Include="..\src\Obstacle.h" />
     <ClInclude Include="..\src\PathNode.h" />
+    <ClInclude Include="..\src\PatrolAction.h" />
     <ClInclude Include="..\src\PlayerHealth.h" />
     <ClInclude Include="..\src\SoundType.h" />
     <ClInclude Include="..\src\Player.h" />
@@ -258,6 +275,7 @@
     <ClInclude Include="..\src\TextureManager.h" />
     <ClInclude Include="..\src\Transform.h" />
     <ClInclude Include="..\src\Util.h" />
+    <ClInclude Include="..\src\WaitBehindCoverAction.h" />
     <ClInclude Include="..\src\Weapon.h" />
   </ItemGroup>
   <ItemGroup>

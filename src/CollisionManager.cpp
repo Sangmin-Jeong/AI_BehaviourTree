@@ -55,15 +55,15 @@ bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 	const float p2Width = object2->getWidth();
 	const float p2Height = object2->getHeight();
 
-	//if (object1->isCentered())
-	//{
-	//	p1 += glm::vec2(-p1Width * 0.5f, -p1Height * 0.5f);
-	//}
+	if (object1->isCentered())
+	{
+		p1 += glm::vec2(-p1Width * 0.5f, -p1Height * 0.5f);
+	}
 
-	//if (object2->isCentered())
-	//{
-	//	p2 += glm::vec2(-p2Width * 0.5f, -p2Height * 0.5f);
-	//}
+	if (object2->isCentered())
+	{
+		p2 += glm::vec2(-p2Width * 0.5f, -p2Height * 0.5f);
+	}
 
 	if (
 		p1.x < p2.x + p2Width &&
@@ -79,6 +79,8 @@ bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 			switch (object2->getType())
 			{
 				case AGENT:
+					std::cout << "Collision with SpaceShip!" << std::endl;
+					SoundManager::Instance().playSound("boom", 0);
 					break;
 				default:
 
@@ -378,7 +380,7 @@ int CollisionManager::circleAABBsquaredDistance(const glm::vec2 circle_centre, i
 	auto dy = std::max(box_start.y - circle_centre.y, 0.0f);
 	dy = std::max(dy, circle_centre.y - (box_start.y + box_height));
 
-	return ((dx * dx) + (dy * dy)) / 1000;
+	return (dx * dx) + (dy * dy);
 }
 
 bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
