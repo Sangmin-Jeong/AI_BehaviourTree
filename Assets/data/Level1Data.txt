@@ -1,0 +1,4 @@
+32 32 24 32 400 300
+Tiledata.txt
+Level1Layout.txt
+Tiles.png

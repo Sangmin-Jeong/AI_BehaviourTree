@@ -1,0 +1,19 @@
+#pragma once
+#ifndef __ENEMY_ANIMATION_STATE__
+#define __ENEMY_ANIMATION_STATE__
+
+enum EnemyAnimationState
+{
+	ENEMY_IDLE_L,
+	ENEMY_IDLE_R,
+	ENEMY_WALK_L,
+	ENEMY_WALK_R,
+	ENEMY_HURT_L,
+	ENEMY_HURT_R,
+	ENEMY_DEATH_L,
+	ENEMY_DEATH_R,
+	ENEMY_GONE,
+	NUM_OF_ENEMY_ANIMATION_STATES
+};
+
+#endif /* defined (__PLAYER_ANIMATION_STATE__)*/
