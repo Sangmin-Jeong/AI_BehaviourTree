@@ -30,30 +30,36 @@ void PlayScene::update()
 	// Set agent tree conditions
 	// Radius condition (distance check)
 	// Close combat condition
-	//m_pPlayer->getTree()->getLOSNode()->setLOS(m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pTarget, m_pObstacles));
-	/*m_checkAgentLOS(m_pPlayer, m_pTarget);*/
-	float distance = Util::distance(m_pPlayer->getTransform()->position, m_pTarget->getTransform()->position);
-	bool isDetected = distance <= 450;
+	//m_pPlayer->getTree()->getLOSNode()->setLOS(m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies, m_pObstacles));
+	/*m_checkAgentLOS(m_pPlayer, m_pEnemies);*/
+	for (auto enemy : m_pEnemies)
+	{
+		float distance = Util::distance(m_pPlayer->getTransform()->position, enemy->getTransform()->position);
+		bool isDetected = distance <= 450;
+	}
 	//bool inClose = distance <= 50;
 
 	//if (m_pPlayer->getTree()->getPlayerDetectedNode()->getDetected() == false)
 		//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(isDetected); // #1
-	//m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pTarget, m_pObstacles); // #2
+	//m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies, m_pObstacles); // #2
 	//m_pPlayer->getTree()->getCloseCombatNode()->setIsWithinCombatRange(inClose); // #3
 
 	// For Ranged Enemy
 	//bool inRange = distance <= 200 && distance <= 350;
-	//m_pEnemies->getTree()->getEnemyHealthNode()->setHealth(m_pTarget->getHealth() > 25); // #1
+	//m_pEnemies->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies->getHealth() > 25); // #1
 	//m_pEnemies->getTree()->getEnemyHitNode()->setIsHit(false); // #2
 	//m_pEnemies->getTree()->getPlayerDetectedNode()->setDetected(isDetected); // #3
-	//m_pEnemies->checkAgentLOSToTarget(m_pPlayer, m_pTarget, m_pObstacles); // #4/#5
+	//m_pEnemies->checkAgentLOSToTarget(m_pPlayer, m_pEnemies, m_pObstacles); // #4/#5
 	//m_pEnemies->getTree()->getRangedCombatNode()->setIsWithinCombatRange(inRange); // #6
 
 	// Now for the path_nodes LOS
 	switch (m_LOSMode)
 	{
 	case 0:
-		m_checkAllNodesWithTarget(m_pTarget);
+		for (auto enemy : m_pEnemies)
+		{
+			m_checkAllNodesWithTarget(enemy);
+		}
 		break;
 	case 1:
 		m_checkAllNodesWithTarget(m_pPlayer);
@@ -91,29 +97,29 @@ void PlayScene::handleEvents()
 		TheGame::Instance().changeSceneState(END_SCENE);
 	}
 
-	if (EventManager::Instance().keyPressed(SDL_SCANCODE_D)) // Damage Enemy
-	{
-		m_pTarget->takeDamage(25);
-		std::cout << "Target at " << m_pTarget->getHealth() << "%. " << std::endl;
-		//m_pPlayer->getTree()->getEnemyHitNode()->setIsHit(true);
-		//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(true);
-	}
+	//if (EventManager::Instance().keyPressed(SDL_SCANCODE_D)) // Damage Enemy
+	//{
+	//	m_pEnemies->takeDamage(25);
+	//	std::cout << "Target at " << m_pEnemies->getHealth() << "%. " << std::endl;
+	//	//m_pPlayer->getTree()->getEnemyHitNode()->setIsHit(true);
+	//	//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(true);
+	//}
 
-	if (EventManager::Instance().keyPressed(SDL_SCANCODE_R)) // Reset Enemy conditions
-	{
-		m_pTarget->setHealth(100);
-		//m_pPlayer->getTree()->getEnemyHitNode()->setIsHit(false);
-		//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(false);
-		std::cout << "Target conditions reset" << std::endl;
-	}
+	//if (EventManager::Instance().keyPressed(SDL_SCANCODE_R)) // Reset Enemy conditions
+	//{
+	//	m_pEnemies->setHealth(100);
+	//	//m_pPlayer->getTree()->getEnemyHitNode()->setIsHit(false);
+	//	//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(false);
+	//	std::cout << "Target conditions reset" << std::endl;
+	//}
 
-	if (EventManager::Instance().keyPressed(SDL_SCANCODE_F))
-	{
-		m_pTorpedos.push_back(new Torpedo(5.0f));
-		m_pTorpedos.back()->getTransform()->position = m_pTarget->getTransform()->position;
-		SoundManager::Instance().playSound("torpedo");
-		addChild(m_pTorpedos.back(),2);
-	}
+	//if (EventManager::Instance().keyPressed(SDL_SCANCODE_F))
+	//{
+	//	m_pTorpedos.push_back(new Torpedo(5.0f));
+	//	m_pTorpedos.back()->getTransform()->position = m_pEnemies->getTransform()->position;
+	//	SoundManager::Instance().playSound("torpedo");
+	//	addChild(m_pTorpedos.back(),2);
+	//}
 }
 
 void PlayScene::start()
@@ -125,9 +131,9 @@ void PlayScene::start()
 	addChild(m_pBG);
 
 	// Intentionally put target here so they can hide in cloud. ;)
-	m_pTarget = new Target();
-	m_pTarget->getTransform()->position = glm::vec2(100.f, 400.f);
-	addChild(m_pTarget, 3);
+	m_pEnemies.push_back(new Enemy());
+	m_pEnemies.back()->getTransform()->position = glm::vec2(100.f, 400.f);
+	addChild(m_pEnemies.back(), 3);
 
 	// New Obstacle creation
 	std::ifstream inFile("../Assets/data/obstacles.txt");
@@ -178,16 +184,16 @@ void PlayScene::start()
 
 void PlayScene::SpawnEnemyTorpedo()
 {
-	// Set spawn point and direction
-	glm::vec2 spawn_pos = m_pPlayer->getTransform()->position + m_pPlayer->getCurrentDirection() * 30.0f;
-	glm::vec2 steering_direction = m_pTarget->getTransform()->position - spawn_pos;
-	steering_direction = Util::normalize(steering_direction);
+	//// Set spawn point and direction
+	//glm::vec2 spawn_pos = m_pPlayer->getTransform()->position + m_pPlayer->getCurrentDirection() * 30.0f;
+	//glm::vec2 steering_direction = m_pEnemies->getTransform()->position - spawn_pos;
+	//steering_direction = Util::normalize(steering_direction);
 
-	// Spawn it
-	m_pTorpedosK.push_back(new TorpedoK(5.0f, steering_direction));
-	m_pTorpedosK.back()->getTransform()->position = spawn_pos;
-	SoundManager::Instance().playSound("torpedo_k");
-	addChild(m_pTorpedosK.back(), 2);
+	//// Spawn it
+	//m_pTorpedosK.push_back(new TorpedoK(5.0f, steering_direction));
+	//m_pTorpedosK.back()->getTransform()->position = spawn_pos;
+	//SoundManager::Instance().playSound("torpedo_k");
+	//addChild(m_pTorpedosK.back(), 2);
 }
 
 void PlayScene::GUI_Function()
@@ -266,14 +272,14 @@ void PlayScene::GUI_Function()
 
 	ImGui::Separator();
 
-	static int targetPosition[] = { m_pTarget->getTransform()->position.x, m_pTarget->getTransform()->position.y };
-	if (ImGui::SliderInt2("Target Position", targetPosition, 0, 800))
-	{
-		m_pTarget->getTransform()->position.x = targetPosition[0];
-		m_pTarget->getTransform()->position.y = targetPosition[1];
-	}
+	//static int targetPosition[] = { m_pEnemies->getTransform()->position.x, m_pEnemies->getTransform()->position.y };
+	//if (ImGui::SliderInt2("Target Position", targetPosition, 0, 800))
+	//{
+	//	m_pEnemies->getTransform()->position.x = targetPosition[0];
+	//	m_pEnemies->getTransform()->position.y = targetPosition[1];
+	//}
 
-	ImGui::Separator();
+	/*ImGui::Separator();*/
 
 	for (unsigned i = 0; i < m_pObstacles.size(); i++)
 	{
@@ -379,9 +385,12 @@ void PlayScene::m_checkAllNodesWithBoth()
 {
 	for (auto path_node : m_pGrid)
 	{
-		bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
-		bool LOSWithTarget = m_checkPathNodeLOS(path_node, m_pTarget);
-		path_node->setHasLOS((LOSWithSpaceShip && LOSWithTarget ? true : false));
+		for (auto enemy : m_pEnemies)
+		{
+			bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
+			bool LOSWithTarget = m_checkPathNodeLOS(path_node, enemy);
+			path_node->setHasLOS((LOSWithSpaceShip && LOSWithTarget ? true : false));
+		}
 	}
 }
 

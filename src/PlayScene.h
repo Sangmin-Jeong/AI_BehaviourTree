@@ -7,10 +7,10 @@
 #include "Target.h"
 #include "PathNode.h"
 #include "Obstacle.h"
-// New Lab 7:
 #include "Background.h"
 #include "DecisionTree.h"
 #include "CloseCombatEnemy.h"
+#include "Enemy.h"
 #include "Player.h"
 #include "RangedCombatEnemy.h"
 #include "Torpedo.h"
@@ -45,7 +45,7 @@ private:
 	// Game Objects
 	Background* m_pBG;
 	Player* m_pPlayer;
-	Target* m_pTarget;
+	std::vector<Enemy*> m_pEnemies;
 	
 	std::vector<Obstacle*> m_pObstacles;
 	std::vector<Torpedo*> m_pTorpedos;
