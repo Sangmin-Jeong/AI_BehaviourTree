@@ -9,15 +9,46 @@
 #include "EventManager.h"
 #include "PlayScene.h"
 
-CloseCombatEnemy::CloseCombatEnemy(Scene* scene) :m_pScene(scene)
+CloseCombatEnemy::CloseCombatEnemy(Scene* scene) :m_pScene(scene), m_animationState(ENEMY_WALK_L), m_animationSpeed(0.8f), isRight(false)
 {
-	TextureManager::Instance().load("../Assets/textures/d7_small.png", "close_enemy");
+	//TextureManager::Instance().load("../Assets/textures/Circle.png","circle");
 
-	const auto size = TextureManager::Instance().getTextureSize("close_enemy");
-	setWidth(size.x);
-	setHeight(size.y);
+	//const auto size = TextureManager::Instance().getTextureSize("circle");
+	TextureManager::Instance().loadSpriteSheet(
+		"../Assets/sprites/enemySprites/enemy.txt",
+		"../Assets/sprites/enemySprites/SteamMan_idle.png",
+		"enemyIdle");
+	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyIdle"));
+
+	TextureManager::Instance().loadSpriteSheet(
+		"../Assets/sprites/enemySprites/enemy.txt",
+		"../Assets/sprites/enemySprites/SteamMan_walk.png",
+		"enemyWalk");
+	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyWalk"));
+
+	TextureManager::Instance().loadSpriteSheet(
+		"../Assets/sprites/enemySprites/enemy.txt",
+		"../Assets/sprites/enemySprites/SteamMan_hurt.png",
+		"enemyHurt");
+	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyHurt"));
+
+	TextureManager::Instance().loadSpriteSheet(
+		"../Assets/sprites/enemySprites/enemy.txt",
+		"../Assets/sprites/enemySprites/SteamMan_death.png",
+		"enemyDeath");
+	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyDeath"));
+
+	TextureManager::Instance().loadSpriteSheet(
+		"../Assets/sprites/enemySprites/enemy.txt",
+		"../Assets/sprites/enemySprites/SteamMan_death.png",
+		"enemyGone");
+	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyGone"));
+
+	setWidth(48);
+	setHeight(48);
 
 	getRigidBody()->bounds = glm::vec2(getWidth(), getHeight());
+	getTransform()->position = glm::vec2(500.0f, 100.0f);
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->acceleration = glm::vec2(0, 0);
 	getRigidBody()->isColliding = false;
@@ -35,10 +66,12 @@ CloseCombatEnemy::CloseCombatEnemy(Scene* scene) :m_pScene(scene)
 	// Fill in action state and patrol code
 	setActionState(NO_ACTION);
 
-	m_patrol.push_back(glm::vec2(760, 40));
-	m_patrol.push_back(glm::vec2(760, 560));
-	m_patrol.push_back(glm::vec2(40, 560));
-	m_patrol.push_back(glm::vec2(40, 40));
+	// Animation
+	setAnimationSheet();
+
+	// Patrol
+	m_patrol.push_back(glm::vec2(150, 430));
+	m_patrol.push_back(glm::vec2(600, 430));
 	m_waypoint = 0;
 
 	setTargetPosition(m_patrol[m_waypoint]);
@@ -60,14 +93,57 @@ void CloseCombatEnemy::draw()
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
 
-	// draw the ship
-	TextureManager::Instance().draw("close_enemy", x, y, getCurrentHeading(), 255, isCentered());
+	// draw the Enemy
+	//TextureManager::Instance().draw("circle", x, y, 0, 255, isCentered());
+	switch (m_animationState)
+	{
+	case ENEMY_IDLE_R:
+		TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
+			x, y, m_animationSpeed, 0, 255, true);
+		break;
+	case ENEMY_IDLE_L:
+		TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
+			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+		break;
+	case ENEMY_WALK_R:
+		getTransform()->position.x += 1;
+		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
+			x, y, m_animationSpeed, 0, 255, true);
+		break;
+	case ENEMY_WALK_L:
+		getTransform()->position.x -= 1;
+		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
+			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+		break;
+	case ENEMY_HURT_R:
+		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
+			x, y, m_animationSpeed, 0, 255, true);
+		break;
+	case ENEMY_HURT_L:
+		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
+			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+		break;
+	case ENEMY_DEATH_R:
+		TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
+			x, y, m_animationSpeed, 0, 255, true);
+		break;
+	case ENEMY_DEATH_L:
+		TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
+			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+		break;
+	case ENEMY_GONE:
+		TextureManager::Instance().playAnimation("enemyGone", getAnimation("gone"),
+			x, y, m_animationSpeed, 0, 255, true);
+		break;
+	default:
+		break;
+	}
 
 	// draw LOS
-	if (EventManager::Instance().isIMGUIActive())
-	{
-		Util::DrawLine(getTransform()->position, getMiddleLOSEndPoint(), getLOSColour());
-	}
+	//if (EventManager::Instance().isIMGUIActive())
+	//{
+	//	Util::DrawLine(getTransform()->position, getMiddleLOSEndPoint(), getLOSColour());
+	//}
 }
 
 void CloseCombatEnemy::update()
@@ -127,6 +203,14 @@ void CloseCombatEnemy::Seek()
 	{
 		if (++m_waypoint == m_patrol.size()) m_waypoint = 0;
 		setTargetPosition(m_patrol[m_waypoint]);
+		if (m_waypoint == 0)
+		{
+			setAnimationState(ENEMY_WALK_L);
+		}
+		else
+		{
+			setAnimationState(ENEMY_WALK_R);
+		}
 	}
 
 	setDesiredVelocity(getTargetPosition());

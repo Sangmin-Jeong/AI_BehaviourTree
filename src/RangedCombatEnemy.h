@@ -2,13 +2,11 @@
 #ifndef __RANGED_COMBAT_ENEMY__
 #define __RANGED_COMBAT_ENEMY__
 
-#include "Agent.h"
-#include "Sprite.h"
 #include "DecisionTree.h"
-// New for lab 8
+#include "Enemy.h"
 #include "Scene.h"
 
-class RangedCombatEnemy final : public Agent
+class RangedCombatEnemy final : public Enemy
 {
 public:
 	RangedCombatEnemy(Scene* scene);
@@ -49,6 +47,7 @@ public:
 
 private:
 	// private movement variables
+	bool isRight;
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
@@ -66,8 +65,11 @@ private:
 	DecisionTree* m_tree;
 	void m_buildTree();
 
-	// New for lab 8
 	int m_fireCtr, m_fireCtrMax;
 	Scene* m_pScene;
+
+	// Animation
+	EnemyAnimationState m_animationState;
+	float m_animationSpeed;
 };
 #endif /* defined (__RANGED_COMBAT_ENEMY__) */

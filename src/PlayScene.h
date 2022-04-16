@@ -30,8 +30,14 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 
-	// New lab 8
 	void SpawnEnemyTorpedo();
+
+	//Getter
+	PathNode* GetPlayerClosest() {return m_pPlayerClosest;}
+	/*PathNode* GetCCEClosest() { return m_pEnemyClosest; }*/
+	Player* GetPlayer() { return m_pPlayer; }
+	Enemy* GetCCE() { return m_pEnemies[m_keys[0]]; }
+	Enemy* GetRCE() { return m_pEnemies[m_keys[1]]; }
 
 private:
 	// IMGUI Function

@@ -2,12 +2,11 @@
 #ifndef __CLOSE_COMBAT_ENEMY__
 #define __CLOSE_COMBAT_ENEMY__
 
-#include "Agent.h"
-#include "Sprite.h"
 #include "DecisionTree.h"
+#include "Enemy.h"
 #include "Scene.h"
 
-class CloseCombatEnemy final : public Agent
+class CloseCombatEnemy final : public Enemy
 {
 public:
 	CloseCombatEnemy(Scene* scene);
@@ -44,6 +43,7 @@ public:
 
 private:
 	// private movement variables
+	bool isRight;
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
@@ -62,5 +62,10 @@ private:
 	void m_buildTree();
 
 	Scene* m_pScene;
+
+	// Animation
+		// Animation
+	EnemyAnimationState m_animationState;
+	float m_animationSpeed;
 };
 #endif /* defined (__CLOSE_COMBAT_ENEMY__) */

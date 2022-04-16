@@ -5,7 +5,7 @@
 #include "EnemyAnimationState.h"
 #include "Agent.h"
 
-class Enemy final : public Agent
+class Enemy : public Agent
 {
 public:
 	Enemy();
