@@ -60,7 +60,7 @@ CloseCombatEnemy::CloseCombatEnemy(Scene* scene) :m_pScene(scene), m_animationSt
 	m_turnRate = 5.0f; // a maximum number of degrees to turn each time-step
 	m_accelerationRate = 2.0f; // a maximum number of pixels to add to the velocity each frame
 
-	setLOSDistance(240.0f); // 5 ppf x 80 feet
+	setLOSDistance(80.0f); // 5 ppf x 80 feet
 	setLOSColour(glm::vec4(1, 0, 0, 1));
 
 	// Fill in action state and patrol code

@@ -4,6 +4,7 @@
 
 #include "EnemyAnimationState.h"
 #include "Agent.h"
+#include "DecisionTree.h"
 
 class Enemy : public Agent
 {
@@ -39,10 +40,16 @@ public:
 	void Seek();
 	void LookWhereYoureGoing(glm::vec2 target_direction);
 
+	const DecisionTree* getTree() { return m_tree; }
+
 private:
 	void m_move();
 	void m_checkBounds();
 	void m_reset();
+
+	// Decision tree
+	DecisionTree* m_tree;
+	void m_buildTree();
 
 	// Animation
 	EnemyAnimationState m_animationState;

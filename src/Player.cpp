@@ -70,7 +70,7 @@ Player::Player() : m_animationState(PLAYER_IDLE_R), m_animationSpeed(1.0f)
 	m_turnRate = 5.0f; // a maximum number of degrees to turn each time-step
 	m_accelerationRate = 4.0f; // a maximum number of pixels to add to the velocity each frame
 
-	setLOSDistance(200.0f); // Length of the middle ray.
+	setLOSDistance(160.0f); // Length of the middle ray.
 	setLOSColour(glm::vec4(1, 0, 0, 1));
 
 	// Animation

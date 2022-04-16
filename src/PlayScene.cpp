@@ -36,6 +36,7 @@ void PlayScene::draw()
 
 	Util::DrawRect(glm::vec2(m_pPlayer->getTransform()->position.x - (m_pPlayer->getWidth() / 2), m_pPlayer->getTransform()->position.y - (m_pPlayer->getHeight() / 2)), m_pPlayer->getWidth(), m_pPlayer->getHeight());
 	Util::DrawRect(glm::vec2(m_pEnemies[m_keys[0]]->getTransform()->position.x - (m_pEnemies[m_keys[0]]->getWidth() / 2), m_pEnemies[m_keys[0]]->getTransform()->position.y - (m_pEnemies[m_keys[0]]->getHeight() / 2)), m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight());
+	Util::DrawRect(glm::vec2(m_pEnemies[m_keys[1]]->getTransform()->position.x - (m_pEnemies[m_keys[1]]->getWidth() / 2), m_pEnemies[m_keys[1]]->getTransform()->position.y - (m_pEnemies[m_keys[1]]->getHeight() / 2)), m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight());
 
 	
 
@@ -47,16 +48,25 @@ void PlayScene::draw()
 	{
 		m_pPlayer->drawLOS();
 		m_pEnemies[m_keys[0]]->drawEnemyLOS();
+		m_pEnemies[m_keys[1]]->drawEnemyLOS();
 	}
 
 	if (m_path_toggle == true)
 	{
 		// for the line that is connected between Player and Closest path_node
 		Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlayerClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-		// for the line that is connected between m_pPlayerClosest path_node and m_pEnemyClosest
-		Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pEnemyClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-		// for the line that is connected between m_pEnemyClosest path_node and Enemy
-		Util::DrawLine(m_pEnemyClosest->getTransform()->position, m_pEnemies[m_keys[0]]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		// for the line that is connected between m_pPlayerClosest path_node and m_pCCEClosest
+		Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pCCEClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		// for the line that is connected between m_pCCEClosest path_node and Enemy
+		Util::DrawLine(m_pCCEClosest->getTransform()->position, m_pEnemies[m_keys[0]]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+		// for the line that is connected between Player and Closest path_node
+		Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlayerClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		// for the line that is connected between m_pPlayerClosest path_node and m_pCCEClosest
+		Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pRCEClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		// for the line that is connected between m_pCCEClosest path_node and Enemy
+		Util::DrawLine(m_pRCEClosest->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
 	}
 }
 
@@ -69,29 +79,34 @@ void PlayScene::update()
 	//m_pPlayer->getTree()->getLOSNode()->setLOS(m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies, m_pObstacles));
 	/*m_checkAgentLOS(m_pPlayer, m_pEnemies);*/
 
-	float distance = Util::distance(m_pPlayer->getTransform()->position, m_pEnemies[m_keys[0]]->getTransform()->position);
-	bool isDetected = distance <= 450;
-	
-	//bool inClose = distance <= 50;
+	float CCE2Pdistance = Util::distance(m_pEnemies[m_keys[0]]->getTransform()->position, m_pPlayer->getTransform()->position);
+	float RCE2Pdistance = Util::distance(m_pEnemies[m_keys[1]]->getTransform()->position, m_pPlayer->getTransform()->position);
 
-	//if (m_pPlayer->getTree()->getPlayerDetectedNode()->getDetected() == false)
-		//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(isDetected); // #1
-	//m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies, m_pObstacles); // #2
-	//m_pPlayer->getTree()->getCloseCombatNode()->setIsWithinCombatRange(inClose); // #3
+	bool CCEisDetected = CCE2Pdistance <= m_pEnemies[m_keys[0]]->getLOSDistance();
+	bool RCEisDetected = RCE2Pdistance <= m_pEnemies[m_keys[1]]->getLOSDistance();
 
-	// For Ranged Enemy
-	//bool inRange = distance <= 200 && distance <= 350;
-	//m_pEnemies->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies->getHealth() > 25); // #1
-	//m_pEnemies->getTree()->getEnemyHitNode()->setIsHit(false); // #2
-	//m_pEnemies->getTree()->getPlayerDetectedNode()->setDetected(isDetected); // #3
-	//m_pEnemies->checkAgentLOSToTarget(m_pPlayer, m_pEnemies, m_pObstacles); // #4/#5
-	//m_pEnemies->getTree()->getRangedCombatNode()->setIsWithinCombatRange(inRange); // #6
+	bool inClose = CCE2Pdistance <= 50;
+	bool inRange = RCE2Pdistance <= 200 && RCE2Pdistance <= 350;
+
+	// For CloseCombatEnemy
+	//if (m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->getDetected() == false)
+	//	m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->setDetected(CCEisDetected); // #1
+	//m_pEnemies[m_keys[0]]->checkAgentLOSToTarget(m_pEnemies[m_keys[0]], m_pPlayer, m_pObstacles); // #2
+	//m_pEnemies[m_keys[0]]->getTree()->getCloseCombatNode()->setIsWithinCombatRange(inClose); // #3
+
+	//// For RangedCombatEnemy
+	//m_pEnemies[m_keys[1]]->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies[m_keys[1]]->getHealth() > 25); // #1
+	//m_pEnemies[m_keys[1]]->getTree()->getEnemyHitNode()->setIsHit(false); // #2
+	//m_pEnemies[m_keys[1]]->getTree()->getPlayerDetectedNode()->setDetected(RCEisDetected); // #3
+	//m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles); // #4/#5
+	//m_pEnemies[m_keys[1]]->getTree()->getRangedCombatNode()->setIsWithinCombatRange(inRange); // #6
 
 	// Now for the path_nodes LOS
 	switch (m_LOSMode)
 	{
 	case 0:
 		m_checkAllNodesWithTarget(m_pEnemies[m_keys[0]]);
+		/*m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]);*/ //TODO: need to separate
 		break;
 	case 1:
 		m_checkAllNodesWithTarget(m_pPlayer);
@@ -101,44 +116,53 @@ void PlayScene::update()
 		break;
 	}
 
-	//PathNode* temp1 = new PathNode;
-	//PathNode* temp2 = new PathNode;
-	//if (m_pEnemies.size() > 0)
-	//{
-	//	for (auto path_node : m_pGrid)
-	//	{
-	//		if (path_node->hasLOS()) // check if path_node has LOS
-	//		{
-	//			auto T2ODistance = Util::getClosestEdge(m_pEnemies.back()->getTransform()->position, path_node);
-	//			auto A2ODistance = Util::getClosestEdge(m_pPlayer->getTransform()->position, path_node);
+	PathNode* temp1 = new PathNode;
+	PathNode* temp2 = new PathNode;
+	PathNode* temp3 = new PathNode;
+	if (m_pEnemies.size() > 0)
+	{
+		for (auto path_node : m_pGrid)
+		{
+			if (path_node->hasLOS()) // check if path_node has LOS
+			{
+				auto CCE2ODistance = Util::getClosestEdge(m_pEnemies[m_keys[0]]->getTransform()->position, path_node);
+				auto RCE2ODistance = Util::getClosestEdge(m_pEnemies[m_keys[1]]->getTransform()->position, path_node);
+				auto A2ODistance = Util::getClosestEdge(m_pPlayer->getTransform()->position, path_node);
 
-	//			if (A2ODistance < temp1->getLOSDistance()) // find what path_node is the m_pPlayerClosest from Player
-	//			{
-	//				temp1->setLOSDistance(A2ODistance);
-	//				m_pPlayerClosest->getTransform()->position = temp1->getTransform()->position = path_node->getTransform()->position;
-	//			}
-	//			else if (T2ODistance < temp2->getLOSDistance()) // find what path_node is the m_pEnemyClosest from Enemy
-	//			{
-	//				temp2->setLOSDistance(T2ODistance);
-	//				m_pEnemyClosest->getTransform()->position = temp2->getTransform()->position = path_node->getTransform()->position;
-	//			}
-	//		}
+				if (A2ODistance < temp1->getLOSDistance()) // find what path_node is the m_pPlayerClosest from Player
+				{
+					temp1->setLOSDistance(A2ODistance);
+					m_pPlayerClosest->getTransform()->position = temp1->getTransform()->position = path_node->getTransform()->position;
+				}
+				else if (CCE2ODistance < temp2->getLOSDistance()) // find what path_node is the m_pCCEClosest from Enemy
+				{
+					temp2->setLOSDistance(CCE2ODistance);
+					m_pCCEClosest->getTransform()->position = temp2->getTransform()->position = path_node->getTransform()->position;
+				}
+				else if (RCE2ODistance < temp3->getLOSDistance()) // find what path_node is the m_pCCEClosest from Enemy
+				{
+					temp3->setLOSDistance(RCE2ODistance);
+					m_pRCEClosest->getTransform()->position = temp3->getTransform()->position = path_node->getTransform()->position;
+				}
+			}
 
-	//	}
-	//	// If path is clear or not
-	//	if (m_checkPathNodeLOS(m_pPlayerClosest, m_pPlayer) && m_checkPathNodeLOS(m_pPlayerClosest, m_pEnemyClosest) && m_checkPathNodeLOS(m_pPlayerClosest, m_pEnemyClosest))
-	//	{
-	//		m_LOS_Clear = true;
-	//	}
-	//	else
-	//	{
-	//		m_LOS_Clear = false;
-	//	}
-	//}
-	//delete temp1;
-	//delete temp2;
-	//temp1 = nullptr;
-	//temp2 = nullptr;
+		}
+		// If path is clear or not
+		//if (m_checkPathNodeLOS(m_pPlayerClosest, m_pPlayer) && m_checkPathNodeLOS(m_pPlayerClosest, m_pCCEClosest) && m_checkPathNodeLOS(m_pPlayerClosest, m_pCCEClosest))
+		//{
+		//	m_LOS_Clear = true;
+		//}
+		//else
+		//{
+		//	m_LOS_Clear = false;
+		//}
+	}
+	delete temp1;
+	delete temp2;
+	delete temp3;
+	temp1 = nullptr;
+	temp2 = nullptr;
+	temp3 = nullptr;
 }
 
 void PlayScene::clean()
@@ -223,7 +247,7 @@ void PlayScene::start()
 
 	/*m_pPlayer = new CloseCombatEnemy();*/
 	m_pPlayer = new Player();
-	m_pPlayer->getTransform()->position = glm::vec2(110.f, 550.f);
+	m_pPlayer->getTransform()->position = glm::vec2(110.f, 430.f); // y550
 	m_pPlayer->setTargetPosition(m_pEnemies[m_keys[0]]->getTransform()->position);
 	addChild(m_pPlayer, 2);
 
@@ -235,10 +259,12 @@ void PlayScene::start()
 
 	// For LOS
 	m_pPlayerClosest = new PathNode();
-	m_pEnemyClosest = new PathNode();
+	m_pCCEClosest = new PathNode();
+	m_pRCEClosest = new PathNode();
 
 	// Setup the grid
 	m_isGridEnabled = false;
+	m_path_toggle = false;
 	m_buildGrid();
 	m_toggleGrid(m_isGridEnabled);
 
@@ -280,7 +306,7 @@ void PlayScene::GUI_Function()
 	// See examples by uncommenting the following - also look at imgui_demo.cpp in the IMGUI filter
 	//ImGui::ShowDemoWindow();
 
-	ImGui::Begin("Lab 7 Debug Properties", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
+	ImGui::Begin("GAME3001_A4", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
 
 	ImGui::Separator();
 
@@ -319,6 +345,24 @@ void PlayScene::GUI_Function()
 	}
 
 	if (m_LOSMode == 2)
+	{
+		ImGui::SameLine();
+		ImGui::Text("<Active>");
+	}
+
+	if (ImGui::Button("Draw path", { 300,20 }))
+	{
+		if (m_path_toggle == true)
+		{
+			m_path_toggle = false;
+		}
+		else
+		{
+			m_path_toggle = true;
+		}
+	}
+
+	if (m_path_toggle == true)
 	{
 		ImGui::SameLine();
 		ImGui::Text("<Active>");
@@ -462,8 +506,9 @@ void PlayScene::m_checkAllNodesWithBoth()
 	for (auto path_node : m_pGrid)
 	{
 		bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
-		bool LOSWithTarget = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
-		path_node->setHasLOS((LOSWithSpaceShip && LOSWithTarget ? true : false));
+		bool LOSWithCCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
+		bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
+		path_node->setHasLOS((LOSWithSpaceShip && LOSWithCCE && LOSWithRCE ? true : false));
 	}
 }
 

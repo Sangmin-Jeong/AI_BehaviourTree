@@ -34,7 +34,7 @@ public:
 
 	//Getter
 	PathNode* GetPlayerClosest() {return m_pPlayerClosest;}
-	/*PathNode* GetCCEClosest() { return m_pEnemyClosest; }*/
+	/*PathNode* GetCCEClosest() { return m_pCCEClosest; }*/
 	Player* GetPlayer() { return m_pPlayer; }
 	Enemy* GetCCE() { return m_pEnemies[m_keys[0]]; }
 	Enemy* GetRCE() { return m_pEnemies[m_keys[1]]; }
@@ -55,7 +55,8 @@ private:
 	std::map<std::string, Enemy*> m_pEnemies;
 	std::string m_keys[2] = { "CCE", "RCE" };
 	PathNode* m_pPlayerClosest;
-	PathNode* m_pEnemyClosest;
+	PathNode* m_pCCEClosest;
+	PathNode* m_pRCEClosest;
 	
 	std::vector<Obstacle*> m_pObstacles;
 	std::vector<Torpedo*> m_pTorpedos;
