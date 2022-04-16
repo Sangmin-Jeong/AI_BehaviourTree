@@ -35,11 +35,9 @@ void PlayScene::draw()
 	//}
 
 	Util::DrawRect(glm::vec2(m_pPlayer->getTransform()->position.x - (m_pPlayer->getWidth() / 2), m_pPlayer->getTransform()->position.y - (m_pPlayer->getHeight() / 2)), m_pPlayer->getWidth(), m_pPlayer->getHeight());
-	for (auto enemy : m_pEnemies)
-	{
-		Util::DrawRect(glm::vec2(enemy->getTransform()->position.x - (enemy->getWidth() / 2), enemy->getTransform()->position.y - (enemy->getHeight() / 2)), enemy->getWidth(), enemy->getHeight());
+	Util::DrawRect(glm::vec2(m_pEnemies["CCE"]->getTransform()->position.x - (m_pEnemies["CCE"]->getWidth() / 2), m_pEnemies["CCE"]->getTransform()->position.y - (m_pEnemies["CCE"]->getHeight() / 2)), m_pEnemies["CCE"]->getWidth(), m_pEnemies["CCE"]->getHeight());
 
-	}
+	
 
 	drawDisplayList();
 
@@ -48,11 +46,7 @@ void PlayScene::draw()
 	if (m_isGridEnabled == true)
 	{
 		m_pPlayer->drawLOS();
-		for (auto enemy : m_pEnemies)
-		{
-			enemy->drawEnemyLOS();
-		}
-		
+		m_pEnemies["CCE"]->drawEnemyLOS();
 	}
 
 	if (m_path_toggle == true)
@@ -62,10 +56,7 @@ void PlayScene::draw()
 		// for the line that is connected between m_pPlayerClosest path_node and m_pEnemyClosest
 		Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pEnemyClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 		// for the line that is connected between m_pEnemyClosest path_node and Enemy
-		for (auto enemy : m_pEnemies)
-		{
-			Util::DrawLine(m_pEnemyClosest->getTransform()->position, enemy->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-		}
+		Util::DrawLine(m_pEnemyClosest->getTransform()->position, m_pEnemies["CCE"]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 }
 
@@ -77,11 +68,10 @@ void PlayScene::update()
 	// Close combat condition
 	//m_pPlayer->getTree()->getLOSNode()->setLOS(m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies, m_pObstacles));
 	/*m_checkAgentLOS(m_pPlayer, m_pEnemies);*/
-	for (auto enemy : m_pEnemies)
-	{
-		float distance = Util::distance(m_pPlayer->getTransform()->position, enemy->getTransform()->position);
-		bool isDetected = distance <= 450;
-	}
+
+	float distance = Util::distance(m_pPlayer->getTransform()->position, m_pEnemies["CCE"]->getTransform()->position);
+	bool isDetected = distance <= 450;
+	
 	//bool inClose = distance <= 50;
 
 	//if (m_pPlayer->getTree()->getPlayerDetectedNode()->getDetected() == false)
@@ -101,10 +91,7 @@ void PlayScene::update()
 	switch (m_LOSMode)
 	{
 	case 0:
-		for (auto enemy : m_pEnemies)
-		{
-			m_checkAllNodesWithTarget(enemy);
-		}
+		m_checkAllNodesWithTarget(m_pEnemies["CCE"]);
 		break;
 	case 1:
 		m_checkAllNodesWithTarget(m_pPlayer);
@@ -211,10 +198,9 @@ void PlayScene::start()
 	m_pBG = new Background();
 	addChild(m_pBG);
 
-	// Intentionally put target here so they can hide in cloud. ;)
-	m_pEnemies.push_back(new Enemy());
-	m_pEnemies.back()->getTransform()->position = glm::vec2(600.f, 430.f);
-	addChild(m_pEnemies.back(), 3);
+	m_pEnemies.emplace("CCE", new Enemy());
+	m_pEnemies["CCE"]->getTransform()->position = glm::vec2(600.f, 430.f);
+	addChild(m_pEnemies["CCE"], 3);
 
 	// New Obstacle creation
 	std::ifstream inFile("../Assets/data/obstacles.txt");
@@ -234,14 +220,18 @@ void PlayScene::start()
 	/*m_pPlayer = new CloseCombatEnemy();*/
 	m_pPlayer = new Player();
 	m_pPlayer->getTransform()->position = glm::vec2(110.f, 550.f);
-	m_pPlayer->setTargetPosition(m_pEnemies.back()->getTransform()->position);
+	m_pPlayer->setTargetPosition(m_pEnemies["CCE"]->getTransform()->position);
 	addChild(m_pPlayer, 2);
 
 	// Setup a few fields
-	m_LOSMode = 0;
+	m_LOSMode = 1;
 	m_obstacleBuffer = 0;
 	m_pathNodeLOSDistance = 1000;
 	m_setPathNodeLOSDistance(m_pathNodeLOSDistance);
+
+	// For LOS
+	m_pPlayerClosest = new PathNode();
+	m_pEnemyClosest = new PathNode();
 
 	// Setup the grid
 	m_isGridEnabled = false;
@@ -467,12 +457,9 @@ void PlayScene::m_checkAllNodesWithBoth()
 {
 	for (auto path_node : m_pGrid)
 	{
-		for (auto enemy : m_pEnemies)
-		{
-			bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
-			bool LOSWithTarget = m_checkPathNodeLOS(path_node, enemy);
-			path_node->setHasLOS((LOSWithSpaceShip && LOSWithTarget ? true : false));
-		}
+		bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
+		bool LOSWithTarget = m_checkPathNodeLOS(path_node, m_pEnemies["CCE"]);
+		path_node->setHasLOS((LOSWithSpaceShip && LOSWithTarget ? true : false));
 	}
 }
 

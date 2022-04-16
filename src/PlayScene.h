@@ -15,6 +15,7 @@
 #include "RangedCombatEnemy.h"
 #include "Torpedo.h"
 #include "TorpedoK.h"
+#include <map>
 
 class PlayScene : public Scene
 {
@@ -45,7 +46,8 @@ private:
 	// Game Objects
 	Background* m_pBG;
 	Player* m_pPlayer;
-	std::vector<Enemy*> m_pEnemies;
+	std::map<std::string, Enemy*> m_pEnemies;
+	std::string m_keys[2] = { "CCE", "RCE" };
 	PathNode* m_pPlayerClosest;
 	PathNode* m_pEnemyClosest;
 	

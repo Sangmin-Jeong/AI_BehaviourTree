@@ -7,15 +7,16 @@
 #include "MoveToPlayerAction.h"
 #include "PatrolAction.h"
 #include "EventManager.h"
+#include "PlayScene.h"
 
-CloseCombatEnemy::CloseCombatEnemy()
+CloseCombatEnemy::CloseCombatEnemy(Scene* scene) :m_pScene(scene)
 {
 	TextureManager::Instance().load("../Assets/textures/d7_small.png", "close_enemy");
 
 	const auto size = TextureManager::Instance().getTextureSize("close_enemy");
 	setWidth(size.x);
 	setHeight(size.y);
-	
+
 	getRigidBody()->bounds = glm::vec2(getWidth(), getHeight());
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->acceleration = glm::vec2(0, 0);
@@ -27,8 +28,8 @@ CloseCombatEnemy::CloseCombatEnemy()
 	m_maxSpeed = 10.0f; // a maximum number of pixels moved per frame
 	m_turnRate = 5.0f; // a maximum number of degrees to turn each time-step
 	m_accelerationRate = 2.0f; // a maximum number of pixels to add to the velocity each frame
-	
-	setLOSDistance(400.0f); // 5 ppf x 80 feet
+
+	setLOSDistance(240.0f); // 5 ppf x 80 feet
 	setLOSColour(glm::vec4(1, 0, 0, 1));
 
 	// Fill in action state and patrol code
@@ -186,6 +187,8 @@ void CloseCombatEnemy::MoveToPlayer()
 		setActionState(action);
 	}
 	// action
+	//setTargetPosition(static_cast<PlayScene*>(m_pScene)->getTarget()->getTransform()->position);
+	m_move();
 }
 
 void CloseCombatEnemy::MoveToLOS()
@@ -197,6 +200,8 @@ void CloseCombatEnemy::MoveToLOS()
 		setActionState(action);
 	}
 	// action
+	//setTargetPosition(static_cast<PlayScene*>(m_pScene)->getTargetCloest()->getTransform()->position);
+	m_move();
 }
 
 void CloseCombatEnemy::Attack()
@@ -207,13 +212,14 @@ void CloseCombatEnemy::Attack()
 		// Initialize. Like set move target to player.
 		setActionState(action);
 	}
+	/*std::cout << "Attack" << std::endl;*/
 	// action
 }
 
 void CloseCombatEnemy::m_move()
 {
 	Seek();
-	
+
 	//                                   final Position     position term    velocity term     acceleration term
 	// kinematic equation for motion --> Pf            =      Pi     +     Vi*(time)    +   (0.5)*Ai*(time * time)
 
@@ -227,8 +233,8 @@ void CloseCombatEnemy::m_move()
 
 	// compute the acceleration term
 	const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
-	
-	
+
+
 	// compute the new position
 	glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
 
@@ -255,7 +261,7 @@ void CloseCombatEnemy::m_buildTree()
 	m_tree->AddNode(m_tree->getPlayerDetectedNode(), losNode, RIGHT_TREE_NODE);
 	losNode->setAgent(this);
 	m_tree->getTree().push_back(losNode);
-	
+
 	TreeNode* moveToLOSNode = m_tree->AddNode(losNode, new MoveToLOSAction(), LEFT_TREE_NODE);
 	moveToLOSNode->setAgent(this);
 	m_tree->getTree().push_back(moveToLOSNode);

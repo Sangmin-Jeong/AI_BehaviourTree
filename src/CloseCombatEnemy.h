@@ -5,11 +5,12 @@
 #include "Agent.h"
 #include "Sprite.h"
 #include "DecisionTree.h"
+#include "Scene.h"
 
 class CloseCombatEnemy final : public Agent
 {
 public:
-	CloseCombatEnemy();
+	CloseCombatEnemy(Scene* scene);
 	~CloseCombatEnemy();
 
 	// Inherited via GameObject
@@ -59,5 +60,7 @@ private:
 	// Decision tree
 	DecisionTree* m_tree;
 	void m_buildTree();
+
+	Scene* m_pScene;
 };
 #endif /* defined (__CLOSE_COMBAT_ENEMY__) */
