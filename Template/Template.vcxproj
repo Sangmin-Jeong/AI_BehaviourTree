@@ -174,6 +174,7 @@
     <ClCompile Include="..\src\EnemyHealthCondition.cpp" />
     <ClCompile Include="..\src\EnemyHitCondition.cpp" />
     <ClCompile Include="..\src\FleeAction.cpp" />
+    <ClCompile Include="..\src\HealthBar.cpp" />
     <ClCompile Include="..\src\ImGuiWindowFrame.cpp" />
     <ClCompile Include="..\src\LOSCondition.cpp" />
     <ClCompile Include="..\src\MoveToCoverAction.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="..\src\EnemyHealthCondition.h" />
     <ClInclude Include="..\src\EnemyHitCondition.h" />
     <ClInclude Include="..\src\FleeAction.h" />
+    <ClInclude Include="..\src\HealthBar.h" />
     <ClInclude Include="..\src\Heuristic.h" />
     <ClInclude Include="..\src\ImGuiWindowFrame.h" />
     <ClInclude Include="..\src\LOSCondition.h" />

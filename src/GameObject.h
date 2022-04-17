@@ -57,6 +57,7 @@ private:
 	// size variables
 	int m_width;
 	int m_height;
+	SDL_FRect m_dst;
 	GameObjectType m_type;
 
 	bool m_enabled;
