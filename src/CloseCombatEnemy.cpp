@@ -59,8 +59,8 @@ CloseCombatEnemy::CloseCombatEnemy(Scene* scene) :m_pScene(scene)
 	// starting motion properties
 	setCurrentHeading(0.0f);// current facing angle
 	setCurrentDirection(glm::vec2(1.0f, 0.0f)); // facing right
-	m_maxSpeed = 10.0f; // a maximum number of pixels moved per frame
-	m_turnRate = 5.0f; // a maximum number of degrees to turn each time-step
+	m_maxSpeed = 5.0f; // a maximum number of pixels moved per frame
+	m_turnRate = 50.0f; // a maximum number of degrees to turn each time-step
 	m_accelerationRate = 2.0f; // a maximum number of pixels to add to the velocity each frame
 
 	setLOSDistance(80.0f); // 5 ppf x 80 feet
@@ -78,7 +78,7 @@ CloseCombatEnemy::CloseCombatEnemy(Scene* scene) :m_pScene(scene)
 	setAnimationSheet();
 
 	// Patrol
-	m_patrol.push_back(glm::vec2(400, 430));
+	m_patrol.push_back(glm::vec2(100, 430));
 	m_patrol.push_back(glm::vec2(600, 430));
 	m_waypoint = 0;
 
@@ -112,12 +112,10 @@ void CloseCombatEnemy::draw()
 			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_WALK_R:
-		getTransform()->position.x += 1;
 		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
 			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_WALK_L:
-		getTransform()->position.x -= 1;
 		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
 			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
@@ -223,14 +221,6 @@ void CloseCombatEnemy::Seek()
 	{
 		if (++m_waypoint == m_patrol.size()) m_waypoint = 0;
 		setTargetPosition(m_patrol[m_waypoint]);
-		if (m_waypoint == 0)
-		{
-			setAnimationState(ENEMY_WALK_L);
-		}
-		else if (m_waypoint == 1)
-		{
-			setAnimationState(ENEMY_WALK_R);
-		}
 	}
 
 	setDesiredVelocity(getTargetPosition());
@@ -278,6 +268,14 @@ void CloseCombatEnemy::Patrol()
 	{
 		// Initialize
 		setActionState(action);
+	}
+	if (m_waypoint == 0)
+	{
+		setAnimationState(ENEMY_WALK_L);
+	}
+	else if (m_waypoint == 1)
+	{
+		setAnimationState(ENEMY_WALK_R);
 	}
 	m_move();
 	
@@ -328,28 +326,30 @@ void CloseCombatEnemy::m_move()
 	//                                   final Position     position term    velocity term     acceleration term
 	// kinematic equation for motion --> Pf            =      Pi     +     Vi*(time)    +   (0.5)*Ai*(time * time)
 
-	//const float dt = TheGame::Instance().getDeltaTime();
+	const float dt = TheGame::Instance().getDeltaTime();
 
-	//// compute the position term
-	//const glm::vec2 initial_position = getTransform()->position;
+	// compute the position term
+	const glm::vec2 initial_position = getTransform()->position;
 
-	//// compute the velocity term
-	//const glm::vec2 velocity_term = getRigidBody()->velocity * dt;
+	// compute the velocity term
+	const glm::vec2 velocity_term = getRigidBody()->velocity * dt;
 
-	//// compute the acceleration term
-	//const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
+	// compute the acceleration term
+	const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
 
 
 	//// compute the new position
-	//glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
+	glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
 
-	//getTransform()->position = final_position;
+	/*std::cout << final_position.x << " " << final_position.y << std::endl;*/
+
+	getTransform()->position.x = final_position.x;
 
 	//// add our acceleration to velocity
-	//getRigidBody()->velocity += getRigidBody()->acceleration;
+	getRigidBody()->velocity += getRigidBody()->acceleration;
 
 	//// clamp our velocity at max speed
-	//getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, getMaxSpeed());
+	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, getMaxSpeed());
 }
 
 void CloseCombatEnemy::m_buildTree()

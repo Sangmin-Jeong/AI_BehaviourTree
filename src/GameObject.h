@@ -7,6 +7,8 @@
 #include <string>
 
 // enums
+#include <SDL_rect.h>
+
 #include "GameObjectType.h"
 
 

@@ -63,8 +63,8 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 	// starting motion properties
 	setCurrentHeading(0.0f);// current facing angle
 	setCurrentDirection(glm::vec2(1.0f, 0.0f)); // facing right
-	m_maxSpeed = 10.0f; // a maximum number of pixels moved per frame
-	m_turnRate = 5.0f; // a maximum number of degrees to turn each time-step
+	m_maxSpeed = 5.0f; // a maximum number of pixels moved per frame
+	m_turnRate = 50.0f; // a maximum number of degrees to turn each time-step
 	m_accelerationRate = 2.0f; // a maximum number of pixels to add to the velocity each frame
 	
 	setLOSDistance(160.0f); // 5 ppf x 80 feet
@@ -116,12 +116,10 @@ void RangedCombatEnemy::draw()
 			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_WALK_R:
-		getTransform()->position.x += 1;
 		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
 			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_WALK_L:
-		getTransform()->position.x -= 1;
 		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
 			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
@@ -227,14 +225,6 @@ void RangedCombatEnemy::Seek()
 	{
 		if (++m_waypoint == m_patrol.size()) m_waypoint = 0;
 		setTargetPosition(m_patrol[m_waypoint]);
-		if (m_waypoint == 0)
-		{
-			setAnimationState(ENEMY_WALK_L);
-		}
-		else
-		{
-			setAnimationState(ENEMY_WALK_R);
-		}
 	}
 
 	setDesiredVelocity(getTargetPosition());
@@ -282,6 +272,14 @@ void RangedCombatEnemy::Patrol()
 	{
 		// Initialize
 		setActionState(action);
+	}
+	if (m_waypoint == 0)
+	{
+		setAnimationState(ENEMY_WALK_L);
+	}
+	else
+	{
+		setAnimationState(ENEMY_WALK_R);
 	}
 	m_move();
 }
@@ -376,28 +374,28 @@ void RangedCombatEnemy::m_move()
 	//                                   final Position     position term    velocity term     acceleration term
 	// kinematic equation for motion --> Pf            =      Pi     +     Vi*(time)    +   (0.5)*Ai*(time * time)
 
-	//const float dt = TheGame::Instance().getDeltaTime();
+	const float dt = TheGame::Instance().getDeltaTime();
 
-	//// compute the position term
-	//const glm::vec2 initial_position = getTransform()->position;
+	// compute the position term
+	const glm::vec2 initial_position = getTransform()->position;
 
-	//// compute the velocity term
-	//const glm::vec2 velocity_term = getRigidBody()->velocity * dt;
+	// compute the velocity term
+	const glm::vec2 velocity_term = getRigidBody()->velocity * dt;
 
-	//// compute the acceleration term
-	//const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
-	//
-	//
-	//// compute the new position
-	//glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
+	// compute the acceleration term
+	const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
+	
+	
+	// compute the new position
+	glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
 
-	//getTransform()->position = final_position;
+	getTransform()->position.x = final_position.x;
 
-	//// add our acceleration to velocity
-	//getRigidBody()->velocity += getRigidBody()->acceleration;
+	// add our acceleration to velocity
+	getRigidBody()->velocity += getRigidBody()->acceleration;
 
-	//// clamp our velocity at max speed
-	//getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, getMaxSpeed());
+	// clamp our velocity at max speed
+	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, getMaxSpeed());
 }
 
 void RangedCombatEnemy::m_buildTree()
