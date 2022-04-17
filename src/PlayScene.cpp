@@ -106,7 +106,7 @@ void PlayScene::update()
 	{
 	case 0:
 		m_checkAllNodesWithTarget(m_pEnemies[m_keys[0]]);
-		/*m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]);*/ //TODO: need to separate
+		m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]); //TODO: need to separate
 		break;
 	case 1:
 		m_checkAllNodesWithTarget(m_pPlayer);
@@ -506,7 +506,7 @@ void PlayScene::m_checkAllNodesWithBoth()
 	{
 		bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
 		bool LOSWithCCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
-		bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
+		bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[1]]);
 		path_node->setHasLOS((LOSWithSpaceShip && LOSWithCCE && LOSWithRCE ? true : false));
 	}
 }

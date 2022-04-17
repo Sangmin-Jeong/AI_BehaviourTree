@@ -14,8 +14,11 @@
 #include "PlayScene.h" // in cpp is fine. in h can cause a infinity loop
 
 RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
-	:m_pScene(scene), m_fireCtr(0), m_fireCtrMax(60), m_animationState(ENEMY_WALK_L), m_animationSpeed(0.8f), isRight(false)
+	:m_pScene(scene), m_fireCtr(0), m_fireCtrMax(60)
 {
+	setAnimationState(ENEMY_WALK_L);
+	setAnimationSpeed(0.8f);
+	setIsRight(false);
 	//TextureManager::Instance().load("../Assets/textures/Circle.png","circle");
 
 		//const auto size = TextureManager::Instance().getTextureSize("circle");
@@ -74,8 +77,8 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 	setAnimationSheet();
 
 	// Patrol
-	m_patrol.push_back(glm::vec2(150, getTransform()->position.y));
-	m_patrol.push_back(glm::vec2(600, getTransform()->position.y));
+	m_patrol.push_back(glm::vec2(400, 230));
+	m_patrol.push_back(glm::vec2(600, 230));
 	m_waypoint = 0;
 
 	setTargetPosition(m_patrol[m_waypoint]);
@@ -97,47 +100,50 @@ void RangedCombatEnemy::draw()
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
 
+	Util::DrawCapsule(glm::vec2(m_patrol[0].x, m_patrol[0].y), 10, 10,glm::vec4(0, 0, 0, 1));
+	Util::DrawCapsule(glm::vec2(m_patrol[1].x, m_patrol[1].y), 10, 10, glm::vec4(0, 0, 0, 1));
+
 	// draw the Enemy
 	//TextureManager::Instance().draw("circle", x, y, 0, 255, isCentered());
-	switch (m_animationState)
+	switch (getAnimationState())
 	{
 	case ENEMY_IDLE_R:
 		TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_IDLE_L:
 		TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_WALK_R:
 		getTransform()->position.x += 1;
 		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_WALK_L:
 		getTransform()->position.x -= 1;
 		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_HURT_R:
 		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_HURT_L:
 		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_DEATH_R:
 		TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_DEATH_L:
 		TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_GONE:
 		TextureManager::Instance().playAnimation("enemyGone", getAnimation("gone"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	default:
 		break;
@@ -154,6 +160,20 @@ void RangedCombatEnemy::update()
 {
 	// Determine which action to perform
 	getTree()->MakeDecision();
+
+	// Control Hit animation 
+	if (getAnimation("hurt").current_frame == 2)
+	{
+		if (getIsRight() == false)
+		{
+			setAnimationState(ENEMY_IDLE_L);
+		}
+		else if (getIsRight() == true)
+		{
+			setAnimationState(ENEMY_IDLE_R);
+		}
+		getAnimation("hurt").current_frame = 0;
+	}
 }
 
 void RangedCombatEnemy::clean()
@@ -356,28 +376,28 @@ void RangedCombatEnemy::m_move()
 	//                                   final Position     position term    velocity term     acceleration term
 	// kinematic equation for motion --> Pf            =      Pi     +     Vi*(time)    +   (0.5)*Ai*(time * time)
 
-	const float dt = TheGame::Instance().getDeltaTime();
+	//const float dt = TheGame::Instance().getDeltaTime();
 
-	// compute the position term
-	const glm::vec2 initial_position = getTransform()->position;
+	//// compute the position term
+	//const glm::vec2 initial_position = getTransform()->position;
 
-	// compute the velocity term
-	const glm::vec2 velocity_term = getRigidBody()->velocity * dt;
+	//// compute the velocity term
+	//const glm::vec2 velocity_term = getRigidBody()->velocity * dt;
 
-	// compute the acceleration term
-	const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
-	
-	
-	// compute the new position
-	glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
+	//// compute the acceleration term
+	//const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
+	//
+	//
+	//// compute the new position
+	//glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
 
-	getTransform()->position = final_position;
+	//getTransform()->position = final_position;
 
-	// add our acceleration to velocity
-	getRigidBody()->velocity += getRigidBody()->acceleration;
+	//// add our acceleration to velocity
+	//getRigidBody()->velocity += getRigidBody()->acceleration;
 
-	// clamp our velocity at max speed
-	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, getMaxSpeed());
+	//// clamp our velocity at max speed
+	//getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, getMaxSpeed());
 }
 
 void RangedCombatEnemy::m_buildTree()
