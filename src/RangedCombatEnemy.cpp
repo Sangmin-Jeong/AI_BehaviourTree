@@ -14,8 +14,11 @@
 #include "PlayScene.h" // in cpp is fine. in h can cause a infinity loop
 
 RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
-	:m_pScene(scene), m_fireCtr(0), m_fireCtrMax(60), m_animationState(ENEMY_WALK_L), m_animationSpeed(0.8f), isRight(false)
+	:m_pScene(scene), m_fireCtr(0), m_fireCtrMax(60)
 {
+	setAnimationState(ENEMY_WALK_L);
+	setAnimationSpeed(0.8f);
+	setIsRight(false);
 	//TextureManager::Instance().load("../Assets/textures/Circle.png","circle");
 
 		//const auto size = TextureManager::Instance().getTextureSize("circle");
@@ -74,8 +77,8 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 	setAnimationSheet();
 
 	// Patrol
-	m_patrol.push_back(glm::vec2(150, getTransform()->position.y));
-	m_patrol.push_back(glm::vec2(600, getTransform()->position.y));
+	m_patrol.push_back(glm::vec2(400, 230));
+	m_patrol.push_back(glm::vec2(600, 230));
 	m_waypoint = 0;
 
 	setTargetPosition(m_patrol[m_waypoint]);
@@ -83,9 +86,9 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 	setType(AGENT);
 
 	// Create decision tree
-	m_tree = new DecisionTree(this); // Overloaded constructor.
+	setTree(new DecisionTree(this)); // Overloaded constructor.
 	m_buildTree();
-	m_tree->Display(); // Optional.
+	getTree()->Display(); // Optional.
 }
 
 RangedCombatEnemy::~RangedCombatEnemy()
@@ -97,47 +100,50 @@ void RangedCombatEnemy::draw()
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
 
+	Util::DrawCapsule(glm::vec2(m_patrol[0].x, m_patrol[0].y), 10, 10,glm::vec4(0, 0, 0, 1));
+	Util::DrawCapsule(glm::vec2(m_patrol[1].x, m_patrol[1].y), 10, 10, glm::vec4(0, 0, 0, 1));
+
 	// draw the Enemy
 	//TextureManager::Instance().draw("circle", x, y, 0, 255, isCentered());
-	switch (m_animationState)
+	switch (getAnimationState())
 	{
 	case ENEMY_IDLE_R:
 		TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_IDLE_L:
 		TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_WALK_R:
 		getTransform()->position.x += 1;
 		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_WALK_L:
 		getTransform()->position.x -= 1;
 		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_HURT_R:
 		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_HURT_L:
 		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_DEATH_R:
 		TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_DEATH_L:
 		TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_GONE:
 		TextureManager::Instance().playAnimation("enemyGone", getAnimation("gone"),
-			x, y, m_animationSpeed, 0, 255, true);
+			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	default:
 		break;
@@ -153,7 +159,21 @@ void RangedCombatEnemy::draw()
 void RangedCombatEnemy::update()
 {
 	// Determine which action to perform
-	m_tree->MakeDecision();
+	getTree()->MakeDecision();
+
+	// Control Hit animation 
+	if (getAnimation("hurt").current_frame == 2)
+	{
+		if (getIsRight() == false)
+		{
+			setAnimationState(ENEMY_IDLE_L);
+		}
+		else if (getIsRight() == true)
+		{
+			setAnimationState(ENEMY_IDLE_R);
+		}
+		getAnimation("hurt").current_frame = 0;
+	}
 }
 
 void RangedCombatEnemy::clean()
@@ -356,93 +376,93 @@ void RangedCombatEnemy::m_move()
 	//                                   final Position     position term    velocity term     acceleration term
 	// kinematic equation for motion --> Pf            =      Pi     +     Vi*(time)    +   (0.5)*Ai*(time * time)
 
-	const float dt = TheGame::Instance().getDeltaTime();
+	//const float dt = TheGame::Instance().getDeltaTime();
 
-	// compute the position term
-	const glm::vec2 initial_position = getTransform()->position;
+	//// compute the position term
+	//const glm::vec2 initial_position = getTransform()->position;
 
-	// compute the velocity term
-	const glm::vec2 velocity_term = getRigidBody()->velocity * dt;
+	//// compute the velocity term
+	//const glm::vec2 velocity_term = getRigidBody()->velocity * dt;
 
-	// compute the acceleration term
-	const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
-	
-	
-	// compute the new position
-	glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
+	//// compute the acceleration term
+	//const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
+	//
+	//
+	//// compute the new position
+	//glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
 
-	getTransform()->position = final_position;
+	//getTransform()->position = final_position;
 
-	// add our acceleration to velocity
-	getRigidBody()->velocity += getRigidBody()->acceleration;
+	//// add our acceleration to velocity
+	//getRigidBody()->velocity += getRigidBody()->acceleration;
 
-	// clamp our velocity at max speed
-	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, getMaxSpeed());
+	//// clamp our velocity at max speed
+	//getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, getMaxSpeed());
 }
 
 void RangedCombatEnemy::m_buildTree()
 {
 	// Create and add root node.
-	m_tree->setEnemyHealthNode(new EnemyHealthCondition());
-	m_tree->getTree().push_back(m_tree->getEnemyHealthNode());
+	getTree()->setEnemyHealthNode(new EnemyHealthCondition());
+	getTree()->getTree().push_back(getTree()->getEnemyHealthNode());
 
 	// Nodes off new health root
-	TreeNode* fleeNode = m_tree->AddNode(m_tree->getEnemyHealthNode(), new FleeAction(), LEFT_TREE_NODE);
+	TreeNode* fleeNode = getTree()->AddNode(getTree()->getEnemyHealthNode(), new FleeAction(), LEFT_TREE_NODE);
 	fleeNode->setAgent(this);
-	m_tree->getTree().push_back(fleeNode);
+	getTree()->getTree().push_back(fleeNode);
 
-	m_tree->setEnemyHitNode(new EnemyHitCondition());
-	m_tree->AddNode(m_tree->getEnemyHealthNode(), m_tree->getEnemyHitNode(), RIGHT_TREE_NODE);
-	m_tree->getTree().push_back(m_tree->getEnemyHitNode());
+	getTree()->setEnemyHitNode(new EnemyHitCondition());
+	getTree()->AddNode(getTree()->getEnemyHealthNode(), getTree()->getEnemyHitNode(), RIGHT_TREE_NODE);
+	getTree()->getTree().push_back(getTree()->getEnemyHitNode());
 	//
 
 	// Node children of enemy hit node
-	m_tree->setPlayerDetectedNode(new PlayerDetectedCondition());
-	m_tree->AddNode(m_tree->getEnemyHitNode(), m_tree->getPlayerDetectedNode(), LEFT_TREE_NODE);
-	m_tree->getTree().push_back(m_tree->getPlayerDetectedNode());
+	getTree()->setPlayerDetectedNode(new PlayerDetectedCondition());
+	getTree()->AddNode(getTree()->getEnemyHitNode(), getTree()->getPlayerDetectedNode(), LEFT_TREE_NODE);
+	getTree()->getTree().push_back(getTree()->getPlayerDetectedNode());
 
 	LOSCondition* losNodeRight = new LOSCondition();
-	m_tree->AddNode(m_tree->getEnemyHitNode(), losNodeRight, RIGHT_TREE_NODE);
+	getTree()->AddNode(getTree()->getEnemyHitNode(), losNodeRight, RIGHT_TREE_NODE);
 	losNodeRight->setAgent(this);
-	m_tree->getTree().push_back(losNodeRight);
+	getTree()->getTree().push_back(losNodeRight);
 	//
 
-	TreeNode* patrolNode = m_tree->AddNode(m_tree->getPlayerDetectedNode(), new PatrolAction(), LEFT_TREE_NODE);
+	TreeNode* patrolNode = getTree()->AddNode(getTree()->getPlayerDetectedNode(), new PatrolAction(), LEFT_TREE_NODE);
 	patrolNode->setAgent(this);
-	m_tree->getTree().push_back(patrolNode);
+	getTree()->getTree().push_back(patrolNode);
 
 	// We have a LOS condition already so make a new node of it.
 	LOSCondition* losNodeLeft = new LOSCondition();
-	m_tree->AddNode(m_tree->getPlayerDetectedNode(), losNodeLeft, RIGHT_TREE_NODE);
+	getTree()->AddNode(getTree()->getPlayerDetectedNode(), losNodeLeft, RIGHT_TREE_NODE);
 	losNodeLeft->setAgent(this);
-	m_tree->getTree().push_back(losNodeLeft);
+	getTree()->getTree().push_back(losNodeLeft);
 
 	// Child nodes of left LOS node
-	TreeNode* moveToLOSNode = m_tree->AddNode(losNodeLeft, new MoveToLOSAction(), LEFT_TREE_NODE);
+	TreeNode* moveToLOSNode = getTree()->AddNode(losNodeLeft, new MoveToLOSAction(), LEFT_TREE_NODE);
 	moveToLOSNode->setAgent(this);
-	m_tree->getTree().push_back(moveToLOSNode);
+	getTree()->getTree().push_back(moveToLOSNode);
 
-	m_tree->setRangedCombatNode(new RangedCombatCondition());
-	m_tree->AddNode(losNodeLeft, m_tree->getRangedCombatNode(), RIGHT_TREE_NODE);
-	m_tree->getTree().push_back(m_tree->getRangedCombatNode());
+	getTree()->setRangedCombatNode(new RangedCombatCondition());
+	getTree()->AddNode(losNodeLeft, getTree()->getRangedCombatNode(), RIGHT_TREE_NODE);
+	getTree()->getTree().push_back(getTree()->getRangedCombatNode());
 
-	TreeNode* moveToRangeNode = m_tree->AddNode(m_tree->getRangedCombatNode(), new MoveToRangeAction(), LEFT_TREE_NODE);
+	TreeNode* moveToRangeNode = getTree()->AddNode(getTree()->getRangedCombatNode(), new MoveToRangeAction(), LEFT_TREE_NODE);
 	moveToRangeNode->setAgent(this);
-	m_tree->getTree().push_back(moveToRangeNode);
+	getTree()->getTree().push_back(moveToRangeNode);
 
-	TreeNode* attackNode = m_tree->AddNode(m_tree->getRangedCombatNode(), new AttackAction(), RIGHT_TREE_NODE);
+	TreeNode* attackNode = getTree()->AddNode(getTree()->getRangedCombatNode(), new AttackAction(), RIGHT_TREE_NODE);
 	attackNode->setAgent(this);
-	m_tree->getTree().push_back(attackNode);
+	getTree()->getTree().push_back(attackNode);
 	//
 
 	// Child nodes of right LOS node
-	TreeNode* waitBehindCoverNode = m_tree->AddNode(losNodeRight, new WaitBehindCoverAction(), LEFT_TREE_NODE);
+	TreeNode* waitBehindCoverNode = getTree()->AddNode(losNodeRight, new WaitBehindCoverAction(), LEFT_TREE_NODE);
 	waitBehindCoverNode->setAgent(this);
-	m_tree->getTree().push_back(waitBehindCoverNode);
+	getTree()->getTree().push_back(waitBehindCoverNode);
 
-	TreeNode* moveToCoverNode = m_tree->AddNode(losNodeRight, new MoveToCoverAction(), RIGHT_TREE_NODE);
+	TreeNode* moveToCoverNode = getTree()->AddNode(losNodeRight, new MoveToCoverAction(), RIGHT_TREE_NODE);
 	moveToCoverNode->setAgent(this);
-	m_tree->getTree().push_back(moveToCoverNode);
+	getTree()->getTree().push_back(moveToCoverNode);
 	//
 
 	//// Create and add root node.

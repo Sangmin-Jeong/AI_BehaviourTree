@@ -59,8 +59,6 @@ Enemy::Enemy() : m_animationState(ENEMY_WALK_L), m_animationSpeed(0.8f), isRight
 	setLOSDistance(200.0f); // Length of the middle ray.
 	setLOSColour(glm::vec4(1, 0, 0, 1));
 
-	// Animation
-	setAnimationSheet();
 
 	// Patrol
 	m_patrol.push_back(glm::vec2(150, 430 ));
@@ -83,49 +81,49 @@ void Enemy::draw()
 
 	// draw the Enemy
 	//TextureManager::Instance().draw("circle", x, y, 0, 255, isCentered());
-	switch (m_animationState)
-	{
-	case ENEMY_IDLE_R:
-		TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
-			x, y, m_animationSpeed, 0, 255, true);
-		break;
-	case ENEMY_IDLE_L:
-		TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-		break;
-	case ENEMY_WALK_R:
-		getTransform()->position.x += 1;
-		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
-			x, y, m_animationSpeed, 0, 255, true);
-		break;
-	case ENEMY_WALK_L:
-		getTransform()->position.x -= 1;
-		TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-		break;
-	case ENEMY_HURT_R:
-		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-			x, y, m_animationSpeed, 0, 255, true);
-		break;
-	case ENEMY_HURT_L:
-		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-		break;
-	case ENEMY_DEATH_R:
-		TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
-			x, y, m_animationSpeed, 0, 255, true);
-		break;
-	case ENEMY_DEATH_L:
-		TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-		break;
-	case ENEMY_GONE:
-		TextureManager::Instance().playAnimation("enemyGone", getAnimation("gone"),
-			x, y, m_animationSpeed, 0, 255, true);
-		break;
-	default:
-		break;
-	}
+	//switch (m_animationState)
+	//{
+	//case ENEMY_IDLE_R:
+	//	TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
+	//		x, y, m_animationSpeed, 0, 255, true);
+	//	break;
+	//case ENEMY_IDLE_L:
+	//	TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
+	//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+	//	break;
+	//case ENEMY_WALK_R:
+	//	getTransform()->position.x += 1;
+	//	TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
+	//		x, y, m_animationSpeed, 0, 255, true);
+	//	break;
+	//case ENEMY_WALK_L:
+	//	getTransform()->position.x -= 1;
+	//	TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
+	//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+	//	break;
+	//case ENEMY_HURT_R:
+	//	TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
+	//		x, y, m_animationSpeed, 0, 255, true);
+	//	break;
+	//case ENEMY_HURT_L:
+	//	TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
+	//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+	//	break;
+	//case ENEMY_DEATH_R:
+	//	TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
+	//		x, y, m_animationSpeed, 0, 255, true);
+	//	break;
+	//case ENEMY_DEATH_L:
+	//	TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
+	//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+	//	break;
+	//case ENEMY_GONE:
+	//	TextureManager::Instance().playAnimation("enemyGone", getAnimation("gone"),
+	//		x, y, m_animationSpeed, 0, 255, true);
+	//	break;
+	//default:
+	//	break;
+	//}
 }
 
 void Enemy::update()

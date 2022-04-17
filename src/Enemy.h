@@ -19,9 +19,12 @@ public:
 
 	// Animation
 	void setAnimationSheet();
-	void setAnimationState(EnemyAnimationState s) { m_animationState = s; }
-	void setAnimationSpeed(float s) { m_animationSpeed = s; }
-	EnemyAnimationState getAnimationState() { return m_animationState; }
+	void setAnimationState(EnemyAnimationState s) { this->m_animationState = s; }
+	void setAnimationSpeed(float s) { this->m_animationSpeed = s; }
+	float getAnimationSpeed() { return this->m_animationSpeed; }
+	EnemyAnimationState getAnimationState() { return this->m_animationState; }
+	bool getIsRight() { return this->isRight; }
+	void setIsRight(bool b) { this->isRight = b; }
 
 	void drawEnemyLOS();
 
@@ -40,16 +43,17 @@ public:
 	void Seek();
 	void LookWhereYoureGoing(glm::vec2 target_direction);
 
-	const DecisionTree* getTree() { return m_tree; }
+	DecisionTree* getTree() { return this->m_tree; }
+	void setTree(DecisionTree* t) { m_tree = t; }
 
 private:
 	void m_move();
 	void m_checkBounds();
 	void m_reset();
 
-	// Decision tree
+	//// Decision tree
 	DecisionTree* m_tree;
-	void m_buildTree();
+	virtual void m_buildTree() = 0;
 
 	// Animation
 	EnemyAnimationState m_animationState;

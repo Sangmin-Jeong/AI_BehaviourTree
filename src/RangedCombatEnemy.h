@@ -43,11 +43,10 @@ public:
 	void MoveToLOS();
 	// more later...
 
-	const DecisionTree* getTree() { return m_tree; }
+	//const DecisionTree* getTree() { return m_tree; }
 
 private:
 	// private movement variables
-	bool isRight;
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
@@ -62,14 +61,11 @@ private:
 	void m_move();
 
 	// Decision tree
-	DecisionTree* m_tree;
-	void m_buildTree();
+	/*DecisionTree* m_tree;*/
+	void m_buildTree() override;
 
 	int m_fireCtr, m_fireCtrMax;
 	Scene* m_pScene;
 
-	// Animation
-	EnemyAnimationState m_animationState;
-	float m_animationSpeed;
 };
 #endif /* defined (__RANGED_COMBAT_ENEMY__) */

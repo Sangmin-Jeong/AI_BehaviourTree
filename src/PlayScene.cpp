@@ -89,24 +89,24 @@ void PlayScene::update()
 	bool inRange = RCE2Pdistance <= 200 && RCE2Pdistance <= 350;
 
 	// For CloseCombatEnemy
-	//if (m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->getDetected() == false)
-	//	m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->setDetected(CCEisDetected); // #1
-	//m_pEnemies[m_keys[0]]->checkAgentLOSToTarget(m_pEnemies[m_keys[0]], m_pPlayer, m_pObstacles); // #2
-	//m_pEnemies[m_keys[0]]->getTree()->getCloseCombatNode()->setIsWithinCombatRange(inClose); // #3
+	if (m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->getDetected() == false)
+		m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->setDetected(CCEisDetected); // #1
+	m_pEnemies[m_keys[0]]->checkAgentLOSToTarget(m_pEnemies[m_keys[0]], m_pPlayer, m_pObstacles); // #2
+	m_pEnemies[m_keys[0]]->getTree()->getCloseCombatNode()->setIsWithinCombatRange(inClose); // #3
 
 	//// For RangedCombatEnemy
-	//m_pEnemies[m_keys[1]]->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies[m_keys[1]]->getHealth() > 25); // #1
-	//m_pEnemies[m_keys[1]]->getTree()->getEnemyHitNode()->setIsHit(false); // #2
-	//m_pEnemies[m_keys[1]]->getTree()->getPlayerDetectedNode()->setDetected(RCEisDetected); // #3
-	//m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles); // #4/#5
-	//m_pEnemies[m_keys[1]]->getTree()->getRangedCombatNode()->setIsWithinCombatRange(inRange); // #6
+	m_pEnemies[m_keys[1]]->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies[m_keys[1]]->getHealth() > 25); // #1
+	m_pEnemies[m_keys[1]]->getTree()->getEnemyHitNode()->setIsHit(false); // #2
+	m_pEnemies[m_keys[1]]->getTree()->getPlayerDetectedNode()->setDetected(RCEisDetected); // #3
+	m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles); // #4/#5
+	m_pEnemies[m_keys[1]]->getTree()->getRangedCombatNode()->setIsWithinCombatRange(inRange); // #6
 
 	// Now for the path_nodes LOS
 	switch (m_LOSMode)
 	{
 	case 0:
 		m_checkAllNodesWithTarget(m_pEnemies[m_keys[0]]);
-		/*m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]);*/ //TODO: need to separate
+		m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]); //TODO: need to separate
 		break;
 	case 1:
 		m_checkAllNodesWithTarget(m_pPlayer);
@@ -230,6 +230,11 @@ void PlayScene::start()
 	m_pEnemies[m_keys[1]]->getTransform()->position = glm::vec2(600.f, 230.f);
 	addChild(m_pEnemies[m_keys[1]], 3);
 
+	m_pPlayer = new Player();
+	m_pPlayer->getTransform()->position = glm::vec2(110.f, 430.f); // y550
+	m_pPlayer->setTargetPosition(m_pEnemies[m_keys[0]]->getTransform()->position);
+	addChild(m_pPlayer, 2);
+
 	// New Obstacle creation
 	std::ifstream inFile("../Assets/data/obstacles.txt");
 	while (!inFile.eof())
@@ -244,12 +249,6 @@ void PlayScene::start()
 		m_pObstacles.push_back(obstacle);
 	}
 	inFile.close();
-
-	/*m_pPlayer = new CloseCombatEnemy();*/
-	m_pPlayer = new Player();
-	m_pPlayer->getTransform()->position = glm::vec2(110.f, 430.f); // y550
-	m_pPlayer->setTargetPosition(m_pEnemies[m_keys[0]]->getTransform()->position);
-	addChild(m_pPlayer, 2);
 
 	// Setup a few fields
 	m_LOSMode = 1;
@@ -507,7 +506,7 @@ void PlayScene::m_checkAllNodesWithBoth()
 	{
 		bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
 		bool LOSWithCCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
-		bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
+		bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[1]]);
 		path_node->setHasLOS((LOSWithSpaceShip && LOSWithCCE && LOSWithRCE ? true : false));
 	}
 }

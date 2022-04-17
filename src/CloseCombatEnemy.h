@@ -39,11 +39,8 @@ public:
 	void Attack();
 	// more later...
 
-	const DecisionTree* getTree() { return m_tree; }
-
 private:
 	// private movement variables
-	bool isRight;
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
@@ -58,14 +55,8 @@ private:
 	void m_move();
 
 	// Decision tree
-	DecisionTree* m_tree;
-	void m_buildTree();
+	virtual void m_buildTree() override;
 
 	Scene* m_pScene;
-
-	// Animation
-		// Animation
-	EnemyAnimationState m_animationState;
-	float m_animationSpeed;
 };
 #endif /* defined (__CLOSE_COMBAT_ENEMY__) */
