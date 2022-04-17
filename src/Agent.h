@@ -79,6 +79,9 @@ public:
 			m_health = 0;
 	}
 
+	bool getIsRight() { return this->isRight; }
+	void setIsRight(bool b) { this->isRight = b; }
+
 private:
 	void m_changeDirection();
 	float m_currentHeading; // angle the ship is looking
@@ -106,6 +109,8 @@ private:
 
 	// New lab 7 part 3
 	int m_health = 100;
+
+	bool isRight;
 };
 
 

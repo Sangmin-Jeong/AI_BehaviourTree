@@ -63,6 +63,8 @@ Player::Player() : m_animationState(PLAYER_IDLE_R), m_animationSpeed(1.0f)
 	setCanDown(false);
 	setCanUp(false);
 
+	setIsRight(true);
+
 	// starting motion properties
 	setCurrentHeading(0.0f);
 	setCurrentDirection(glm::vec2(1.0f, 0.0f));

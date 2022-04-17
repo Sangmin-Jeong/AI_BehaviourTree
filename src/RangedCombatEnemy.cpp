@@ -357,10 +357,23 @@ void RangedCombatEnemy::Flee()
 	ActionState action = FLEE;
 	if (getActionState() != action)
 	{
-		// Initialize
+		// Initialize. Like set move target to player.
 		setActionState(action);
 	}
-	// Action
+
+	// action
+	setIsRight(static_cast<PlayScene*>(m_pScene)->GetPlayer()->getIsRight());
+	if (getIsRight() == true)
+	{
+		setTargetPosition(glm::vec2(800, getTransform()->position.y));
+		setAnimationState(ENEMY_WALK_R);
+	}
+	else
+	{
+		setTargetPosition(glm::vec2(0, getTransform()->position.y));
+		setAnimationState(ENEMY_WALK_L);
+	}
+	m_move();
 }
 
 void RangedCombatEnemy::MovetoCover()

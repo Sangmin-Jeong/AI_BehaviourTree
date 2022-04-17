@@ -6,8 +6,9 @@
 #include "Util.h"
 
 
-Enemy::Enemy() : m_animationState(ENEMY_WALK_L), m_animationSpeed(0.8f), isRight(false)
+Enemy::Enemy() : m_animationState(ENEMY_WALK_L), m_animationSpeed(0.8f)
 {
+	setIsRight(false);
 	TextureManager::Instance().load("../Assets/textures/Circle.png","circle");
 
 	const auto size = TextureManager::Instance().getTextureSize("circle");
@@ -59,11 +60,11 @@ void Enemy::update()
 	// Control Hit animation 
 	if (getAnimation("hurt").current_frame == 2)
 	{
-		if (isRight == false)
+		if (getIsRight() == false)
 		{
 			setAnimationState(ENEMY_IDLE_L);
 		}
-		else if (isRight == true)
+		else if (getIsRight() == true)
 		{
 			setAnimationState(ENEMY_IDLE_R);
 		}

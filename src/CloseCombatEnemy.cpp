@@ -414,10 +414,18 @@ void CloseCombatEnemy::Flee()
 	}
 
 	// action
-	if (getHealth() <= 25)
+	setIsRight(static_cast<PlayScene*>(m_pScene)->GetPlayer()->getIsRight());
+	if (getIsRight() == true)
 	{
-		setTargetPosition(static_cast<PlayScene*>(m_pScene)->GetPlayer()->getCurrentDirection());
+		setTargetPosition(glm::vec2(800, getTransform()->position.y));
+		setAnimationState(ENEMY_WALK_R);
 	}
+	else
+	{
+		setTargetPosition(glm::vec2(0, getTransform()->position.y));
+		setAnimationState(ENEMY_WALK_L);
+	}
+	m_move();
 }
 
 void CloseCombatEnemy::m_move()

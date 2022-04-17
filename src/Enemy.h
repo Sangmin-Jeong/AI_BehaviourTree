@@ -22,8 +22,6 @@ public:
 	void setAnimationSpeed(float s) { this->m_animationSpeed = s; }
 	float getAnimationSpeed() { return this->m_animationSpeed; }
 	EnemyAnimationState getAnimationState() { return this->m_animationState; }
-	bool getIsRight() { return this->isRight; }
-	void setIsRight(bool b) { this->isRight = b; }
 
 	void drawEnemyLOS();
 
@@ -64,7 +62,6 @@ private:
 	glm::vec2 m_desiredVelocity;
 
 	// private movement variables
-	bool isRight;
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
