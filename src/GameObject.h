@@ -49,6 +49,9 @@ public:
 	void setIsCentered(bool state);
 	bool isCentered() const;
 
+	void setDstW(float w) { m_dst.w = w; }
+	SDL_FRect getDst() { return m_dst; }
+
 private:
 	// transform component
 	Transform m_transform;

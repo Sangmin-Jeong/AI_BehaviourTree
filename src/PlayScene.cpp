@@ -19,9 +19,13 @@ PlayScene::~PlayScene()
 
 void PlayScene::draw()
 {
+	drawDisplayList();
+
+	glm::vec4 black = { 0,0,0,1 };
+
 	for (auto element : m_pObstacles)
 	{
-		Util::DrawRect(glm::vec2(element->getTransform()->position.x - (element->getWidth() / 2), element->getTransform()->position.y - (element->getHeight() / 2)), element->getWidth(), element->getHeight());
+		Util::DrawRect(glm::vec2(element->getTransform()->position.x - (element->getWidth() / 2), element->getTransform()->position.y - (element->getHeight() / 2)), element->getWidth(), element->getHeight(), black);
 	}
 
 	//for (auto element : m_pInvisObstacles)
@@ -34,15 +38,17 @@ void PlayScene::draw()
 	//	Util::DrawRect(glm::vec2(element->getTransform()->position.x - (element->getWidth() / 2), element->getTransform()->position.y - (element->getHeight() / 2)), element->getWidth(), element->getHeight());
 	//}
 
-	Util::DrawRect(glm::vec2(m_pPlayer->getTransform()->position.x - (m_pPlayer->getWidth() / 2), m_pPlayer->getTransform()->position.y - (m_pPlayer->getHeight() / 2)), m_pPlayer->getWidth(), m_pPlayer->getHeight());
-	Util::DrawRect(glm::vec2(m_pEnemies[m_keys[0]]->getTransform()->position.x - (m_pEnemies[m_keys[0]]->getWidth() / 2), m_pEnemies[m_keys[0]]->getTransform()->position.y - (m_pEnemies[m_keys[0]]->getHeight() / 2)), m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight());
-	Util::DrawRect(glm::vec2(m_pEnemies[m_keys[1]]->getTransform()->position.x - (m_pEnemies[m_keys[1]]->getWidth() / 2), m_pEnemies[m_keys[1]]->getTransform()->position.y - (m_pEnemies[m_keys[1]]->getHeight() / 2)), m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight());
+	for (auto element : m_pEnemyDaggers)
+	{
+		Util::DrawRect(glm::vec2(element->getTransform()->position.x - (element->getWidth() / 2), element->getTransform()->position.y - (element->getHeight() / 2)), element->getWidth(), element->getHeight(), black);
 
-	
+	}
 
-	drawDisplayList();
+	Util::DrawRect(glm::vec2(m_pPlayer->getTransform()->position.x - (m_pPlayer->getWidth() / 2), m_pPlayer->getTransform()->position.y - (m_pPlayer->getHeight() / 2)), m_pPlayer->getWidth(), m_pPlayer->getHeight(), black);
+	Util::DrawRect(glm::vec2(m_pEnemies[m_keys[0]]->getTransform()->position.x - (m_pEnemies[m_keys[0]]->getWidth() / 2), m_pEnemies[m_keys[0]]->getTransform()->position.y - (m_pEnemies[m_keys[0]]->getHeight() / 2)), m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight(), black);
+	Util::DrawRect(glm::vec2(m_pEnemies[m_keys[1]]->getTransform()->position.x - (m_pEnemies[m_keys[1]]->getWidth() / 2), m_pEnemies[m_keys[1]]->getTransform()->position.y - (m_pEnemies[m_keys[1]]->getHeight() / 2)), m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight(), black);
 
-	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 255, 255, 255, 255);
+	/*SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 255, 255, 255, 255);*/
 
 	if (m_isGridEnabled == true)
 	{
@@ -86,7 +92,7 @@ void PlayScene::update()
 	bool RCEisDetected = RCE2Pdistance <= m_pEnemies[m_keys[1]]->getLOSDistance();
 
 	bool inClose = CCE2Pdistance <= 10;
-	bool inRange = RCE2Pdistance <= 200 && RCE2Pdistance <= 350;
+	bool inRange = RCE2Pdistance <= m_pEnemies[m_keys[1]]->getLOSDistance();  //200 && RCE2Pdistance <= 350;
 
 	// For CloseCombatEnemy
 	m_pEnemies[m_keys[0]]->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies[m_keys[0]]->getHealth() > 25); // #1
@@ -95,8 +101,6 @@ void PlayScene::update()
 		m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->setDetected(CCEisDetected); // #1
 	m_pEnemies[m_keys[0]]->checkAgentLOSToTarget(m_pEnemies[m_keys[0]], m_pPlayer, m_pObstacles); // #2
 	m_pEnemies[m_keys[0]]->getTree()->getCloseCombatNode()->setIsWithinCombatRange(inClose); // #3
-	
-
 
 	//// For RangedCombatEnemy
 	m_pEnemies[m_keys[1]]->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies[m_keys[1]]->getHealth() > 25); // #1
@@ -167,6 +171,49 @@ void PlayScene::update()
 	temp1 = nullptr;
 	temp2 = nullptr;
 	temp3 = nullptr;
+
+	// Dagger(Enemy's Range attack) VS Player
+	if (m_pEnemyDaggers.size() > 0)
+	{
+		for (unsigned int i = 0; i < m_pEnemyDaggers.size(); i++)
+		{
+			// Guide Dagger to Enemy
+
+			// Player's Position -> PlayerClosest's position
+			if (CollisionManager::squaredDistance(m_pEnemyDaggers[i]->getTransform()->position, m_pRCEClosest->getTransform()->position) < 500)
+			{
+				m_pEnemyDaggers[i]->setTargetPosition(m_pPlayerClosest->getTransform()->position);
+			}
+			// PlayerClosest's position -> EnemyClosest's position
+			else if (CollisionManager::squaredDistance(m_pEnemyDaggers[i]->getTransform()->position, m_pPlayerClosest->getTransform()->position) < 1000)
+			{
+				m_pEnemyDaggers[i]->setTargetPosition(m_pPlayer->getTransform()->position);
+			}
+
+			// Collision check
+			if (CollisionManager::AABBCheck(m_pEnemyDaggers[i], m_pPlayer))
+			{
+				m_pPlayer->setAnimationState(PLAYER_HURT_L);
+				m_pPlayer->setHealth(m_pPlayer->getHealth()-25);
+				SoundManager::Instance().playSound("hit", 0, -1);
+
+				removeChild(m_pEnemyDaggers[i]);
+				//delete m_pEnemyDaggers[i];
+				//m_pEnemyDaggers[i] = nullptr;
+				//m_pEnemyDaggers.erase(m_pEnemyDaggers.begin() + i);
+				//m_pEnemyDaggers.shrink_to_fit();
+			}
+			//If Dagger is away from Player so far, remove Dagger
+			//else if (CollisionManager::squaredDistance(m_pEnemyDaggers[i]->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position) > 50000)
+			//{
+			//	removeChild(m_pEnemyDaggers[i]);
+			///*	delete m_pEnemyDaggers[i];*/
+			///*	m_pEnemyDaggers[i] = nullptr;
+			//	m_pEnemyDaggers.shrink_to_fit();*/
+			//}
+		}
+	}
+	/*std::cout <<  << std::endl;*/
 }
 
 void PlayScene::clean()
@@ -310,7 +357,7 @@ void PlayScene::start()
 	addChild(m_pEnemies[m_keys[1]], 3);
 
 	m_pPlayer = new Player();
-	m_pPlayer->getTransform()->position = glm::vec2(110.f, 430.f); // y550
+	m_pPlayer->getTransform()->position = glm::vec2(110.f, 230.f); // y550
 	m_pPlayer->setTargetPosition(m_pEnemies[m_keys[0]]->getTransform()->position);
 	addChild(m_pPlayer, 2);
 
@@ -346,7 +393,6 @@ void PlayScene::start()
 	m_buildGrid();
 	m_toggleGrid(m_isGridEnabled);
 
-
 	SoundManager::Instance().load("../Assets/audio/yay.ogg", "yay", SOUND_SFX);
 	SoundManager::Instance().load("../Assets/audio/thunder.ogg", "boom", SOUND_SFX);
 	SoundManager::Instance().load("../Assets/audio/torpedo.ogg", "torpedo", SOUND_SFX);
@@ -362,18 +408,19 @@ void PlayScene::start()
 	ImGuiWindowFrame::Instance().setGUIFunction(std::bind(&PlayScene::GUI_Function, this));
 }
 
-void PlayScene::SpawnEnemyTorpedo()
+void PlayScene::SpawnRangedAttack()
 {
-	//// Set spawn point and direction
-	//glm::vec2 spawn_pos = m_pPlayer->getTransform()->position + m_pPlayer->getCurrentDirection() * 30.0f;
-	//glm::vec2 steering_direction = m_pEnemies->getTransform()->position - spawn_pos;
+	// Set spawn point and direction
+	//glm::vec2 spawn_pos = m_pEnemies[m_keys[1]]->getTransform()->position + m_pEnemies[m_keys[1]]->getCurrentDirection() * 30.0f;
+	//glm::vec2 steering_direction = m_pPlayer->getTransform()->position - spawn_pos;
 	//steering_direction = Util::normalize(steering_direction);
 
-	//// Spawn it
-	//m_pTorpedosK.push_back(new TorpedoK(5.0f, steering_direction));
-	//m_pTorpedosK.back()->getTransform()->position = spawn_pos;
-	//SoundManager::Instance().playSound("torpedo_k");
-	//addChild(m_pTorpedosK.back(), 2);
+	// Spawn it
+	m_pEnemyDaggers.push_back(new Weapon(m_pEnemies[m_keys[1]]->getTransform()->position + m_pEnemies[m_keys[1]]->getCurrentDirection() * 30.0f));
+	m_pEnemyDaggers.shrink_to_fit();
+	m_pEnemyDaggers.back()->setIsMoving(true);
+	m_pEnemyDaggers.back()->setTargetPosition(m_pRCEClosest->getTransform()->position);
+	addChild(m_pEnemyDaggers.back());
 }
 
 void PlayScene::GUI_Function()

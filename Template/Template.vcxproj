@@ -217,6 +217,7 @@
     <ClCompile Include="..\src\TextureManager.cpp" />
     <ClCompile Include="..\src\Util.cpp" />
     <ClCompile Include="..\src\WaitBehindCoverAction.cpp" />
+    <ClCompile Include="..\src\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\IMGUI\imconfig.h" />
@@ -303,6 +304,7 @@
     <ClInclude Include="..\src\Transform.h" />
     <ClInclude Include="..\src\Util.h" />
     <ClInclude Include="..\src\WaitBehindCoverAction.h" />
+    <ClInclude Include="..\src\Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

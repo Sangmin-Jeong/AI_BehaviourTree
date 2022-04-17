@@ -51,6 +51,13 @@ Player::Player() : m_animationState(PLAYER_IDLE_R), m_animationSpeed(1.0f)
 
 	setSpriteSheet(TextureManager::Instance().getSpriteSheet("playerRange"));
 
+	TextureManager::Instance().loadSpriteSheet(
+		"../Assets/sprites/playerSprites/player.txt",
+		"../Assets/sprites/playerSprites/GraveRobber_hurt.png",
+		"playerHurt");
+
+	setSpriteSheet(TextureManager::Instance().getSpriteSheet("playerHurt"));
+
 	setWidth(48);
 	setHeight(48);
 
@@ -145,6 +152,14 @@ void Player::draw()
 		TextureManager::Instance().playAnimation("playerRange", getAnimation("range"),
 			x, y, m_animationSpeed, 0, 255, true);
 		break;
+	case PLAYER_HURT_R:
+		TextureManager::Instance().playAnimation("playerHurt", getAnimation("hurt"),
+			x, y, m_animationSpeed, 0, 255, true);
+		break;
+	case PLAYER_HURT_L:
+		TextureManager::Instance().playAnimation("playerHurt", getAnimation("hurt"),
+			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
+		break;
 	default:
 		break;
 	}
@@ -210,6 +225,13 @@ void Player::setAnimationSheet()
 	range.frames.push_back(getSpriteSheet()->getFrame("PLAYER-RANGE-4"));
 	range.frames.push_back(getSpriteSheet()->getFrame("PLAYER-RANGE-5"));
 	setAnimation(range);
+
+	Animation hurt = Animation();
+	hurt.name = "hurt";
+	hurt.frames.push_back(getSpriteSheet()->getFrame("PLAYER-HURT-0"));
+	hurt.frames.push_back(getSpriteSheet()->getFrame("PLAYER-HURT-1"));
+	hurt.frames.push_back(getSpriteSheet()->getFrame("PLAYER-HURT-2"));
+	setAnimation(hurt);
 }
 
 void Player::drawLOS()
@@ -224,6 +246,20 @@ void Player::drawLOS()
 void Player::update()
 {
 	setMiddleLOSEndPoint(getTransform()->position + getCurrentDirection() * getLOSDistance());
+
+	// Control Hit animation 
+	if (getAnimation("hurt").current_frame == 2)
+	{
+		if (getIsRight() == false)
+		{
+			setAnimationState(PLAYER_IDLE_L);
+		}
+		else if (getIsRight() == true)
+		{
+			setAnimationState(PLAYER_IDLE_L);
+		}
+		getAnimation("hurt").current_frame = 0;
+	}
 }
 
 void Player::clean()

@@ -52,11 +52,11 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 		"enemyGone");
 	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyGone"));
 
-	//TextureManager::Instance().loadSpriteSheet(
-	//	"../Assets/sprites/enemySprites/enemy.txt",
-	//	"../Assets/sprites/enemySprites/SteamMan_attack1.png",
-	//	"enemyAttack");
-	//setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyAttack"));
+	TextureManager::Instance().loadSpriteSheet(
+		"../Assets/sprites/enemySprites/enemy.txt",
+		"../Assets/sprites/enemySprites/SteamMan_attack2.png",
+		"enemyAttack");
+	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyAttack"));
 
 	setWidth(48);
 	setHeight(48);
@@ -86,7 +86,7 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 	setHealth(100);
 
 	// Patrol
-	m_patrol.push_back(glm::vec2(400, 230));
+	m_patrol.push_back(glm::vec2(150, 230));
 	m_patrol.push_back(glm::vec2(600, 230));
 	m_waypoint = 0;
 
@@ -152,6 +152,14 @@ void RangedCombatEnemy::draw()
 		TextureManager::Instance().playAnimation("enemyGone", getAnimation("gone"),
 			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
+	case ENEMY_ATTACK_R:
+		TextureManager::Instance().playAnimation("enemyAttack", getAnimation("attack"),
+			x, y, getAnimationSpeed(), 0, 255, true);
+		break;
+	case ENEMY_ATTACK_L:
+		TextureManager::Instance().playAnimation("enemyAttack", getAnimation("attack"),
+			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
+		break;
 	default:
 		break;
 	}
@@ -209,6 +217,16 @@ void RangedCombatEnemy::setAnimationSheet()
 	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-4"));
 	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-5"));
 	setAnimation(gone);
+
+	Animation attack = Animation();
+	attack.name = "attack";
+	attack.frames.push_back(getSpriteSheet()->getFrame("ENEMY-ATTACK-0"));
+	attack.frames.push_back(getSpriteSheet()->getFrame("ENEMY-ATTACK-1"));
+	attack.frames.push_back(getSpriteSheet()->getFrame("ENEMY-ATTACK-2"));
+	attack.frames.push_back(getSpriteSheet()->getFrame("ENEMY-ATTACK-3"));
+	attack.frames.push_back(getSpriteSheet()->getFrame("ENEMY-ATTACK-4"));
+	attack.frames.push_back(getSpriteSheet()->getFrame("ENEMY-ATTACK-5"));
+	setAnimation(attack);
 }
 
 void RangedCombatEnemy::update()
@@ -400,7 +418,7 @@ void RangedCombatEnemy::Attack()
 	if (m_fireCtr++ % m_fireCtrMax == 0)
 	{
 		// Fire torpedo
-		static_cast<PlayScene*>(m_pScene)->SpawnEnemyTorpedo();
+		static_cast<PlayScene*>(m_pScene)->SpawnRangedAttack();
 	}
 }
 

@@ -16,6 +16,8 @@
 #include "TorpedoK.h"
 #include <map>
 
+#include "Weapon.h"
+
 class PlayScene : public Scene
 {
 public:
@@ -29,7 +31,7 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 
-	void SpawnEnemyTorpedo();
+	void SpawnRangedAttack();
 
 	//Getter
 	PathNode* GetPlayerClosest() {return m_pPlayerClosest;}
@@ -58,8 +60,7 @@ private:
 	PathNode* m_pRCEClosest;
 	
 	std::vector<Obstacle*> m_pObstacles;
-	std::vector<Torpedo*> m_pTorpedos;
-	std::vector<TorpedoK*> m_pTorpedosK;
+	std::vector<Weapon*> m_pEnemyDaggers;
 
 	// PathNode Objects and Functions
 	std::vector<PathNode*> m_pGrid;
@@ -79,7 +80,6 @@ private:
 	static inline bool m_path_toggle;
 	bool m_LOS_Clear;
 
-	
 };
 
 #endif /* defined (__PLAY_SCENE__) */

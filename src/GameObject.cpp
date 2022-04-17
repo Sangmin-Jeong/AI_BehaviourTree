@@ -36,11 +36,13 @@ GameObjectType GameObject::getType() const
 void GameObject::setWidth(const int new_width)
 {
 	m_width = new_width;
+	m_dst.w = new_width;
 }
 
 void GameObject::setHeight(const int new_height)
 {
 	m_height = new_height;
+	m_dst.h = new_height;
 }
 
 void GameObject::setType(const GameObjectType new_type)
