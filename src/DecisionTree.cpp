@@ -150,7 +150,7 @@ void DecisionTree::clean()
 // in-order traversal
 void DecisionTree::MakeDecision()
 {
-	auto currentNode = m_treeNodeList[0]; // Start at root node.
+	auto currentNode = m_currentNode = m_treeNodeList[0]; // Start at root node.
 	while (!currentNode->m_isLeaf)
 	{
 		currentNode = dynamic_cast<ConditionNode*>(currentNode)->Condition() ? (currentNode->m_pRight) : (currentNode->m_pLeft);

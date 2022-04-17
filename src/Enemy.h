@@ -18,7 +18,6 @@ public:
 	virtual void clean() override;
 
 	// Animation
-	void setAnimationSheet();
 	void setAnimationState(EnemyAnimationState s) { this->m_animationState = s; }
 	void setAnimationSpeed(float s) { this->m_animationSpeed = s; }
 	float getAnimationSpeed() { return this->m_animationSpeed; }

@@ -52,6 +52,12 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 		"enemyGone");
 	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyGone"));
 
+	//TextureManager::Instance().loadSpriteSheet(
+	//	"../Assets/sprites/enemySprites/enemy.txt",
+	//	"../Assets/sprites/enemySprites/SteamMan_attack1.png",
+	//	"enemyAttack");
+	//setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyAttack"));
+
 	setWidth(48);
 	setHeight(48);
 	
@@ -75,6 +81,9 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 
 	// Animation
 	setAnimationSheet();
+
+	// Health
+	setHealth(100);
 
 	// Patrol
 	m_patrol.push_back(glm::vec2(400, 230));
@@ -152,6 +161,54 @@ void RangedCombatEnemy::draw()
 	//{
 	//	Util::DrawLine(getTransform()->position, getMiddleLOSEndPoint(), getLOSColour());
 	//}
+}
+
+void RangedCombatEnemy::setAnimationSheet()
+{
+	Animation idle = Animation();
+	idle.name = "idle";
+	idle.frames.push_back(getSpriteSheet()->getFrame("ENEMY-IDLE-0"));
+	idle.frames.push_back(getSpriteSheet()->getFrame("ENEMY-IDLE-1"));
+	idle.frames.push_back(getSpriteSheet()->getFrame("ENEMY-IDLE-2"));
+	idle.frames.push_back(getSpriteSheet()->getFrame("ENEMY-IDLE-3"));
+	setAnimation(idle);
+
+	Animation walk = Animation();
+	walk.name = "walk";
+	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-0"));
+	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-1"));
+	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-2"));
+	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-3"));
+	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-4"));
+	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-5"));
+	setAnimation(walk);
+
+	Animation hurt = Animation();
+	hurt.name = "hurt";
+	hurt.frames.push_back(getSpriteSheet()->getFrame("ENEMY-HURT-0"));
+	hurt.frames.push_back(getSpriteSheet()->getFrame("ENEMY-HURT-1"));
+	hurt.frames.push_back(getSpriteSheet()->getFrame("ENEMY-HURT-2"));
+	setAnimation(hurt);
+
+	Animation death = Animation();
+	death.name = "death";
+	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-0"));
+	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-1"));
+	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-2"));
+	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-3"));
+	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-4"));
+	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-5"));
+	setAnimation(death);
+
+	Animation gone = Animation();
+	gone.name = "gone";
+	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-0"));
+	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-1"));
+	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-2"));
+	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-3"));
+	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-4"));
+	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-5"));
+	setAnimation(gone);
 }
 
 void RangedCombatEnemy::update()

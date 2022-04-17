@@ -85,14 +85,18 @@ void PlayScene::update()
 	bool CCEisDetected = CCE2Pdistance <= m_pEnemies[m_keys[0]]->getLOSDistance();
 	bool RCEisDetected = RCE2Pdistance <= m_pEnemies[m_keys[1]]->getLOSDistance();
 
-	bool inClose = CCE2Pdistance <= 50;
+	bool inClose = CCE2Pdistance <= 10;
 	bool inRange = RCE2Pdistance <= 200 && RCE2Pdistance <= 350;
 
 	// For CloseCombatEnemy
+	m_pEnemies[m_keys[0]]->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies[m_keys[0]]->getHealth() > 25); // #1
+	m_pEnemies[m_keys[0]]->getTree()->getEnemyHitNode()->setIsHit(false); // #2
 	if (m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->getDetected() == false)
 		m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->setDetected(CCEisDetected); // #1
 	m_pEnemies[m_keys[0]]->checkAgentLOSToTarget(m_pEnemies[m_keys[0]], m_pPlayer, m_pObstacles); // #2
 	m_pEnemies[m_keys[0]]->getTree()->getCloseCombatNode()->setIsWithinCombatRange(inClose); // #3
+	
+
 
 	//// For RangedCombatEnemy
 	m_pEnemies[m_keys[1]]->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies[m_keys[1]]->getHealth() > 25); // #1
@@ -189,13 +193,88 @@ void PlayScene::handleEvents()
 		TheGame::Instance().changeSceneState(END_SCENE);
 	}
 
-	//if (EventManager::Instance().keyPressed(SDL_SCANCODE_D)) // Damage Enemy
-	//{
-	//	m_pEnemies->takeDamage(25);
-	//	std::cout << "Target at " << m_pEnemies->getHealth() << "%. " << std::endl;
-	//	//m_pPlayer->getTree()->getEnemyHitNode()->setIsHit(true);
-	//	//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(true);
-	//}
+	if (EventManager::Instance().keyPressed(SDL_SCANCODE_D)) // Damage Enemy
+	{
+		m_pEnemies[m_keys[0]]->takeDamage(25);
+		if (m_pEnemies[m_keys[0]]->getIsRight() == true)
+		{
+			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_R);
+		}
+		else
+		{
+			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
+		}
+		m_pEnemies[m_keys[1]]->takeDamage(25);
+		if (m_pEnemies[m_keys[1]]->getIsRight() == true)
+		{
+			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_R);
+		}
+		else
+		{
+			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
+		}
+		
+		std::cout << "Target at " << m_pEnemies[m_keys[0]]->getHealth() << "%. " << std::endl;
+		std::cout << "Target at " << m_pEnemies[m_keys[1]]->getHealth() << "%. " << std::endl;
+		//m_pPlayer->getTree()->getEnemyHitNode()->setIsHit(true);
+		//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(true);
+	}
+
+	// Enemies movement will be toggled between idle and patrol
+	if (EventManager::Instance().keyPressed(SDL_SCANCODE_P))
+	{
+		if (m_pEnemies[m_keys[0]]->getActionState() == PATROL)
+		{
+			m_pEnemies[m_keys[0]]->setDesiredVelocity(glm::vec2(0, 0));
+			if (m_pEnemies[m_keys[0]]->getIsRight() == true)
+			{
+				m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_IDLE_R);
+			}
+			else
+			{
+				m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_IDLE_L);
+			}
+		}
+		else
+		{
+			m_pEnemies[m_keys[0]]->setActionState(PATROL);
+		}
+
+		if (m_pEnemies[m_keys[1]]->getActionState() == PATROL)
+		{
+			m_pEnemies[m_keys[1]]->setDesiredVelocity(glm::vec2(0, 0));
+			if (m_pEnemies[m_keys[1]]->getIsRight() == true)
+			{
+				m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_IDLE_R);
+			}
+			else
+			{
+				m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_IDLE_L);
+			}
+		}
+		else
+		{
+			m_pEnemies[m_keys[1]]->setActionState(PATROL);
+		}
+	}
+
+	// Debug view
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_H))
+	{
+		if (m_isGridEnabled == true)
+		{
+			m_isGridEnabled = false;
+			m_toggleGrid(m_isGridEnabled);
+			SDL_Delay(200);
+		}
+		else
+		{
+			m_isGridEnabled = true;
+			m_toggleGrid(m_isGridEnabled);
+			SDL_Delay(200);
+
+		}
+	}
 
 	//if (EventManager::Instance().keyPressed(SDL_SCANCODE_R)) // Reset Enemy conditions
 	//{

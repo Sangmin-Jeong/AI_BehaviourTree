@@ -53,6 +53,9 @@ public:
 	void clean();
 
 	void MakeDecision(); // in order traversal
+
+	TreeNode* getCurrentNode() { return this->m_currentNode; }
+	
 private:
 	Agent* m_agent;
 
@@ -66,6 +69,7 @@ private:
 	PlayerDetectedCondition* m_PlayerDetectedNode;
 	//
 	std::vector<TreeNode*> m_treeNodeList;
+	TreeNode* m_currentNode;
 };
 
 #endif /* defined (__DECISION_TREE__) */

@@ -8,38 +8,9 @@
 
 Enemy::Enemy() : m_animationState(ENEMY_WALK_L), m_animationSpeed(0.8f), isRight(false)
 {
-	//TextureManager::Instance().load("../Assets/textures/Circle.png","circle");
+	TextureManager::Instance().load("../Assets/textures/Circle.png","circle");
 
-	//const auto size = TextureManager::Instance().getTextureSize("circle");
-	TextureManager::Instance().loadSpriteSheet(
-		"../Assets/sprites/enemySprites/enemy.txt",
-		"../Assets/sprites/enemySprites/SteamMan_idle.png",
-		"enemyIdle");
-	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyIdle"));
-
-	TextureManager::Instance().loadSpriteSheet(
-		"../Assets/sprites/enemySprites/enemy.txt",
-		"../Assets/sprites/enemySprites/SteamMan_walk.png",
-		"enemyWalk");
-	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyWalk"));
-
-	TextureManager::Instance().loadSpriteSheet(
-		"../Assets/sprites/enemySprites/enemy.txt",
-		"../Assets/sprites/enemySprites/SteamMan_hurt.png",
-		"enemyHurt");
-	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyHurt"));
-
-	TextureManager::Instance().loadSpriteSheet(
-		"../Assets/sprites/enemySprites/enemy.txt",
-		"../Assets/sprites/enemySprites/SteamMan_death.png",
-		"enemyDeath");
-	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyDeath"));
-
-	TextureManager::Instance().loadSpriteSheet(
-		"../Assets/sprites/enemySprites/enemy.txt",
-		"../Assets/sprites/enemySprites/SteamMan_death.png",
-		"enemyGone");
-	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyGone"));
+	const auto size = TextureManager::Instance().getTextureSize("circle");
 
 	setWidth(48);
 	setHeight(48);
@@ -78,52 +49,6 @@ void Enemy::draw()
 	// alias for x and y
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
-
-	// draw the Enemy
-	//TextureManager::Instance().draw("circle", x, y, 0, 255, isCentered());
-	//switch (m_animationState)
-	//{
-	//case ENEMY_IDLE_R:
-	//	TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
-	//		x, y, m_animationSpeed, 0, 255, true);
-	//	break;
-	//case ENEMY_IDLE_L:
-	//	TextureManager::Instance().playAnimation("enemyIdle", getAnimation("idle"),
-	//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-	//	break;
-	//case ENEMY_WALK_R:
-	//	getTransform()->position.x += 1;
-	//	TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
-	//		x, y, m_animationSpeed, 0, 255, true);
-	//	break;
-	//case ENEMY_WALK_L:
-	//	getTransform()->position.x -= 1;
-	//	TextureManager::Instance().playAnimation("enemyWalk", getAnimation("walk"),
-	//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-	//	break;
-	//case ENEMY_HURT_R:
-	//	TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-	//		x, y, m_animationSpeed, 0, 255, true);
-	//	break;
-	//case ENEMY_HURT_L:
-	//	TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-	//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-	//	break;
-	//case ENEMY_DEATH_R:
-	//	TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
-	//		x, y, m_animationSpeed, 0, 255, true);
-	//	break;
-	//case ENEMY_DEATH_L:
-	//	TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
-	//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-	//	break;
-	//case ENEMY_GONE:
-	//	TextureManager::Instance().playAnimation("enemyGone", getAnimation("gone"),
-	//		x, y, m_animationSpeed, 0, 255, true);
-	//	break;
-	//default:
-	//	break;
-	//}
 }
 
 void Enemy::update()
@@ -144,54 +69,6 @@ void Enemy::update()
 		}
 		getAnimation("hurt").current_frame = 0;
 	}
-}
-
-void Enemy::setAnimationSheet()
-{
-	Animation idle = Animation();
-	idle.name = "idle";
-	idle.frames.push_back(getSpriteSheet()->getFrame("ENEMY-IDLE-0"));
-	idle.frames.push_back(getSpriteSheet()->getFrame("ENEMY-IDLE-1"));
-	idle.frames.push_back(getSpriteSheet()->getFrame("ENEMY-IDLE-2"));
-	idle.frames.push_back(getSpriteSheet()->getFrame("ENEMY-IDLE-3"));
-	setAnimation(idle);
-
-	Animation walk = Animation();
-	walk.name = "walk";
-	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-0"));
-	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-1"));
-	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-2"));
-	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-3"));
-	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-4"));
-	walk.frames.push_back(getSpriteSheet()->getFrame("ENEMY-WALK-5"));
-	setAnimation(walk);
-
-	Animation hurt = Animation();
-	hurt.name = "hurt";
-	hurt.frames.push_back(getSpriteSheet()->getFrame("ENEMY-HURT-0"));
-	hurt.frames.push_back(getSpriteSheet()->getFrame("ENEMY-HURT-1"));
-	hurt.frames.push_back(getSpriteSheet()->getFrame("ENEMY-HURT-2"));
-	setAnimation(hurt);
-
-	Animation death = Animation();
-	death.name = "death";
-	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-0"));
-	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-1"));
-	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-2"));
-	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-3"));
-	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-4"));
-	death.frames.push_back(getSpriteSheet()->getFrame("ENEMY-DEATH-5"));
-	setAnimation(death);
-
-	Animation gone = Animation();
-	gone.name = "gone";
-	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-0"));
-	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-1"));
-	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-2"));
-	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-3"));
-	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-4"));
-	gone.frames.push_back(getSpriteSheet()->getFrame("ENEMY-GONE-5"));
-	setAnimation(gone);
 }
 
 void Enemy::clean()

@@ -43,7 +43,8 @@ public:
 	void MoveToLOS();
 	// more later...
 
-	//const DecisionTree* getTree() { return m_tree; }
+	// Animation
+	void setAnimationSheet();
 
 private:
 	// private movement variables
@@ -61,7 +62,6 @@ private:
 	void m_move();
 
 	// Decision tree
-	/*DecisionTree* m_tree;*/
 	void m_buildTree() override;
 
 	int m_fireCtr, m_fireCtrMax;

@@ -37,7 +37,11 @@ public:
 	void MoveToPlayer();
 	void MoveToLOS();
 	void Attack();
+	void Flee();
 	// more later...
+
+	// Animation
+	void setAnimationSheet();
 
 private:
 	// private movement variables
