@@ -39,7 +39,7 @@ public:
 	void Attack();
 	// more later...
 
-	const DecisionTree* getTree() { return m_tree; }
+	//const DecisionTree* getTree() { return m_tree; }
 
 private:
 	// private movement variables
@@ -58,8 +58,8 @@ private:
 	void m_move();
 
 	// Decision tree
-	DecisionTree* m_tree;
-	void m_buildTree();
+	/*DecisionTree* m_tree;*/
+	virtual void m_buildTree() override;
 
 	Scene* m_pScene;
 

@@ -40,16 +40,17 @@ public:
 	void Seek();
 	void LookWhereYoureGoing(glm::vec2 target_direction);
 
-	const DecisionTree* getTree() { return m_tree; }
+	DecisionTree* getTree() { return this->m_tree; }
+	void setTree(DecisionTree* t) { m_tree = t; }
 
 private:
 	void m_move();
 	void m_checkBounds();
 	void m_reset();
 
-	// Decision tree
+	//// Decision tree
 	DecisionTree* m_tree;
-	void m_buildTree();
+	virtual void m_buildTree() = 0;
 
 	// Animation
 	EnemyAnimationState m_animationState;

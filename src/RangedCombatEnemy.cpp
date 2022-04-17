@@ -83,9 +83,9 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 	setType(AGENT);
 
 	// Create decision tree
-	m_tree = new DecisionTree(this); // Overloaded constructor.
+	setTree(new DecisionTree(this)); // Overloaded constructor.
 	m_buildTree();
-	m_tree->Display(); // Optional.
+	getTree()->Display(); // Optional.
 }
 
 RangedCombatEnemy::~RangedCombatEnemy()
@@ -153,7 +153,7 @@ void RangedCombatEnemy::draw()
 void RangedCombatEnemy::update()
 {
 	// Determine which action to perform
-	m_tree->MakeDecision();
+	getTree()->MakeDecision();
 }
 
 void RangedCombatEnemy::clean()
@@ -383,66 +383,66 @@ void RangedCombatEnemy::m_move()
 void RangedCombatEnemy::m_buildTree()
 {
 	// Create and add root node.
-	m_tree->setEnemyHealthNode(new EnemyHealthCondition());
-	m_tree->getTree().push_back(m_tree->getEnemyHealthNode());
+	getTree()->setEnemyHealthNode(new EnemyHealthCondition());
+	getTree()->getTree().push_back(getTree()->getEnemyHealthNode());
 
 	// Nodes off new health root
-	TreeNode* fleeNode = m_tree->AddNode(m_tree->getEnemyHealthNode(), new FleeAction(), LEFT_TREE_NODE);
+	TreeNode* fleeNode = getTree()->AddNode(getTree()->getEnemyHealthNode(), new FleeAction(), LEFT_TREE_NODE);
 	fleeNode->setAgent(this);
-	m_tree->getTree().push_back(fleeNode);
+	getTree()->getTree().push_back(fleeNode);
 
-	m_tree->setEnemyHitNode(new EnemyHitCondition());
-	m_tree->AddNode(m_tree->getEnemyHealthNode(), m_tree->getEnemyHitNode(), RIGHT_TREE_NODE);
-	m_tree->getTree().push_back(m_tree->getEnemyHitNode());
+	getTree()->setEnemyHitNode(new EnemyHitCondition());
+	getTree()->AddNode(getTree()->getEnemyHealthNode(), getTree()->getEnemyHitNode(), RIGHT_TREE_NODE);
+	getTree()->getTree().push_back(getTree()->getEnemyHitNode());
 	//
 
 	// Node children of enemy hit node
-	m_tree->setPlayerDetectedNode(new PlayerDetectedCondition());
-	m_tree->AddNode(m_tree->getEnemyHitNode(), m_tree->getPlayerDetectedNode(), LEFT_TREE_NODE);
-	m_tree->getTree().push_back(m_tree->getPlayerDetectedNode());
+	getTree()->setPlayerDetectedNode(new PlayerDetectedCondition());
+	getTree()->AddNode(getTree()->getEnemyHitNode(), getTree()->getPlayerDetectedNode(), LEFT_TREE_NODE);
+	getTree()->getTree().push_back(getTree()->getPlayerDetectedNode());
 
 	LOSCondition* losNodeRight = new LOSCondition();
-	m_tree->AddNode(m_tree->getEnemyHitNode(), losNodeRight, RIGHT_TREE_NODE);
+	getTree()->AddNode(getTree()->getEnemyHitNode(), losNodeRight, RIGHT_TREE_NODE);
 	losNodeRight->setAgent(this);
-	m_tree->getTree().push_back(losNodeRight);
+	getTree()->getTree().push_back(losNodeRight);
 	//
 
-	TreeNode* patrolNode = m_tree->AddNode(m_tree->getPlayerDetectedNode(), new PatrolAction(), LEFT_TREE_NODE);
+	TreeNode* patrolNode = getTree()->AddNode(getTree()->getPlayerDetectedNode(), new PatrolAction(), LEFT_TREE_NODE);
 	patrolNode->setAgent(this);
-	m_tree->getTree().push_back(patrolNode);
+	getTree()->getTree().push_back(patrolNode);
 
 	// We have a LOS condition already so make a new node of it.
 	LOSCondition* losNodeLeft = new LOSCondition();
-	m_tree->AddNode(m_tree->getPlayerDetectedNode(), losNodeLeft, RIGHT_TREE_NODE);
+	getTree()->AddNode(getTree()->getPlayerDetectedNode(), losNodeLeft, RIGHT_TREE_NODE);
 	losNodeLeft->setAgent(this);
-	m_tree->getTree().push_back(losNodeLeft);
+	getTree()->getTree().push_back(losNodeLeft);
 
 	// Child nodes of left LOS node
-	TreeNode* moveToLOSNode = m_tree->AddNode(losNodeLeft, new MoveToLOSAction(), LEFT_TREE_NODE);
+	TreeNode* moveToLOSNode = getTree()->AddNode(losNodeLeft, new MoveToLOSAction(), LEFT_TREE_NODE);
 	moveToLOSNode->setAgent(this);
-	m_tree->getTree().push_back(moveToLOSNode);
+	getTree()->getTree().push_back(moveToLOSNode);
 
-	m_tree->setRangedCombatNode(new RangedCombatCondition());
-	m_tree->AddNode(losNodeLeft, m_tree->getRangedCombatNode(), RIGHT_TREE_NODE);
-	m_tree->getTree().push_back(m_tree->getRangedCombatNode());
+	getTree()->setRangedCombatNode(new RangedCombatCondition());
+	getTree()->AddNode(losNodeLeft, getTree()->getRangedCombatNode(), RIGHT_TREE_NODE);
+	getTree()->getTree().push_back(getTree()->getRangedCombatNode());
 
-	TreeNode* moveToRangeNode = m_tree->AddNode(m_tree->getRangedCombatNode(), new MoveToRangeAction(), LEFT_TREE_NODE);
+	TreeNode* moveToRangeNode = getTree()->AddNode(getTree()->getRangedCombatNode(), new MoveToRangeAction(), LEFT_TREE_NODE);
 	moveToRangeNode->setAgent(this);
-	m_tree->getTree().push_back(moveToRangeNode);
+	getTree()->getTree().push_back(moveToRangeNode);
 
-	TreeNode* attackNode = m_tree->AddNode(m_tree->getRangedCombatNode(), new AttackAction(), RIGHT_TREE_NODE);
+	TreeNode* attackNode = getTree()->AddNode(getTree()->getRangedCombatNode(), new AttackAction(), RIGHT_TREE_NODE);
 	attackNode->setAgent(this);
-	m_tree->getTree().push_back(attackNode);
+	getTree()->getTree().push_back(attackNode);
 	//
 
 	// Child nodes of right LOS node
-	TreeNode* waitBehindCoverNode = m_tree->AddNode(losNodeRight, new WaitBehindCoverAction(), LEFT_TREE_NODE);
+	TreeNode* waitBehindCoverNode = getTree()->AddNode(losNodeRight, new WaitBehindCoverAction(), LEFT_TREE_NODE);
 	waitBehindCoverNode->setAgent(this);
-	m_tree->getTree().push_back(waitBehindCoverNode);
+	getTree()->getTree().push_back(waitBehindCoverNode);
 
-	TreeNode* moveToCoverNode = m_tree->AddNode(losNodeRight, new MoveToCoverAction(), RIGHT_TREE_NODE);
+	TreeNode* moveToCoverNode = getTree()->AddNode(losNodeRight, new MoveToCoverAction(), RIGHT_TREE_NODE);
 	moveToCoverNode->setAgent(this);
-	m_tree->getTree().push_back(moveToCoverNode);
+	getTree()->getTree().push_back(moveToCoverNode);
 	//
 
 	//// Create and add root node.
