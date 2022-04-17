@@ -55,8 +55,8 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 	TextureManager::Instance().loadSpriteSheet(
 		"../Assets/sprites/enemySprites/enemy.txt",
 		"../Assets/sprites/enemySprites/SteamMan_attack2.png",
-		"enemyAttack");
-	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyAttack"));
+		"enemyAttack2");
+	setSpriteSheet(TextureManager::Instance().getSpriteSheet("enemyAttack2"));
 
 	setWidth(48);
 	setHeight(48);
@@ -153,12 +153,12 @@ void RangedCombatEnemy::draw()
 			x, y, getAnimationSpeed(), 0, 255, true);
 		break;
 	case ENEMY_ATTACK_R:
-		TextureManager::Instance().playAnimation("enemyAttack", getAnimation("attack"),
-			x, y, getAnimationSpeed(), 0, 255, true);
+		TextureManager::Instance().playAnimation("enemyAttack2", getAnimation("attack"),
+			x, y, 0.4f, 0, 255, true);
 		break;
 	case ENEMY_ATTACK_L:
-		TextureManager::Instance().playAnimation("enemyAttack", getAnimation("attack"),
-			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
+		TextureManager::Instance().playAnimation("enemyAttack2", getAnimation("attack"),
+			x, y, 0.4f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	default:
 		break;
@@ -247,6 +247,8 @@ void RangedCombatEnemy::update()
 		}
 		getAnimation("hurt").current_frame = 0;
 	}
+
+	/*std::cout << getAnimation("attack").current_frame << std::endl;*/
 }
 
 void RangedCombatEnemy::clean()
@@ -415,10 +417,19 @@ void RangedCombatEnemy::Attack()
 		setActionState(action);
 	}
 	// Action
-	if (m_fireCtr++ % m_fireCtrMax == 0)
+	if (getIsRight() == true)
 	{
-		// Fire torpedo
+		setAnimationState(ENEMY_ATTACK_R);
+	}
+	else
+	{
+		setAnimationState(ENEMY_ATTACK_L);
+	}
+
+	if (getAnimation("attack").current_frame == 5)
+	{
 		static_cast<PlayScene*>(m_pScene)->SpawnRangedAttack();
+		getAnimation("attack").current_frame = 0;
 	}
 }
 
