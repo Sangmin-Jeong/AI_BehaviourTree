@@ -72,8 +72,9 @@ void PlayScene::draw()
 		Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pRCEClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 		// for the line that is connected between m_pCCEClosest path_node and Enemy
 		Util::DrawLine(m_pRCEClosest->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
 	}
+
+	m_pHealthBar->Render();
 }
 
 void PlayScene::update()
@@ -267,6 +268,16 @@ void PlayScene::handleEvents()
 		//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(true);
 	}
 
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_EQUALS))
+	{
+		m_pHealthBar->TakeDamage(-5);
+	}
+
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_MINUS))
+	{
+		m_pHealthBar->TakeDamage(5);
+	}
+
 	// Enemies movement will be toggled between idle and patrol
 	if (EventManager::Instance().keyPressed(SDL_SCANCODE_P))
 	{
@@ -360,6 +371,8 @@ void PlayScene::start()
 	m_pPlayer->getTransform()->position = glm::vec2(110.f, 230.f); // y550
 	m_pPlayer->setTargetPosition(m_pEnemies[m_keys[0]]->getTransform()->position);
 	addChild(m_pPlayer, 2);
+
+	m_pHealthBar = new HealthBar({ m_pPlayer->getTransform()->position.x - 30, m_pPlayer->getTransform()->position.y - 20, 50, 10 }, 100);
 
 	// New Obstacle creation
 	std::ifstream inFile("../Assets/data/obstacles.txt");

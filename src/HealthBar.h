@@ -3,6 +3,8 @@
 #define  _HEALTHBAR_H_
 #include "GameObject.h"
 #include "Agent.h"
+#include "Renderer.h"
+#include "Game.h"
 #include <SDL/include/SDL_rect.h>
 
 class HealthBar : public GameObject
@@ -17,6 +19,15 @@ public:
 	void Update();
 	void Render();
 	void TakeDamage(int amount);
+
+	// Draw the object
+	void draw() {};
+
+	// Update the object
+	void update() {};
+
+	// remove anything that needs to be deleted
+	void clean() {};
 };
 
 
