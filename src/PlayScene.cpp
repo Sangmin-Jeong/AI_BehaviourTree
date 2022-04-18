@@ -39,7 +39,10 @@ void PlayScene::draw()
 		Util::DrawFilledRect(glm::vec2{ m_pEnemies[m_keys[1]]->getTransform()->position.x - 49, m_pEnemies[m_keys[1]]->getTransform()->position.y - 38 }, m_pEnemies[m_keys[1]]->getHealth(), 10,
 			(m_pEnemies[m_keys[1]]->getHealth() <= 50 ? (m_pEnemies[m_keys[1]]->getHealth() <= 25 ? red : yellow) : green));
 	}
-	glm::vec4 black = { 0,0,0,1 };
+	
+	// Shield Health
+	Util::DrawFilledRect(glm::vec2{ m_pShields[0]->getTransform()->position.x - 38, m_pShields[0]->getTransform()->position.y - 25}, m_pShields[0]->getHealth(), 7, blue);
+
 
 	for (auto element : m_pObstacles)
 	{

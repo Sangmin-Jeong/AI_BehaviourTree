@@ -1,2 +1,28 @@
-﻿  StartScene.cpp
-  Template.vcxproj -> C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe
+﻿  PlayScene.cpp
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(114,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(614,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(615,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(784,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(785,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(788,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(789,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(793,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(796,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(959,20): warning C4018: '<': signed/unsigned mismatch
+  Template.vcxproj -> C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Section48678\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe
