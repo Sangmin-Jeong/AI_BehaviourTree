@@ -383,14 +383,6 @@ void PlayScene::update()
 			removeChild(enemy);
 			m_pEnemies[m_keys[i]] = nullptr;
 			m_pEnemies.erase(m_keys[i]);
-
-
-			//delete m_pEnemies[m_keys[i]];
-			//m_pEnemies[m_keys[i]] = nullptr;
-			//removeChild(m_pEnemies[m_keys[i]]);
-			//m_pEnemies[m_keys[i]] = nullptr;
-			//m_pEnemies.erase(m_keys[i]);
-			//removeChild(m_pEnemies[m_keys[i]]);
 		}
 	}
 
@@ -502,34 +494,6 @@ void PlayScene::handleEvents()
 		TheGame::Instance().changeSceneState(END_SCENE);
 	}
 
-	if (EventManager::Instance().keyPressed(SDL_SCANCODE_T)) // Take Damage Enemy
-	{
-		m_pEnemies[m_keys[0]]->takeDamage(25);
-		if (m_pEnemies[m_keys[0]]->getIsRight() == true)
-		{
-			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_R);
-		}
-		else
-		{
-			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
-		}
-		m_pEnemies[m_keys[1]]->setIsHit(true);
-		m_pEnemies[m_keys[1]]->takeDamage(25);
-		if (m_pEnemies[m_keys[1]]->getIsRight() == true)
-		{
-			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_R);
-		}
-		else
-		{
-			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
-		}
-		
-		std::cout << "Target at " << m_pEnemies[m_keys[0]]->getHealth() << "%. " << std::endl;
-		std::cout << "Target at " << m_pEnemies[m_keys[1]]->getHealth() << "%. " << std::endl;
-		//m_pPlayer->getTree()->getEnemyHitNode()->setIsHit(true);
-		//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(true);
-	}
-
 	// player health
 	if (EventManager::Instance().keyPressed(SDL_SCANCODE_EQUALS))
 	{
@@ -558,6 +522,7 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().keyPressed(SDL_SCANCODE_9))
 	{
 		m_pEnemies[m_keys[0]]->takeDamage(25);
+		m_pEnemies[m_keys[0]]->setIsHit(true);
 	}
 
 	// CC enemy health
@@ -577,6 +542,7 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().keyPressed(SDL_SCANCODE_7))
 	{
 		m_pEnemies[m_keys[1]]->takeDamage(25);
+		m_pEnemies[m_keys[1]]->setIsHit(true);
 	}
 
 	// Enemies movement will be toggled between idle and patrol
