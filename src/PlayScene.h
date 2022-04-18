@@ -7,6 +7,7 @@
 #include "PathNode.h"
 #include "Obstacle.h"
 #include "Background.h"
+#include "HealthBar.h"
 #include "DecisionTree.h"
 #include "CloseCombatEnemy.h"
 #include "Enemy.h"
@@ -60,6 +61,8 @@ private:
 	PathNode* m_pPlayerClosest;
 	PathNode* m_pCCEClosest;
 	PathNode* m_pRCEClosest;
+
+	HealthBar* m_pHealthBar;
 	
 	std::vector<Obstacle*> m_pObstacles;
 	std::vector<Weapon*> m_pEnemyDaggers;

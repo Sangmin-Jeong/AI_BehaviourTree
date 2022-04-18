@@ -50,6 +50,7 @@ public:
 	bool isCentered() const;
 
 	void setDstW(float w) { m_dst.w = w; }
+
 	SDL_FRect getDst() { return m_dst; }
 
 private:
@@ -68,6 +69,8 @@ private:
 	bool m_enabled;
 	bool m_visible;
 	bool m_isCentered;
+
+	friend class HealthBar;
 };
 
 #endif /* defined (__GAME_OBJECT__) */
