@@ -293,7 +293,7 @@ void CloseCombatEnemy::setDesiredVelocity(const glm::vec2 target_position)
 void CloseCombatEnemy::Seek()
 {
 	// Find next waypoint:
-	if (Util::distance(m_patrol[m_waypoint], getTransform()->position) <= 10)
+	if (getActionState() != FLEE && Util::distance(m_patrol[m_waypoint], getTransform()->position) <= 10)
 	{
 		if (++m_waypoint == m_patrol.size()) m_waypoint = 0;
 		setTargetPosition(m_patrol[m_waypoint]);
@@ -414,17 +414,21 @@ void CloseCombatEnemy::Flee()
 	}
 
 	// action
-	setIsRight(static_cast<PlayScene*>(m_pScene)->GetPlayer()->getIsRight());
-	if (getIsRight() == true)
+	float playerPosX = static_cast<PlayScene*>(m_pScene)->GetPlayer()->getTransform()->position.x;
+	float CloseCombatEnemyPosX = this->getTransform()->position.x;
+
+	//setIsRight((playerPosX < RangedCombatEnemyPosX));
+	if (playerPosX < CloseCombatEnemyPosX)
 	{
-		setTargetPosition(glm::vec2(800, getTransform()->position.y));
+		setTargetPosition(glm::vec2(800 + 40, getTransform()->position.y));
 		setAnimationState(ENEMY_WALK_R);
 	}
 	else
 	{
-		setTargetPosition(glm::vec2(0, getTransform()->position.y));
+		setTargetPosition(glm::vec2(0 - 40, getTransform()->position.y));
 		setAnimationState(ENEMY_WALK_L);
 	}
+
 	m_move();
 }
 
