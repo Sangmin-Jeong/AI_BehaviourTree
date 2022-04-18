@@ -1,110 +1,110 @@
 ﻿  RangedCombatEnemy.cpp
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(121,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(123,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(121,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(123,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(125,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(127,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(125,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(127,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(129,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(131,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(129,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(131,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(133,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(135,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(133,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(135,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(137,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(139,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(137,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(139,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(141,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(143,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(141,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(143,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(145,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(147,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(145,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(147,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(149,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(151,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(149,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(151,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(153,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(155,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(153,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(155,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(157,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(159,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(157,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(159,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(161,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(163,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(161,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\RangedCombatEnemy.cpp(163,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
           with
           [
               T=float

@@ -79,6 +79,9 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
+
+	//std::cout << m_pEnemies[m_keys[1]]->getIsHit() << " " << m_pEnemies[m_keys[1]]->hasLOS() << " " << m_pEnemies[m_keys[1]]->getIsCovered() << std::endl;
+
 	// Set agent tree conditions
 	// Radius condition (distance check)
 	// Close combat condition
@@ -92,7 +95,8 @@ void PlayScene::update()
 	bool RCEisDetected = RCE2Pdistance <= m_pEnemies[m_keys[1]]->getLOSDistance();
 
 	bool inClose = CCE2Pdistance <= 10;
-	bool inRange = RCE2Pdistance <= m_pEnemies[m_keys[1]]->getLOSDistance();  //200 && RCE2Pdistance <= 350;
+	bool inRange = RCE2Pdistance <= m_pEnemies[m_keys[1]]->getLOSDistance()-30;  //200 && RCE2Pdistance <= 350;
+	bool RCCisHit = m_pEnemies[m_keys[1]]->getIsHit();
 
 	// For CloseCombatEnemy
 	m_pEnemies[m_keys[0]]->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies[m_keys[0]]->getHealth() > 25); // #1
@@ -104,7 +108,7 @@ void PlayScene::update()
 
 	//// For RangedCombatEnemy
 	m_pEnemies[m_keys[1]]->getTree()->getEnemyHealthNode()->setHealth(m_pEnemies[m_keys[1]]->getHealth() > 25); // #1
-	m_pEnemies[m_keys[1]]->getTree()->getEnemyHitNode()->setIsHit(false); // #2
+	m_pEnemies[m_keys[1]]->getTree()->getEnemyHitNode()->setIsHit(RCCisHit); // #2
 	m_pEnemies[m_keys[1]]->getTree()->getPlayerDetectedNode()->setDetected(RCEisDetected); // #3
 	m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles); // #4/#5
 	m_pEnemies[m_keys[1]]->getTree()->getRangedCombatNode()->setIsWithinCombatRange(inRange); // #6
@@ -213,7 +217,6 @@ void PlayScene::update()
 			//}
 		}
 	}
-	/*std::cout <<  << std::endl;*/
 }
 
 void PlayScene::clean()
@@ -251,6 +254,7 @@ void PlayScene::handleEvents()
 		{
 			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
 		}
+		m_pEnemies[m_keys[1]]->setIsHit(true);
 		m_pEnemies[m_keys[1]]->takeDamage(25);
 		if (m_pEnemies[m_keys[1]]->getIsRight() == true)
 		{
@@ -270,39 +274,7 @@ void PlayScene::handleEvents()
 	// Enemies movement will be toggled between idle and patrol
 	if (EventManager::Instance().keyPressed(SDL_SCANCODE_P))
 	{
-		if (m_pEnemies[m_keys[0]]->getActionState() == PATROL)
-		{
-			m_pEnemies[m_keys[0]]->setDesiredVelocity(glm::vec2(0, 0));
-			if (m_pEnemies[m_keys[0]]->getIsRight() == true)
-			{
-				m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_IDLE_R);
-			}
-			else
-			{
-				m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_IDLE_L);
-			}
-		}
-		else
-		{
-			m_pEnemies[m_keys[0]]->setActionState(PATROL);
-		}
 
-		if (m_pEnemies[m_keys[1]]->getActionState() == PATROL)
-		{
-			m_pEnemies[m_keys[1]]->setDesiredVelocity(glm::vec2(0, 0));
-			if (m_pEnemies[m_keys[1]]->getIsRight() == true)
-			{
-				m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_IDLE_R);
-			}
-			else
-			{
-				m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_IDLE_L);
-			}
-		}
-		else
-		{
-			m_pEnemies[m_keys[1]]->setActionState(PATROL);
-		}
 	}
 
 	// Debug view
@@ -405,6 +377,8 @@ void PlayScene::start()
 	SoundManager::Instance().setMusicVolume(16);
 	SoundManager::Instance().setSoundVolume(16);
 
+	SpawnShield();
+
 	ImGuiWindowFrame::Instance().setGUIFunction(std::bind(&PlayScene::GUI_Function, this));
 }
 
@@ -421,6 +395,43 @@ void PlayScene::SpawnRangedAttack()
 	m_pEnemyDaggers.back()->setIsMoving(true);
 	m_pEnemyDaggers.back()->setTargetPosition(m_pRCEClosest->getTransform()->position);
 	addChild(m_pEnemyDaggers.back());
+}
+
+void PlayScene::SpawnShield()
+{
+	glm::vec2 temp;
+	temp.x = m_pEnemies[m_keys[1]]->getTransform()->position.x - m_pEnemies[m_keys[1]]->getCurrentDirection().x * 100.0f;
+	temp.y = m_pEnemies[m_keys[1]]->getTransform()->position.y;
+
+	m_pShields.push_back(new Shield(temp));
+	m_pShields.shrink_to_fit();
+	addChild(m_pShields.back());
+	//if (m_pShields.size() < 1)
+	//{
+	//	glm::vec2 temp;
+	//	temp.x = m_pEnemies[m_keys[1]]->getTransform()->position.x - m_pEnemies[m_keys[1]]->getCurrentDirection().x * 200.0f;
+	//	temp.y = m_pEnemies[m_keys[1]]->getTransform()->position.y;
+	//	m_pShields.push_back(new Shield(temp));
+	//	m_pShields.shrink_to_fit();
+	//	addChild(m_pShields.back());
+	//	if (m_pEnemies[m_keys[1]]->getTransform()->position.x < temp.x)
+	//	{
+	//		m_pEnemies[m_keys[1]]->setIsRight(true);
+	//		temp.x += 40;
+	//	}
+	//	else
+	//	{
+	//		m_pEnemies[m_keys[1]]->setIsRight(false);
+	//		temp.x -= 40;
+	//	}
+	//	m_pEnemies[m_keys[1]]->setTargetPosition(temp);
+
+	//	if (CollisionManager::squaredDistance(m_pEnemies[m_keys[1]]->getTransform()->position, temp) >= 100000)
+	//	{
+	//		m_pEnemies[m_keys[1]]->setIsCovered(true);
+	//	}
+	//	std::cout << CollisionManager::squaredDistance(m_pEnemies[m_keys[1]]->getTransform()->position, temp) << std::endl;
+	//}
 }
 
 void PlayScene::GUI_Function()

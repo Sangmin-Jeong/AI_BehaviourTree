@@ -43,6 +43,12 @@ public:
 	DecisionTree* getTree() { return this->m_tree; }
 	void setTree(DecisionTree* t) { m_tree = t; }
 
+	bool getIsHit() { return m_isHit; }
+	void setIsHit(bool b) { m_isHit = b; }
+
+	bool getIsCovered() { return m_isCovered; }
+	void setIsCovered(bool b) { m_isCovered = b; }
+
 private:
 	void m_move();
 	void m_checkBounds();
@@ -65,6 +71,9 @@ private:
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
+
+	bool m_isHit;
+	bool m_isCovered;
 
 };
 

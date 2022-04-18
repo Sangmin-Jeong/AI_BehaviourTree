@@ -108,7 +108,7 @@ private:
 	ActionState m_state;
 
 	// New lab 7 part 3
-	int m_health = 100;
+	int m_health;
 
 	bool isRight;
 };

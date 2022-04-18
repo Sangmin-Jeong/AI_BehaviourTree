@@ -189,6 +189,7 @@
     <ClCompile Include="..\src\RadiusCondition.cpp" />
     <ClCompile Include="..\src\RangedCombatCondition.cpp" />
     <ClCompile Include="..\src\RangedCombatEnemy.cpp" />
+    <ClCompile Include="..\src\Shield.cpp" />
     <ClCompile Include="..\src\SpaceShip.cpp" />
     <ClCompile Include="..\src\Sprite.cpp" />
     <ClCompile Include="..\src\Tile.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="..\src\RadiusCondition.h" />
     <ClInclude Include="..\src\RangedCombatCondition.h" />
     <ClInclude Include="..\src\RangedCombatEnemy.h" />
+    <ClInclude Include="..\src\Shield.h" />
     <ClInclude Include="..\src\SoundType.h" />
     <ClInclude Include="..\src\SpaceShip.h" />
     <ClInclude Include="..\src\Sprite.h" />

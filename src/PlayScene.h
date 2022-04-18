@@ -12,8 +12,7 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "RangedCombatEnemy.h"
-#include "Torpedo.h"
-#include "TorpedoK.h"
+#include "Shield.h"
 #include <map>
 
 #include "Weapon.h"
@@ -32,13 +31,16 @@ public:
 	virtual void start() override;
 
 	void SpawnRangedAttack();
+	void SpawnShield();
 
 	//Getter
 	PathNode* GetPlayerClosest() {return m_pPlayerClosest;}
 	PathNode* GetCCEClosest() { return m_pCCEClosest; }
+	PathNode* GetRCEClosest() { return m_pRCEClosest; }
 	Player* GetPlayer() { return m_pPlayer; }
 	Enemy* GetCCE() { return m_pEnemies[m_keys[0]]; }
 	Enemy* GetRCE() { return m_pEnemies[m_keys[1]]; }
+	Shield* GetShield() { return m_pShields.back(); }
 
 private:
 	// IMGUI Function
@@ -61,6 +63,7 @@ private:
 	
 	std::vector<Obstacle*> m_pObstacles;
 	std::vector<Weapon*> m_pEnemyDaggers;
+	std::vector<Shield*> m_pShields;
 
 	// PathNode Objects and Functions
 	std::vector<PathNode*> m_pGrid;

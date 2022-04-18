@@ -19,6 +19,8 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 	setAnimationState(ENEMY_WALK_L);
 	setAnimationSpeed(0.8f);
 	setIsRight(false);
+	setIsHit(false);
+	setIsCovered(false);
 	//TextureManager::Instance().load("../Assets/textures/Circle.png","circle");
 
 		//const auto size = TextureManager::Instance().getTextureSize("circle");
@@ -134,11 +136,11 @@ void RangedCombatEnemy::draw()
 		break;
 	case ENEMY_HURT_R:
 		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-			x, y, getAnimationSpeed(), 0, 255, true);
+			x, y, 0.4f, 0, 255, true);
 		break;
 	case ENEMY_HURT_L:
 		TextureManager::Instance().playAnimation("enemyHurt", getAnimation("hurt"),
-			x, y, getAnimationSpeed(), 0, 255, true, SDL_FLIP_HORIZONTAL);
+			x, y, 0.4f, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		break;
 	case ENEMY_DEATH_R:
 		TextureManager::Instance().playAnimation("enemyDeath", getAnimation("death"),
@@ -248,7 +250,18 @@ void RangedCombatEnemy::update()
 		getAnimation("hurt").current_frame = 0;
 	}
 
-	/*std::cout << getAnimation("attack").current_frame << std::endl;*/
+	if (getIsCovered() == true)
+	{
+		m_maxSpeed = 0;
+		m_accelerationRate = 0;
+	}
+	else
+	{
+		m_maxSpeed = 5.0f;
+		m_accelerationRate = 2.0f;
+	}
+
+	//std::cout << Util::squaredDistance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, static_cast<PlayScene*>(m_pScene)->GetShield()->getTransform()->position)<< std::endl;
 }
 
 void RangedCombatEnemy::clean()
@@ -369,7 +382,8 @@ void RangedCombatEnemy::MoveToPlayer()
 		// Initialize. Like set move target to player.
 		setActionState(action);
 	}
-	// m_move();
+	setTargetPosition(static_cast<PlayScene*>(m_pScene)->GetPlayer()->getTransform()->position);
+	m_move();
 }
 
 void RangedCombatEnemy::Flee()
@@ -379,6 +393,7 @@ void RangedCombatEnemy::Flee()
 	{
 		// Initialize. Like set move target to player.
 		setActionState(action);
+		setIsCovered(false);
 	}
 
 	// action
@@ -398,13 +413,74 @@ void RangedCombatEnemy::Flee()
 
 void RangedCombatEnemy::MovetoCover()
 {
-	ActionState action = MOVE_TO_COVER;
+	glm::vec2 shield_position = static_cast<PlayScene*>(m_pScene)->GetShield()->getTransform()->position;
+	glm::vec2 behind_position;
+	ActionState action = MOVE_TO_COVER; 
 	if (getActionState() != action)
 	{
 		// Initialize
 		setActionState(action);
+		if (shield_position.x > static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position.x)
+		{
+			glm::vec2 temp = shield_position;
+			temp.x += 40;
+			setIsRight(true);
+			setTargetPosition(temp);
+			behind_position = temp;
+		}
+		else
+		{
+			glm::vec2 temp = shield_position;
+			temp.x -= 40;
+			setIsRight(false);
+			setTargetPosition(temp);
+			behind_position = temp;
+		}
 	}
 	// Action
+	/*if (getIsRight() == true)*/
+	//{
+	//	setAnimationState(ENEMY_WALK_R);
+	//	if (Util::distance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, behind_position) >= 585)
+	//	{
+	//		setAnimationState(ENEMY_IDLE_R);
+	//		setIsHit(false);
+	//		setIsCovered(true);
+	//	}
+	//	else
+	//	{
+	//		setAnimationState(ENEMY_WALK_R);
+	//		setIsCovered(false);
+	//	}
+	//	m_move();
+	//}
+	//else
+	//{
+	//	if (Util::distance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, behind_position) <= 520)
+	//	{
+	//		setAnimationState(ENEMY_IDLE_L);
+	//		setIsHit(false);
+	//		setIsCovered(true);
+	//	}
+	//	else
+	//	{
+	//		setAnimationState(ENEMY_WALK_L);
+	//		setIsCovered(false);
+	//	}
+	//	m_move();
+	//}
+
+	if (getIsRight() == true)
+	{
+		setTargetPosition(glm::vec2(800, getTransform()->position.y));
+		setAnimationState(ENEMY_WALK_R);
+	}
+	else
+	{
+		setTargetPosition(glm::vec2(0, getTransform()->position.y));
+		setAnimationState(ENEMY_WALK_L);
+	}
+	m_move();
 }
 
 void RangedCombatEnemy::Attack()
@@ -435,13 +511,63 @@ void RangedCombatEnemy::Attack()
 
 void RangedCombatEnemy::WaitBehindCover()
 {
+	glm::vec2 shield_position = static_cast<PlayScene*>(m_pScene)->GetShield()->getTransform()->position;
+	glm::vec2 behind_position;
 	ActionState action = WAIT_BEHIND_COVER;
 	if (getActionState() != action)
 	{
 		// Initialize
 		setActionState(action);
+
+		if (shield_position.x > static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position.x)
+		{
+			glm::vec2 temp = shield_position;
+			temp.x += 40;
+			setIsRight(true);
+			setTargetPosition(temp);
+			behind_position = temp;
+		}
+		else
+		{
+			glm::vec2 temp = shield_position;
+			temp.x -= 40;
+			setIsRight(false);
+			setTargetPosition(temp);
+			behind_position = temp;
+		}
 	}
 	// Action
+
+	if (getIsRight() == true)
+	{
+		setAnimationState(ENEMY_WALK_R);
+		if (Util::distance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, behind_position) >= 585)
+		{
+			setAnimationState(ENEMY_IDLE_R);
+			setIsCovered(true);
+		}
+		else
+		{
+			setAnimationState(ENEMY_WALK_R);
+			setIsCovered(false);
+		}
+		m_move();
+	}
+	else
+	{
+		if (Util::distance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, behind_position) <= 520)
+		{
+			setAnimationState(ENEMY_IDLE_L);
+			setIsCovered(true);
+		}
+		else
+		{
+			setAnimationState(ENEMY_WALK_L);
+			setIsCovered(false);
+		}
+		m_move();
+	}
+	//std::cout << Util::distance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, behind_position) << std::endl;
 }
 
 void RangedCombatEnemy::MoveToRange()
@@ -453,6 +579,12 @@ void RangedCombatEnemy::MoveToRange()
 		setActionState(action);
 	}
 	// Action
+	setTargetPosition(static_cast<PlayScene*>(m_pScene)->GetRCEClosest()->getMiddleLOSEndPoint());
+	m_move();
+	//if (Util::distance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, static_cast<PlayScene*>(m_pScene)->GetPlayer()->getTransform()->position) > getLOSDistance())
+	//{
+		
+	//}
 }
 
 void RangedCombatEnemy::MoveToLOS()
@@ -464,6 +596,8 @@ void RangedCombatEnemy::MoveToLOS()
 		setActionState(action);
 	}
 	// Action
+	setTargetPosition(static_cast<PlayScene*>(m_pScene)->GetPlayerClosest()->getTransform()->position);
+	m_move();
 }
 
 void RangedCombatEnemy::m_move()
