@@ -21,6 +21,19 @@ void PlayScene::draw()
 {
 	drawDisplayList();
 
+
+	// player Health
+	Util::DrawFilledRect(glm::vec2{ m_pPlayer->getTransform()->position.x - 49, m_pPlayer->getTransform()->position.y - 38 }, m_pPlayer->getHealth(), 10, 
+		(m_pPlayer->getHealth() <= 50 ? (m_pPlayer->getHealth() <= 25 ? red : yellow) : green));
+	
+	// closeCombat Health
+	Util::DrawFilledRect(glm::vec2{ m_pEnemies[m_keys[0]]->getTransform()->position.x - 49, m_pEnemies[m_keys[0]]->getTransform()->position.y - 38 }, m_pEnemies[m_keys[0]]->getHealth(), 10, 
+		(m_pEnemies[m_keys[0]]->getHealth() <= 50 ? (m_pEnemies[m_keys[0]]->getHealth() <= 25 ? red : yellow) : green));
+	
+	// RangedCombat Health
+	Util::DrawFilledRect(glm::vec2{ m_pEnemies[m_keys[1]]->getTransform()->position.x - 49, m_pEnemies[m_keys[1]]->getTransform()->position.y - 38 }, m_pEnemies[m_keys[1]]->getHealth(), 10, 
+		(m_pEnemies[m_keys[1]]->getHealth() <= 50 ? (m_pEnemies[m_keys[1]]->getHealth() <= 25 ? red : yellow) : green));
+
 	glm::vec4 black = { 0,0,0,1 };
 
 	for (auto element : m_pObstacles)
@@ -74,9 +87,9 @@ void PlayScene::draw()
 		Util::DrawLine(m_pRCEClosest->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 
-	m_pHealthBar->Render();
-	m_e1HealthBar->Render();
-	m_e2HealthBar->Render();
+	//m_pHealthBar->Render();
+	//m_e1HealthBar->Render();
+	//m_e2HealthBar->Render();
 }
 
 void PlayScene::update()
@@ -475,11 +488,12 @@ void PlayScene::start()
 	m_pPlayer = new Player();
 	m_pPlayer->getTransform()->position = glm::vec2(110.f, 230.f); // y550
 	m_pPlayer->setTargetPosition(m_pEnemies[m_keys[0]]->getTransform()->position);
+	m_pPlayer->setHealth(100);
 	addChild(m_pPlayer, 2);
 
-	m_pHealthBar = new HealthBar({ 10, 10, 100, 10 }, 100);
-	m_e1HealthBar = new HealthBar({ 690, 10, 100, 10 }, 100);
-	m_e2HealthBar = new HealthBar({ 580, 10, 100, 10 }, 100);
+	//m_pHealthBar = new HealthBar({ 10, 10, 100, 10 }, 100);
+	//m_e1HealthBar = new HealthBar({ 690, 10, 100, 10 }, 100);
+	//m_e2HealthBar = new HealthBar({ 580, 10, 100, 10 }, 100);
 
 	// New Obstacle creation
 	std::ifstream inFile("../Assets/data/obstacles.txt");
