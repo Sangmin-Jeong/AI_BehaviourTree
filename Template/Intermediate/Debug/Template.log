@@ -1,5 +1,26 @@
-﻿  HealthBar.cpp
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\HealthBar.cpp(22,15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\HealthBar.cpp(23,86): warning C4244: 'argument': conversion from 'double' to 'Uint8', possible loss of data
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\HealthBar.cpp(23,65): warning C4244: 'argument': conversion from 'double' to 'Uint8', possible loss of data
+﻿  PlayScene.cpp
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(411,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(412,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(542,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(543,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(547,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(548,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(552,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(555,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Template.vcxproj -> C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe
