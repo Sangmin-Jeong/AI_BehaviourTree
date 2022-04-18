@@ -761,12 +761,15 @@ void PlayScene::start()
 	knifeSound = false;
 	knifeThrowingSound = false;
 
-	//SoundManager::Instance().load("../Assets/audio/mutara.mp3", "mutara", SOUND_MUSIC);
-	//SoundManager::Instance().playMusic("mutara");
-	SoundManager::Instance().load("../Assets/audio/klingon.mp3", "klingon", SOUND_MUSIC);
-	SoundManager::Instance().playMusic("klingon");
-	SoundManager::Instance().setMusicVolume(16);
-	SoundManager::Instance().setSoundVolume(16);
+	SoundManager::Instance().load("../Assets/audio/Knife.flac", "knife", SOUND_SFX);
+	SoundManager::Instance().load("../Assets/audio/music.mp3", "music", SOUND_MUSIC);
+	SoundManager::Instance().load("../Assets/audio/music.mp3", "music", SOUND_MUSIC);
+	SoundManager::Instance().load("../Assets/audio/music.mp3", "music", SOUND_MUSIC);
+
+	SoundManager::Instance().load("../Assets/audio/music.mp3", "music", SOUND_MUSIC);
+	SoundManager::Instance().playMusic("music");
+	SoundManager::Instance().setMusicVolume(4);
+	SoundManager::Instance().setSoundVolume(8);
 
 	SpawnShield();
 
