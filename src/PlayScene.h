@@ -88,6 +88,15 @@ private:
 	static inline bool m_path_toggle;
 	bool m_LOS_Clear;
 
+	// WASD
+	std::vector <char> keyList;
+	char key;
+	bool isRight;
+	int m_moveAmount;
+	bool isMoving;
+	bool CheckKeyList(char c);
+	bool DeleteKeyList(char c);
+
 };
 
 #endif /* defined (__PLAY_SCENE__) */

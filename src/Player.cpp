@@ -33,12 +33,6 @@ Player::Player() : m_animationState(PLAYER_IDLE_R), m_animationSpeed(1.0f)
 
 	TextureManager::Instance().loadSpriteSheet(
 		"../Assets/sprites/playerSprites/player.txt",
-		"../Assets/sprites/playerSprites/GraveRobber_climb.png",
-		"playerClimb");
-	setSpriteSheet(TextureManager::Instance().getSpriteSheet("playerClimb"));
-
-	TextureManager::Instance().loadSpriteSheet(
-		"../Assets/sprites/playerSprites/player.txt",
 		"../Assets/sprites/playerSprites/GraveRobber_attack1.png",
 		"playerMelee");
 
@@ -50,13 +44,6 @@ Player::Player() : m_animationState(PLAYER_IDLE_R), m_animationSpeed(1.0f)
 		"playerRange");
 
 	setSpriteSheet(TextureManager::Instance().getSpriteSheet("playerRange"));
-
-	TextureManager::Instance().loadSpriteSheet(
-		"../Assets/sprites/playerSprites/player.txt",
-		"../Assets/sprites/playerSprites/GraveRobber_hurt.png",
-		"playerHurt");
-
-	setSpriteSheet(TextureManager::Instance().getSpriteSheet("playerHurt"));
 
 	setWidth(48);
 	setHeight(48);
@@ -128,11 +115,7 @@ void Player::draw()
 		//	TextureManager::Instance().playAnimation("playerJump", getAnimation("jump"),
 		//		x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
 		//	break;
-	case PLAYER_CLIMB_L:
-		TextureManager::Instance().playAnimation("playerClimb", getAnimation("climb"),
-			x, y, m_animationSpeed, 0, 255, true, SDL_FLIP_HORIZONTAL);
-		break;
-	case PLAYER_CLIMB_R:
+	case PLAYER_CLIMB:
 		TextureManager::Instance().playAnimation("playerClimb", getAnimation("climb"),
 			x, y, m_animationSpeed, 0, 255, true);
 		break;

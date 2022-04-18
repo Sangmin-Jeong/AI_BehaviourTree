@@ -1,26 +1,27 @@
 ﻿  PlayScene.cpp
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(384,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(385,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(554,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(446,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(447,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(616,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(555,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(617,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(558,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(620,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(559,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(621,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(563,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(566,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Template.vcxproj -> C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(625,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(628,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(791,20): warning C4018: '<': signed/unsigned mismatch
+  Template.vcxproj -> C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe

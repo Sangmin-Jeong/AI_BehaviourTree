@@ -231,6 +231,65 @@ void PlayScene::handleEvents()
 {
 	EventManager::Instance().update();
 
+	////////////////////// WASD ////////////////////// 
+	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_W))
+		if (CheckKeyList('W'))DeleteKeyList('W');
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
+		if (!CheckKeyList('W'))keyList.push_back('W');
+	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_S))
+		if (CheckKeyList('S'))DeleteKeyList('S');
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_S))
+		if (!CheckKeyList('S'))keyList.push_back('S');
+	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_A))
+		if (CheckKeyList('A'))DeleteKeyList('A');
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
+		if (!CheckKeyList('A'))keyList.push_back('A');
+	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_D))
+		if (CheckKeyList('D'))DeleteKeyList('D');
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
+		if (!CheckKeyList('D'))keyList.push_back('D');
+
+	key = keyList.size() > 0 ? ((char)keyList[keyList.size() - 1]) : 0;
+
+	if (key == 'W')
+	{
+		m_pPlayer->getTransform()->position.y -= m_moveAmount;
+		m_pPlayer->setCurrentHeading(270);
+		m_pPlayer->setAnimationState(PLAYER_CLIMB);
+	}
+	else if (key == 'A')
+	{
+		m_pPlayer->getTransform()->position.x -= m_moveAmount;
+		m_pPlayer->setCurrentHeading(180);
+		isRight = false;
+		m_pPlayer->setAnimationState(PLAYER_RUN_L);
+	}
+	else if (key == 'S')
+	{
+		m_pPlayer->getTransform()->position.y += m_moveAmount;
+		m_pPlayer->setCurrentHeading(90);
+		m_pPlayer->setAnimationState(PLAYER_CLIMB);
+	}
+	else if (key == 'D')
+	{
+		m_pPlayer->getTransform()->position.x += m_moveAmount;
+		m_pPlayer->setCurrentHeading(0);
+		isRight = true;
+		m_pPlayer->setAnimationState(PLAYER_RUN_R);
+	}
+	else
+	{
+		if (isRight == false)
+		{
+			m_pPlayer->setAnimationState(PLAYER_IDLE_L);
+		}
+		else if (isRight == true)
+		{
+			m_pPlayer->setAnimationState(PLAYER_IDLE_R);
+		}
+	}
+	////////////////////// WASD ////////////////////// 
+
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
 		TheGame::Instance().quit();
@@ -246,7 +305,7 @@ void PlayScene::handleEvents()
 		TheGame::Instance().changeSceneState(END_SCENE);
 	}
 
-	if (EventManager::Instance().keyPressed(SDL_SCANCODE_D)) // Damage Enemy
+	if (EventManager::Instance().keyPressed(SDL_SCANCODE_T)) // Take Damage Enemy
 	{
 		m_pEnemies[m_keys[0]]->takeDamage(25);
 		if (m_pEnemies[m_keys[0]]->getIsRight() == true)
@@ -350,6 +409,9 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	// Movement
+	m_moveAmount = 10;
+
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
 	
@@ -713,4 +775,28 @@ bool PlayScene::m_checkAgentLOS(Agent* agent, DisplayObject* target_object)
 		agent->setHasLOS(hasLOS);
 	}
 	return hasLOS;
+}
+
+bool PlayScene::CheckKeyList(char c) {
+	if (std::find(keyList.begin(), keyList.end(), c) != keyList.end()) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool PlayScene::DeleteKeyList(char c) {
+	bool _rtn = false;
+	for (int i = 0; i < keyList.size(); ) {
+		if (keyList[i] == c) {
+			keyList.erase(keyList.begin() + i);
+			_rtn = true;
+			break;
+		}
+		else {
+			i++;
+		}
+	}
+	return _rtn;
 }
