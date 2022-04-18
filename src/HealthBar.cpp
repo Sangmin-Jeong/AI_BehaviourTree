@@ -15,11 +15,11 @@ void HealthBar::Update()
 void HealthBar::Render()
 {
 	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 0, 0, 0, 255);
-	SDL_RenderFillRectF(Renderer::Instance().getRenderer(), &getDst());
+	SDL_RenderFillRectF(Renderer::Instance().getRenderer(), &m_dst);
 
 	double percent = (m_health / 100.0);
 
-	m_bar.w = 50 * percent; // z-min/max-min -> % in a range
+	m_bar.w = 100 * percent; // z-min/max-min -> % in a range
 	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 255 * (1 - percent), 255 * percent, 0, 255);
 	SDL_RenderFillRectF(Renderer::Instance().getRenderer(), &m_bar);
 

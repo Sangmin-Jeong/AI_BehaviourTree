@@ -63,6 +63,8 @@ private:
 	PathNode* m_pRCEClosest;
 
 	HealthBar* m_pHealthBar;
+	HealthBar* m_e1HealthBar;
+	HealthBar* m_e2HealthBar;
 	
 	std::vector<Obstacle*> m_pObstacles;
 	std::vector<Weapon*> m_pEnemyDaggers;
