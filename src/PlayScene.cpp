@@ -568,22 +568,6 @@ void PlayScene::handleEvents()
 
 		}
 	}
-
-	//if (EventManager::Instance().keyPressed(SDL_SCANCODE_R)) // Reset Enemy conditions
-	//{
-	//	m_pEnemies->setHealth(100);
-	//	//m_pPlayer->getTree()->getEnemyHitNode()->setIsHit(false);
-	//	//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(false);
-	//	std::cout << "Target conditions reset" << std::endl;
-	//}
-
-	//if (EventManager::Instance().keyPressed(SDL_SCANCODE_F))
-	//{
-	//	m_pTorpedos.push_back(new Torpedo(5.0f));
-	//	m_pTorpedos.back()->getTransform()->position = m_pEnemies->getTransform()->position;
-	//	SoundManager::Instance().playSound("torpedo");
-	//	addChild(m_pTorpedos.back(),2);
-	//}
 }
 
 void PlayScene::start()

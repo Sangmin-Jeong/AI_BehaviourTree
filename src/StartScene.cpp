@@ -54,10 +54,9 @@ void StartScene::start()
 	m_pInstructionsLabel->setParent(this);
 	addChild(m_pInstructionsLabel);
 
-
-	m_pShip = new Ship();
-	m_pShip->getTransform()->position = glm::vec2(400.0f, 300.0f); 
-	addChild(m_pShip); 
+	m_pTeamLabel = new Label("Travor Bui-101376655   Sangmin Jeong-101369732   Chaewan Woo-101376655", "Consolas", 20, blue, glm::vec2(WIDTH / 2, 550.0f));
+	m_pTeamLabel->setParent(this);
+	addChild(m_pTeamLabel);
 
 	// Start Button
 	m_pStartButton = new Button();
