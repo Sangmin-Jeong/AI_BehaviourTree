@@ -1,113 +1,28 @@
-﻿  CloseCombatEnemy.cpp
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(118,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+﻿  PlayScene.cpp
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(492,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(493,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(662,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(118,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(663,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(122,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(666,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(122,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(667,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(126,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(126,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(130,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(130,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(134,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(134,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(138,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(138,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(142,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(142,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(146,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(146,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(150,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(150,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(154,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(154,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(158,7): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\CloseCombatEnemy.cpp(158,4): warning C4244: 'argument': conversion from 'const T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(671,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(674,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(837,20): warning C4018: '<': signed/unsigned mismatch
   LINK : C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe not found or not built by the last incremental link; performing full link
   Template.vcxproj -> C:\Users\chaew\Desktop\GBC\T163\Winter 2022\GAME3001 (AI)\Lecture and Labs\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe

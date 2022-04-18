@@ -89,6 +89,7 @@ void PlayScene::update()
 		{
 			Enemy* enemy = m_pEnemies[m_keys[i]];
 			removeChild(enemy);
+			m_pEnemies.erase(m_keys[i]);
 			//delete enemy;
 			//enemy = nullptr;
 			if (i == 0)
