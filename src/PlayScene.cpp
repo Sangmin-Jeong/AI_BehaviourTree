@@ -81,8 +81,34 @@ void PlayScene::draw()
 
 void PlayScene::update()
 {
-	updateDisplayList();
+	/////////////////// Respawn///////////////////
+	for (int i = 0; i < 2; i++)
+	{
+		float enemyPosX = m_pEnemies[m_keys[i]]->getTransform()->position.x;
+		if (enemyPosX > 835 || enemyPosX < -35)
+		{
+			Enemy* enemy = m_pEnemies[m_keys[i]];
+			removeChild(enemy);
+			//delete enemy;
+			//enemy = nullptr;
+			if (i == 0)
+			{
+				m_pEnemies.emplace(m_keys[i], new CloseCombatEnemy(this));
+				m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(600.f, 430.f);
+				addChild(m_pEnemies[m_keys[i]], 3);
+			}
+			else if (i == 1)
+			{
+				m_pEnemies.emplace(m_keys[i], new RangedCombatEnemy(this));
+				m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(600.f, 230.f);
+				addChild(m_pEnemies[m_keys[i]], 3);
+			}
+		}
 
+	}
+	/////////////////// Respawn///////////////////
+
+	updateDisplayList();
 	//std::cout << m_pEnemies[m_keys[1]]->getIsHit() << " " << m_pEnemies[m_keys[1]]->hasLOS() << " " << m_pEnemies[m_keys[1]]->getIsCovered() << std::endl;
 
 	// Set agent tree conditions
