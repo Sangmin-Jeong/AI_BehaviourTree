@@ -106,6 +106,10 @@ void PlayScene::draw()
 
 void PlayScene::update()
 {
+	updateDisplayList();
+
+	std::cout << m_pPlayer->hasLOS() << std::endl;
+
 	/////////////////// Respawn///////////////////
 	for (int i = 0; i < m_pEnemies.size(); i++)
 	{
@@ -137,7 +141,7 @@ void PlayScene::update()
 	}
 	/////////////////// Respawn///////////////////
 
-	updateDisplayList();
+	
 	//std::cout << m_pEnemies[m_keys[1]]->getIsHit() << " " << m_pEnemies[m_keys[1]]->hasLOS() << " " << m_pEnemies[m_keys[1]]->getIsCovered() << std::endl;
 
 	// Set agent tree conditions
@@ -161,21 +165,6 @@ void PlayScene::update()
 			m_pEnemies[m_keys[0]]->getTree()->getPlayerDetectedNode()->setDetected(CCEisDetected); // #1
 		m_pEnemies[m_keys[0]]->checkAgentLOSToTarget(m_pEnemies[m_keys[0]], m_pPlayer, m_pObstacles); // #2
 		m_pEnemies[m_keys[0]]->getTree()->getCloseCombatNode()->setIsWithinCombatRange(inClose); // #3
-
-			// Now for the path_nodes LOS
-		switch (m_LOSMode)
-		{
-		case 0:
-			m_checkAllNodesWithTarget(m_pEnemies[m_keys[0]]);
-			//m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]); //TODO: need to separate
-			break;
-		case 1:
-			m_checkAllNodesWithTarget(m_pPlayer);
-			break;
-		case 2:
-			m_checkAllNodesWithBoth();
-			break;
-		}
 	}
 
 	if (m_pEnemies[m_keys[1]] != nullptr)
@@ -194,20 +183,6 @@ void PlayScene::update()
 		m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles); // #4/#5
 		m_pEnemies[m_keys[1]]->getTree()->getRangedCombatNode()->setIsWithinCombatRange(inRange); // #6
 
-			// Now for the path_nodes LOS
-		switch (m_LOSMode)
-		{
-		case 0:
-			//m_checkAllNodesWithTarget(m_pEnemies[m_keys[0]]);
-			m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]); //TODO: need to separate
-			break;
-		case 1:
-			m_checkAllNodesWithTarget(m_pPlayer);
-			break;
-		case 2:
-			m_checkAllNodesWithBoth();
-			break;
-		}
 	}
 
 	//float CCE2Pdistance = Util::distance(m_pEnemies[m_keys[0]]->getTransform()->position, m_pPlayer->getTransform()->position);
@@ -314,7 +289,7 @@ void PlayScene::update()
 			}
 
 		}
-		// If path is clear or not
+		//If path is clear or not
 		//if (m_checkPathNodeLOS(m_pPlayerClosest, m_pPlayer) && m_checkPathNodeLOS(m_pPlayerClosest, m_pCCEClosest) && m_checkPathNodeLOS(m_pPlayerClosest, m_pCCEClosest))
 		//{
 		//	m_LOS_Clear = true;
@@ -386,6 +361,20 @@ void PlayScene::update()
 		}
 	}
 
+	for (unsigned int i = 0; i < m_pEnemies.size(); i++)
+	{
+		if (m_pEnemies[m_keys[0]] != nullptr)
+		{
+			m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies[m_keys[0]], m_pObstacles);
+			m_pEnemies[m_keys[0]]->checkAgentLOSToTarget(m_pEnemies[m_keys[0]], m_pPlayer, m_pObstacles);
+		}
+			
+		if (m_pEnemies[m_keys[1]] != nullptr)
+		{
+			m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies[m_keys[1]], m_pObstacles);
+			m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles);
+		}
+	}
 	if (m_pEnemies[m_keys[1]] == nullptr && m_pEnemies[m_keys[0]] == nullptr)
 	{
 		TheGame::Instance().changeSceneState(END_SCENE);
@@ -418,6 +407,10 @@ void PlayScene::handleEvents()
 		if (CheckKeyList('D'))DeleteKeyList('D');
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
 		if (!CheckKeyList('D'))keyList.push_back('D');
+	if (EventManager::Instance().mousePressed(1))
+		if (!CheckKeyList('L'))keyList.push_back('L');
+	if (EventManager::Instance().mousePressed(3))
+		if (!CheckKeyList('R'))keyList.push_back('R');
 
 	key = keyList.size() > 0 ? ((char)keyList[keyList.size() - 1]) : 0;
 
@@ -446,6 +439,129 @@ void PlayScene::handleEvents()
 		m_pPlayer->setCurrentHeading(0);
 		isRight = true;
 		m_pPlayer->setAnimationState(PLAYER_RUN_R);
+	}
+	else if (key == 'R')
+	{
+		// isRange Range Possible
+		if (CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) <= 28 && m_pPlayer->hasLOS())
+		{
+			if (isRight == false)
+			{
+				m_pPlayer->setAnimationState(PLAYER_RANGE_L);
+
+				if (knifeThrowingSound == false)
+				{
+					SoundManager::Instance().playSound("knifethrowing", 0, -1);
+					knifeThrowingSound = true;
+				}
+			}
+			else if (isRight == true)
+			{
+				m_pPlayer->setAnimationState(PLAYER_RANGE_R);
+				if (knifeThrowingSound == false)
+				{
+					SoundManager::Instance().playSound("knifethrowing", 0, -1);
+					knifeThrowingSound = true;
+				}
+			}
+
+			if (m_pPlayerDaggers.size() < 1)
+			{
+				m_pPlayerDaggers.push_back(new Weapon(m_pPlayer->getTransform()->position));
+				m_pPlayerDaggers.shrink_to_fit();
+				m_pPlayerDaggers.back()->setIsMoving(true);
+				m_pPlayerDaggers.back()->setTargetPosition(m_pPlayerClosest->getTransform()->position);
+				addChild(m_pPlayerDaggers.back());
+			}
+		}
+
+		if (m_pPlayer->getAnimation("range").current_frame == 5)
+		{
+			if (isRight == false)
+			{
+				m_pPlayer->setAnimationState(PLAYER_RANGE_L);
+
+				if (knifeThrowingSound == true)
+				{
+					knifeThrowingSound = false;
+				}
+			}
+			else if (isRight == true)
+			{
+				m_pPlayer->setAnimationState(PLAYER_RANGE_R);
+
+				if (knifeThrowingSound == true)
+				{
+					knifeThrowingSound = false;
+				}
+			}
+			m_pPlayer->getAnimation("range").current_frame = 0;
+			keyList.pop_back();
+		}
+	}
+	else if (key == 'L')
+	{
+		if (isRight == false)
+		{
+			m_pPlayer->setAnimationState(PLAYER_MELEE_L);
+			if (knifeSound == false)
+			{
+				SoundManager::Instance().playSound("knife", 0, -1);
+				knifeSound = true;
+			}
+		}
+		else if (isRight == true)
+		{
+			m_pPlayer->setAnimationState(PLAYER_MELEE_R);
+
+			if (knifeSound == false)
+			{
+				SoundManager::Instance().playSound("knife", 0, -1);
+				knifeSound = true;
+			}
+		}
+		/* || (!m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_L))*/
+		// isMelee Range Possible
+		float distanceCCE = Util::distance(m_pPlayer->getTransform()->position, m_pEnemies[m_keys[0]]->getTransform()->position);
+		float distanceRCE = Util::distance(m_pPlayer->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position);
+		std::cout << "distance: " << distanceCCE << " : " << " LOS: " << m_pPlayer->hasLOS() << "isRight" << m_pPlayer->getIsRight() << "\n";
+		if (((m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_L)))
+		{
+			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
+			/*time = 500;*/
+			m_pEnemies[m_keys[0]]->setIsHit(true);
+		}
+
+		if (((m_pPlayer->getIsRight() && distanceRCE <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distanceRCE <= MELEE_DISTANCE_L)))
+		{
+			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
+			/*time = 500;*/
+			m_pEnemies[m_keys[1]]->setIsHit(true);
+		}
+
+		if (m_pPlayer->getAnimation("melee").current_frame == 5)
+		{
+			if (isRight == false)
+			{
+				m_pPlayer->setAnimationState(PLAYER_IDLE_L);
+
+				if (knifeSound == true)
+				{
+					knifeSound = false;
+				}
+			}
+			else if (isRight == true)
+			{
+				m_pPlayer->setAnimationState(PLAYER_IDLE_R);
+
+				if (knifeSound == true)
+				{
+					knifeSound = false;
+				}
+			}
+			m_pPlayer->getAnimation("melee").current_frame = 0;
+			keyList.pop_back();
+		}
 	}
 	else
 	{
@@ -647,10 +763,9 @@ void PlayScene::start()
 	m_buildGrid();
 	m_toggleGrid(m_isGridEnabled);
 
-	SoundManager::Instance().load("../Assets/audio/yay.ogg", "yay", SOUND_SFX);
-	SoundManager::Instance().load("../Assets/audio/thunder.ogg", "boom", SOUND_SFX);
-	SoundManager::Instance().load("../Assets/audio/torpedo.ogg", "torpedo", SOUND_SFX);
-	SoundManager::Instance().load("../Assets/audio/torpedo_k.ogg", "torpedo_k", SOUND_SFX);
+	// bools for sound effects
+	knifeSound = false;
+	knifeThrowingSound = false;
 
 	//SoundManager::Instance().load("../Assets/audio/mutara.mp3", "mutara", SOUND_MUSIC);
 	//SoundManager::Instance().playMusic("mutara");

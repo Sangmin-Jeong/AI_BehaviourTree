@@ -18,6 +18,9 @@
 
 #include "Weapon.h"
 
+#define MELEE_DISTANCE_L 45
+#define MELEE_DISTANCE_R 45
+
 class PlayScene : public Scene
 {
 public:
@@ -67,6 +70,7 @@ private:
 	HealthBar* m_e2HealthBar;
 	
 	std::vector<Obstacle*> m_pObstacles;
+	std::vector<Weapon*> m_pPlayerDaggers;
 	std::vector<Weapon*> m_pEnemyDaggers;
 	std::vector<Shield*> m_pShields;
 
@@ -96,6 +100,8 @@ private:
 	bool isMoving;
 	bool CheckKeyList(char c);
 	bool DeleteKeyList(char c);
+	bool knifeSound;
+	bool knifeThrowingSound;
 
 	// Health color
 	glm::vec4 red = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
