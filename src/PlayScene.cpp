@@ -75,6 +75,8 @@ void PlayScene::draw()
 	}
 
 	m_pHealthBar->Render();
+	m_e1HealthBar->Render();
+	m_e2HealthBar->Render();
 }
 
 void PlayScene::update()
@@ -272,6 +274,7 @@ void PlayScene::handleEvents()
 		//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(true);
 	}
 
+	// player health
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_EQUALS))
 	{
 		m_pHealthBar->TakeDamage(-5);
@@ -280,6 +283,28 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_MINUS))
 	{
 		m_pHealthBar->TakeDamage(5);
+	}
+
+	// ranged enemy health
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_0))
+	{
+		m_e1HealthBar->TakeDamage(-5);
+	}
+
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_9))
+	{
+		m_e1HealthBar->TakeDamage(5);
+	}
+
+	// CC enemy health
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_8))
+	{
+		m_e2HealthBar->TakeDamage(-5);
+	}
+
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_7))
+	{
+		m_e2HealthBar->TakeDamage(5);
 	}
 
 	// Enemies movement will be toggled between idle and patrol
@@ -344,7 +369,9 @@ void PlayScene::start()
 	m_pPlayer->setTargetPosition(m_pEnemies[m_keys[0]]->getTransform()->position);
 	addChild(m_pPlayer, 2);
 
-	m_pHealthBar = new HealthBar({ m_pPlayer->getTransform()->position.x - 30, m_pPlayer->getTransform()->position.y - 20, 50, 10 }, 100);
+	m_pHealthBar = new HealthBar({ 10, 10, 100, 10 }, 100);
+	m_e1HealthBar = new HealthBar({ 690, 10, 100, 10 }, 100);
+	m_e2HealthBar = new HealthBar({ 580, 10, 100, 10 }, 100);
 
 	// New Obstacle creation
 	std::ifstream inFile("../Assets/data/obstacles.txt");
