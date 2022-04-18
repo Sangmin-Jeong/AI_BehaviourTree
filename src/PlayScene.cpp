@@ -39,7 +39,10 @@ void PlayScene::draw()
 		Util::DrawFilledRect(glm::vec2{ m_pEnemies[m_keys[1]]->getTransform()->position.x - 49, m_pEnemies[m_keys[1]]->getTransform()->position.y - 38 }, m_pEnemies[m_keys[1]]->getHealth(), 10,
 			(m_pEnemies[m_keys[1]]->getHealth() <= 50 ? (m_pEnemies[m_keys[1]]->getHealth() <= 25 ? red : yellow) : green));
 	}
-	glm::vec4 black = { 0,0,0,1 };
+	
+	// Shield Health
+	Util::DrawFilledRect(glm::vec2{ m_pShields[0]->getTransform()->position.x - 38, m_pShields[0]->getTransform()->position.y - 25}, m_pShields[0]->getHealth(), 7, blue);
+
 
 	for (auto element : m_pObstacles)
 	{
@@ -126,18 +129,18 @@ void PlayScene::update()
 				if (i == 0)
 				{
 					m_pEnemies.emplace(m_keys[i], new CloseCombatEnemy(this));
-					m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(600.f, 430.f);
+					m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(rand() % 750 + 50, 430.f);
 					addChild(m_pEnemies[m_keys[i]], 3);
 				}
 				else if (i == 1)
 				{
 					m_pEnemies.emplace(m_keys[i], new RangedCombatEnemy(this));
-					m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(600.f, 230.f);
+					m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(rand() % 750 + 50, 230.f);
 					addChild(m_pEnemies[m_keys[i]], 3);
 				}
 			}
 		}
-
+		
 	}
 	/////////////////// Respawn///////////////////
 
@@ -347,6 +350,13 @@ void PlayScene::update()
 			//	m_pEnemyDaggers.shrink_to_fit();*/
 			//}
 		}
+	}
+
+	if (CollisionManager::AABBCheck(m_pShields[0], m_pPlayer))
+	{
+		m_pShields[0]->setHealth(m_pShields[0]->getHealth() - 34);
+		SoundManager::Instance().playSound("hit", 0, -1);
+		removeChild(m_pShields[0]);
 	}
 
 
@@ -684,22 +694,6 @@ void PlayScene::handleEvents()
 
 		}
 	}
-
-	//if (EventManager::Instance().keyPressed(SDL_SCANCODE_R)) // Reset Enemy conditions
-	//{
-	//	m_pEnemies->setHealth(100);
-	//	//m_pPlayer->getTree()->getEnemyHitNode()->setIsHit(false);
-	//	//m_pPlayer->getTree()->getPlayerDetectedNode()->setDetected(false);
-	//	std::cout << "Target conditions reset" << std::endl;
-	//}
-
-	//if (EventManager::Instance().keyPressed(SDL_SCANCODE_F))
-	//{
-	//	m_pTorpedos.push_back(new Torpedo(5.0f));
-	//	m_pTorpedos.back()->getTransform()->position = m_pEnemies->getTransform()->position;
-	//	SoundManager::Instance().playSound("torpedo");
-	//	addChild(m_pTorpedos.back(),2);
-	//}
 }
 
 void PlayScene::start()
