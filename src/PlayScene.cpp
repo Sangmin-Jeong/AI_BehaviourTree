@@ -404,25 +404,41 @@ void PlayScene::handleEvents()
 	}
 
 	// ranged enemy health
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_0))
+	if (EventManager::Instance().keyPressed(SDL_SCANCODE_0))
 	{
-		m_e1HealthBar->TakeDamage(-5);
+		m_pEnemies[m_keys[0]]->takeDamage(-25);
+		if (m_pEnemies[m_keys[0]]->getIsRight() == true)
+		{
+			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_R);
+		}
+		else
+		{
+			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
+		}
 	}
 
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_9))
+	if (EventManager::Instance().keyPressed(SDL_SCANCODE_9))
 	{
-		m_e1HealthBar->TakeDamage(5);
+		m_pEnemies[m_keys[0]]->takeDamage(25);
 	}
 
 	// CC enemy health
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_8))
+	if (EventManager::Instance().keyPressed(SDL_SCANCODE_8))
 	{
-		m_e2HealthBar->TakeDamage(-5);
+		m_pEnemies[m_keys[1]]->takeDamage(-25);
+		if (m_pEnemies[m_keys[1]]->getIsRight() == true)
+		{					  
+			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_R);
+		}
+		else
+		{
+			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
+		}
 	}
 
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_7))
+	if (EventManager::Instance().keyPressed(SDL_SCANCODE_7))
 	{
-		m_e2HealthBar->TakeDamage(5);
+		m_pEnemies[m_keys[1]]->takeDamage(25);
 	}
 
 	// Enemies movement will be toggled between idle and patrol
