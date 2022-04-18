@@ -288,6 +288,25 @@ void PlayScene::handleEvents()
 			m_pPlayer->setAnimationState(PLAYER_IDLE_R);
 		}
 	}
+
+	// Boundary for player
+	if (m_pPlayer->getTransform()->position.x < 0)
+	{
+		m_pPlayer->getTransform()->position.x = 0;
+	}
+	else if (m_pPlayer->getTransform()->position.x > WIDTH)
+	{
+		m_pPlayer->getTransform()->position.x = WIDTH;
+	}
+	else if (m_pPlayer->getTransform()->position.y < 25)
+	{
+		m_pPlayer->getTransform()->position.y = 25;
+	}
+	else if (m_pPlayer->getTransform()->position.y > HEIGHT - 25)
+	{
+		m_pPlayer->getTransform()->position.y = HEIGHT - 25;
+	}
+
 	////////////////////// WASD ////////////////////// 
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
