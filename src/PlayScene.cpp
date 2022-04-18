@@ -377,6 +377,13 @@ void PlayScene::update()
 		}
 	}
 
+	if (CollisionManager::AABBCheck(m_pShields[0], m_pPlayer))
+	{
+		m_pShields[0]->setHealth(m_pShields[0]->getHealth() - 34);
+		SoundManager::Instance().playSound("hit", 0, -1);
+		removeChild(m_pShields[0]);
+	}
+
 
 	for (unsigned int i = 0; i < m_pEnemies.size(); i++)
 	{
