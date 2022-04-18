@@ -125,18 +125,18 @@ void PlayScene::update()
 				if (i == 0)
 				{
 					m_pEnemies.emplace(m_keys[i], new CloseCombatEnemy(this));
-					m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(600.f, 430.f);
+					m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(rand() % 750 + 50, 430.f);
 					addChild(m_pEnemies[m_keys[i]], 3);
 				}
 				else if (i == 1)
 				{
 					m_pEnemies.emplace(m_keys[i], new RangedCombatEnemy(this));
-					m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(600.f, 230.f);
+					m_pEnemies[m_keys[i]]->getTransform()->position = glm::vec2(rand() % 750 + 50, 230.f);
 					addChild(m_pEnemies[m_keys[i]], 3);
 				}
 			}
 		}
-
+		
 	}
 	/////////////////// Respawn///////////////////
 
