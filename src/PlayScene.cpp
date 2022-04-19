@@ -87,21 +87,32 @@ void PlayScene::draw()
 
 	if (m_path_toggle == true)
 	{
-		// for the line that is connected between Player and Closest path_node
-		Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlayerClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-		// for the line that is connected between m_pPlayerClosest path_node and m_pCCEClosest
-		Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pCCEClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-		// for the line that is connected between m_pCCEClosest path_node and Enemy
-		Util::DrawLine(m_pCCEClosest->getTransform()->position, m_pEnemies[m_keys[0]]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		if (m_pEnemies.size() > 0)
+		{
+			if (m_pEnemies[m_keys[0]] != nullptr)
+			{
+				// for the line that is connected between Player and Closest path_node
+				Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlayerClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+				// for the line that is connected between m_pPlayerClosest path_node and m_pCCEClosest
+				Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pCCEClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+				// for the line that is connected between m_pCCEClosest path_node and Enemy
+				Util::DrawLine(m_pCCEClosest->getTransform()->position, m_pEnemies[m_keys[0]]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
-		// for the line that is connected between Player and Closest path_node
-		Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlayerClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-		// for the line that is connected between m_pPlayerClosest path_node and m_pCCEClosest
-		Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pRCEClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-		// for the line that is connected between m_pCCEClosest path_node and Enemy
-		Util::DrawLine(m_pRCEClosest->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+			}
+
+			if (m_pEnemies[m_keys[1]] != nullptr)
+			{
+				// for the line that is connected between Player and Closest path_node
+				Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlayerClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+				// for the line that is connected between m_pPlayerClosest path_node and m_pCCEClosest
+				Util::DrawLine(m_pPlayerClosest->getTransform()->position, m_pRCEClosest->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+				// for the line that is connected between m_pCCEClosest path_node and Enemy
+				Util::DrawLine(m_pRCEClosest->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+			}
+		}
+
 	}
-
 	//m_pHealthBar->Render();
 	//m_e1HealthBar->Render();
 	//m_e2HealthBar->Render();
@@ -117,6 +128,18 @@ void PlayScene::update()
 	switch (m_LOSMode)
 	{
 	case 0:
+		if (m_pEnemies.size() > 0)
+		{
+			if (m_pEnemies[m_keys[0]] != nullptr)
+			{
+				m_checkAllNodesWithTarget(m_pEnemies[m_keys[0]]);
+			}
+
+			if (m_pEnemies[m_keys[1]] != nullptr)
+			{
+				m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]);
+			}
+		}
 		break;
 	case 1:
 		m_checkAllNodesWithTarget(m_pPlayer);
