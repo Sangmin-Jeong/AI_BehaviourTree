@@ -41,7 +41,11 @@ void PlayScene::draw()
 	}
 
 	// Shield Health
-	Util::DrawFilledRect(glm::vec2{ m_pShields[0]->getTransform()->position.x - 38, m_pShields[0]->getTransform()->position.y - 25 }, m_pShields[0]->getHealth(), 7, blue);
+	if (m_pEnemies[m_keys[1]] != nullptr)
+	{
+		Util::DrawFilledRect(glm::vec2{ m_pEnemies[m_keys[1]]->getTransform()->position.x - 49, m_pEnemies[m_keys[1]]->getTransform()->position.y - 38 }, m_pEnemies[m_keys[1]]->getHealth(), 10,
+			(m_pEnemies[m_keys[1]]->getHealth() <= 50 ? (m_pEnemies[m_keys[1]]->getHealth() <= 25 ? red : yellow) : green));
+	}
 
 
 	for (auto element : m_pObstacles)
@@ -359,13 +363,6 @@ void PlayScene::update()
 		}
 	}
 
-	if (CollisionManager::AABBCheck(m_pShields[0], m_pPlayer))
-	{
-		m_pShields[0]->setHealth(m_pShields[0]->getHealth() - 34);
-		SoundManager::Instance().playSound("hit", 0, -1);
-		removeChild(m_pShields[0]);
-	}
-
 
 	for (unsigned int i = 0; i < m_pEnemies.size(); i++)
 	{
@@ -578,6 +575,24 @@ void PlayScene::handleEvents()
 						m_pEnemies[m_keys[1]]->takeDamage(25);
 						m_pEnemies[m_keys[1]]->setIsHit(true);
 					}
+				}
+			}
+		}
+
+		//MeleeTime -= TheGame::Instance().getDeltaTime() * 1000;
+		//std::cout << "time: " << (int)(MeleeTime / 1000) % 60;
+		if (m_pShields.size() != 0)
+		{
+			float distancePtoS = Util::distance(m_pPlayer->getTransform()->position, m_pShields[0]->getTransform()->position);
+			if (((m_pPlayer->getIsRight() && distancePtoS <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distancePtoS <= MELEE_DISTANCE_L)))
+			{
+				m_pShields[0]->setHealth(0);
+				removeChild(m_pShields[0]);
+				/*time = 500;*/
+				if (!m_isHit)
+				{
+					m_isHit = true;
+					SoundManager::Instance().playSound("hit", 0, -1);
 				}
 			}
 		}
