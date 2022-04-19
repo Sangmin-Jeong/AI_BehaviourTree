@@ -1054,22 +1054,22 @@ void PlayScene::m_checkAllNodesWithTarget(DisplayObject* target_object)
 
 void PlayScene::m_checkAllNodesWithBoth()
 {
-	//for (auto path_node : m_pGrid)
-	//{
-	//	bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
+	for (auto path_node : m_pGrid)
+	{
+		bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
 
-	//	if (m_pEnemies[m_keys[0]] != nullptr)
-	//	{
-	//		bool LOSWithCCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
-	//		path_node->setHasLOS((LOSWithSpaceShip && LOSWithCCE ? true : false));
-	//	}
+		if (m_pEnemies[m_keys[0]] != nullptr)
+		{
+			bool LOSWithCCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
+			path_node->setHasLOS((LOSWithSpaceShip && LOSWithCCE ? true : false));
+		}
 
-	//	if (m_pEnemies[m_keys[1]] != nullptr)
-	//	{
-	//		bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[1]]);
-	//		path_node->setHasLOS((LOSWithSpaceShip && LOSWithRCE ? true : false));
-	//	}
-	//}
+		if (m_pEnemies[m_keys[1]] != nullptr)
+		{
+			bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[1]]);
+			path_node->setHasLOS((LOSWithSpaceShip && LOSWithRCE ? true : false));
+		}
+	}
 }
 
 bool PlayScene::m_checkAgentLOS(Agent* agent, DisplayObject* target_object)
