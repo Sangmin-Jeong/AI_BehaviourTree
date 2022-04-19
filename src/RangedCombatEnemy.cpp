@@ -62,7 +62,7 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 
 	setWidth(48);
 	setHeight(48);
-	
+
 	getRigidBody()->bounds = glm::vec2(getWidth(), getHeight());
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->acceleration = glm::vec2(0, 0);
@@ -74,7 +74,7 @@ RangedCombatEnemy::RangedCombatEnemy(Scene* scene)
 	m_maxSpeed = 5.0f; // a maximum number of pixels moved per frame
 	m_turnRate = 50.0f; // a maximum number of degrees to turn each time-step
 	m_accelerationRate = 2.0f; // a maximum number of pixels to add to the velocity each frame
-	
+
 	setLOSDistance(160.0f); // 5 ppf x 80 feet
 	setLOSColour(glm::vec4(1, 0, 0, 1));
 
@@ -111,7 +111,7 @@ void RangedCombatEnemy::draw()
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
 
-	Util::DrawCapsule(glm::vec2(m_patrol[0].x, m_patrol[0].y), 10, 10,glm::vec4(0, 0, 0, 1));
+	Util::DrawCapsule(glm::vec2(m_patrol[0].x, m_patrol[0].y), 10, 10, glm::vec4(0, 0, 0, 1));
 	Util::DrawCapsule(glm::vec2(m_patrol[1].x, m_patrol[1].y), 10, 10, glm::vec4(0, 0, 0, 1));
 
 	// draw the Enemy
@@ -362,6 +362,8 @@ void RangedCombatEnemy::Patrol()
 	{
 		// Initialize
 		setActionState(action);
+		setIsCovered(false);
+		setTargetPosition(m_patrol[m_waypoint]);
 	}
 	if (m_waypoint == 0)
 	{
@@ -403,7 +405,7 @@ void RangedCombatEnemy::Flee()
 	//setIsRight((playerPosX < RangedCombatEnemyPosX));
 	if (playerPosX < RangedCombatEnemyPosX)
 	{
-		setTargetPosition(glm::vec2(800 +40, getTransform()->position.y));
+		setTargetPosition(glm::vec2(800 + 40, getTransform()->position.y));
 		setAnimationState(ENEMY_WALK_R);
 	}
 	else
@@ -411,8 +413,6 @@ void RangedCombatEnemy::Flee()
 		setTargetPosition(glm::vec2(0 - 40, getTransform()->position.y));
 		setAnimationState(ENEMY_WALK_L);
 	}
-	
-
 	m_move();
 }
 
@@ -420,71 +420,28 @@ void RangedCombatEnemy::MovetoCover()
 {
 	glm::vec2 shield_position = static_cast<PlayScene*>(m_pScene)->GetShield()->getTransform()->position;
 	glm::vec2 behind_position;
-	ActionState action = MOVE_TO_COVER; 
+	ActionState action = MOVE_TO_COVER;
 	if (getActionState() != action)
 	{
 		// Initialize
 		setActionState(action);
-		if (shield_position.x > static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position.x)
-		{
-			glm::vec2 temp = shield_position;
-			temp.x += 40;
-			setIsRight(true);
-			setTargetPosition(temp);
-			behind_position = temp;
-		}
-		else
-		{
-			glm::vec2 temp = shield_position;
-			temp.x -= 40;
-			setIsRight(false);
-			setTargetPosition(temp);
-			behind_position = temp;
-		}
 	}
-	// Action
-	/*if (getIsRight() == true)*/
-	//{
-	//	setAnimationState(ENEMY_WALK_R);
-	//	if (Util::distance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, behind_position) >= 585)
-	//	{
-	//		setAnimationState(ENEMY_IDLE_R);
-	//		setIsHit(false);
-	//		setIsCovered(true);
-	//	}
-	//	else
-	//	{
-	//		setAnimationState(ENEMY_WALK_R);
-	//		setIsCovered(false);
-	//	}
-	//	m_move();
-	//}
-	//else
-	//{
-	//	if (Util::distance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, behind_position) <= 520)
-	//	{
-	//		setAnimationState(ENEMY_IDLE_L);
-	//		setIsHit(false);
-	//		setIsCovered(true);
-	//	}
-	//	else
-	//	{
-	//		setAnimationState(ENEMY_WALK_L);
-	//		setIsCovered(false);
-	//	}
-	//	m_move();
-	//}
+	float playerPosX = static_cast<PlayScene*>(m_pScene)->GetPlayer()->getTransform()->position.x;
+	float shieldPosX = static_cast<PlayScene*>(m_pScene)->GetShield()->getTransform()->position.x;
+	float RangedCombatEnemyPosX = this->getTransform()->position.x;
 
-	if (getIsRight() == true)
+	setIsCovered(true);
+	if (RangedCombatEnemyPosX < shieldPosX)
 	{
-		setTargetPosition(glm::vec2(800, getTransform()->position.y));
+		setTargetPosition(glm::vec2(shieldPosX + 40, getTransform()->position.y));
 		setAnimationState(ENEMY_WALK_R);
 	}
 	else
 	{
-		setTargetPosition(glm::vec2(0, getTransform()->position.y));
+		setTargetPosition(glm::vec2(shieldPosX - 40, getTransform()->position.y));
 		setAnimationState(ENEMY_WALK_L);
 	}
+
 	m_move();
 }
 
@@ -588,7 +545,7 @@ void RangedCombatEnemy::MoveToRange()
 	m_move();
 	//if (Util::distance(static_cast<PlayScene*>(m_pScene)->GetRCE()->getTransform()->position, static_cast<PlayScene*>(m_pScene)->GetPlayer()->getTransform()->position) > getLOSDistance())
 	//{
-		
+
 	//}
 }
 
@@ -608,7 +565,7 @@ void RangedCombatEnemy::MoveToLOS()
 void RangedCombatEnemy::m_move()
 {
 	Seek();
-	
+
 	//                                   final Position     position term    velocity term     acceleration term
 	// kinematic equation for motion --> Pf            =      Pi     +     Vi*(time)    +   (0.5)*Ai*(time * time)
 
@@ -622,8 +579,8 @@ void RangedCombatEnemy::m_move()
 
 	// compute the acceleration term
 	const glm::vec2 acceleration_term = getRigidBody()->acceleration * 0.5f;// *dt;
-	
-	
+
+
 	// compute the new position
 	glm::vec2 final_position = initial_position + velocity_term + acceleration_term;
 

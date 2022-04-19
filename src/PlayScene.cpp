@@ -122,8 +122,21 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	//std::cout << CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[0]]->getTransform()->position, m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight()) << std::endl;
+	std::cout << randCoverTime << "\n";
+	float shieldPosX = m_pShields[0]->getTransform()->position.x;
+	float RangedCombatEnemyPosX = m_pEnemies[m_keys[1]]->getTransform()->position.x;
+	if (((RangedCombatEnemyPosX > shieldPosX + 30 && RangedCombatEnemyPosX < shieldPosX + 50) || (RangedCombatEnemyPosX < shieldPosX - 30 && RangedCombatEnemyPosX > shieldPosX - 50)) && m_pEnemies[m_keys[1]]->getIsCovered())
+	{
+		randCoverTime -= TheGame::Instance().getDeltaTime() * 1000;
+		if (randCoverTime <= 0)
+		{
+			if (m_pEnemies[m_keys[1]]->getIsCovered())
+			{
+				m_pEnemies[m_keys[1]]->setIsHit(false);
 
+			}
+		}
+	}
 	if (m_pPlayer->getHealth() <= 0)
 	{
 		m_pPlayer->getTransform()->position = glm::vec2(110.f, 230.f); // y550
