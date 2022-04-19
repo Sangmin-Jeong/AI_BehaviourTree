@@ -23,25 +23,25 @@ void PlayScene::draw()
 
 
 	// player Health
-	Util::DrawFilledRect(glm::vec2{ m_pPlayer->getTransform()->position.x - 49, m_pPlayer->getTransform()->position.y - 38 }, m_pPlayer->getHealth(), 10, 
+	Util::DrawFilledRect(glm::vec2{ m_pPlayer->getTransform()->position.x - 49, m_pPlayer->getTransform()->position.y - 38 }, m_pPlayer->getHealth(), 10,
 		(m_pPlayer->getHealth() <= 50 ? (m_pPlayer->getHealth() <= 25 ? red : yellow) : green));
-	
+
 	// closeCombat Health
 	if (m_pEnemies[m_keys[0]] != nullptr)
 	{
 		Util::DrawFilledRect(glm::vec2{ m_pEnemies[m_keys[0]]->getTransform()->position.x - 49, m_pEnemies[m_keys[0]]->getTransform()->position.y - 38 }, m_pEnemies[m_keys[0]]->getHealth(), 10,
 			(m_pEnemies[m_keys[0]]->getHealth() <= 50 ? (m_pEnemies[m_keys[0]]->getHealth() <= 25 ? red : yellow) : green));
 	}
-	
+
 	// RangedCombat Health
 	if (m_pEnemies[m_keys[1]] != nullptr)
 	{
 		Util::DrawFilledRect(glm::vec2{ m_pEnemies[m_keys[1]]->getTransform()->position.x - 49, m_pEnemies[m_keys[1]]->getTransform()->position.y - 38 }, m_pEnemies[m_keys[1]]->getHealth(), 10,
 			(m_pEnemies[m_keys[1]]->getHealth() <= 50 ? (m_pEnemies[m_keys[1]]->getHealth() <= 25 ? red : yellow) : green));
 	}
-	
+
 	// Shield Health
-	Util::DrawFilledRect(glm::vec2{ m_pShields[0]->getTransform()->position.x - 38, m_pShields[0]->getTransform()->position.y - 25}, (m_pShields[0]->getHealth() <= 0 ? 0 : m_pShields[0]->getHealth()), 7, blue);
+	Util::DrawFilledRect(glm::vec2{ m_pShields[0]->getTransform()->position.x - 38, m_pShields[0]->getTransform()->position.y - 25 }, m_pShields[0]->getHealth(), 7, blue);
 
 
 	for (auto element : m_pObstacles)
@@ -111,14 +111,12 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	//std::cout << CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) << std::endl;
+	//std::cout << CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[0]]->getTransform()->position, m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight()) << std::endl;
 
 	// Now for the path_nodes LOS
 	switch (m_LOSMode)
 	{
 	case 0:
-		m_checkAllNodesWithTarget(m_pEnemies[m_keys[0]]);
-		m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]); //TODO: need to separate
 		break;
 	case 1:
 		m_checkAllNodesWithTarget(m_pPlayer);
@@ -155,11 +153,11 @@ void PlayScene::update()
 				}
 			}
 		}
-		
+
 	}
 	/////////////////// Respawn///////////////////
 
-	
+
 	//std::cout << m_pEnemies[m_keys[1]]->getIsHit() << " " << m_pEnemies[m_keys[1]]->hasLOS() << " " << m_pEnemies[m_keys[1]]->getIsCovered() << std::endl;
 
 	// Set agent tree conditions
@@ -279,7 +277,7 @@ void PlayScene::update()
 			if (CollisionManager::AABBCheck(m_pEnemyDaggers[i], m_pPlayer))
 			{
 				m_pPlayer->setAnimationState(PLAYER_HURT_L);
-				m_pPlayer->setHealth(m_pPlayer->getHealth()-25);
+				m_pPlayer->setHealth(m_pPlayer->getHealth() - 25);
 				SoundManager::Instance().playSound("hit", 0, -1);
 
 				removeChild(m_pEnemyDaggers[i]);
@@ -304,49 +302,69 @@ void PlayScene::update()
 	{
 		for (unsigned int i = 0; i < m_pPlayerDaggers.size(); i++)
 		{
-			// Guide Dagger to Enemy
-
-			// Player's Position -> PlayerClosest's position
-			if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pPlayerClosest->getTransform()->position) < 500)
+			if (m_pEnemies[m_keys[0]] != nullptr)
 			{
-				m_pPlayerDaggers[i]->setTargetPosition(m_pRCEClosest->getTransform()->position);
-			}
-			// PlayerClosest's position -> EnemyClosest's position
-			else if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pRCEClosest->getTransform()->position) < 1000)
-			{
-				m_pPlayerDaggers[i]->setTargetPosition(m_pEnemies[m_keys[1]]->getTransform()->position);
+				// Guide Dagger to Enemy
+				// Player's Position -> PlayerClosest's position
+				if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pPlayerClosest->getTransform()->position) < 500)
+				{
+					m_pPlayerDaggers[i]->setTargetPosition(m_pRCEClosest->getTransform()->position);
+				}
+				// PlayerClosest's position -> EnemyClosest's position
+				else if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pRCEClosest->getTransform()->position) < 1000)
+				{
+					m_pPlayerDaggers[i]->setTargetPosition(m_pEnemies[m_keys[0]]->getTransform()->position);
+				}
+
+				// Collision check
+				if (CollisionManager::AABBCheck(m_pPlayerDaggers[i], m_pEnemies[m_keys[0]]))
+				{
+					m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
+					m_pEnemies[m_keys[0]]->takeDamage(25);
+					SoundManager::Instance().playSound("hit", 0, -1);
+
+					removeChild(m_pPlayerDaggers[i]);
+					m_pPlayerDaggers[i] = nullptr;
+					m_pPlayerDaggers.erase(m_pPlayerDaggers.begin());
+				}
 			}
 
-			// Collision check
-			if (CollisionManager::AABBCheck(m_pPlayerDaggers[i], m_pEnemies[m_keys[1]]))
+			if (m_pEnemies[m_keys[1]] != nullptr)
 			{
-				m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
-				m_pEnemies[m_keys[1]]->takeDamage(25);
-				SoundManager::Instance().playSound("hit", 0, -1);
+				// Guide Dagger to Enemy
+				// Player's Position -> PlayerClosest's position
+				if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pPlayerClosest->getTransform()->position) < 500)
+				{
+					m_pPlayerDaggers[i]->setTargetPosition(m_pRCEClosest->getTransform()->position);
+				}
+				// PlayerClosest's position -> EnemyClosest's position
+				else if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pRCEClosest->getTransform()->position) < 1000)
+				{
+					m_pPlayerDaggers[i]->setTargetPosition(m_pEnemies[m_keys[1]]->getTransform()->position);
+				}
 
-				removeChild(m_pPlayerDaggers[i]);
-				//delete m_pEnemyDaggers[i];
-				//m_pEnemyDaggers[i] = nullptr;
-				//m_pEnemyDaggers.erase(m_pEnemyDaggers.begin() + i);
-				//m_pEnemyDaggers.shrink_to_fit();
+				// Collision check
+				if (CollisionManager::AABBCheck(m_pPlayerDaggers[i], m_pEnemies[m_keys[1]]))
+				{
+					m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
+					m_pEnemies[m_keys[1]]->takeDamage(25);
+					SoundManager::Instance().playSound("hit", 0, -1);
+
+					removeChild(m_pPlayerDaggers[i]);
+					m_pPlayerDaggers[i] = nullptr;
+					m_pPlayerDaggers.erase(m_pPlayerDaggers.begin());
+				}
 			}
-			//If Dagger is away from Player so far, remove Dagger
-			//else if (CollisionManager::squaredDistance(m_pEnemyDaggers[i]->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position) > 50000)
-			//{
-			//	removeChild(m_pEnemyDaggers[i]);
-			///*	delete m_pEnemyDaggers[i];*/
-			///*	m_pEnemyDaggers[i] = nullptr;
-			//	m_pEnemyDaggers.shrink_to_fit();*/
-			//}
+
 		}
 	}
 
-	//if (CollisionManager::AABBCheck(m_pShields[0], m_pPlayer))
-	//{
-	//	m_pShields[0]->setHealth(m_pShields[0]->getHealth() - 34);
-	//	SoundManager::Instance().playSound("hit", 0, -1);
-	//	removeChild(m_pShields[0]);
-	//}
+	if (CollisionManager::AABBCheck(m_pShields[0], m_pPlayer))
+	{
+		m_pShields[0]->setHealth(m_pShields[0]->getHealth() - 34);
+		SoundManager::Instance().playSound("hit", 0, -1);
+		removeChild(m_pShields[0]);
+	}
 
 
 	for (unsigned int i = 0; i < m_pEnemies.size(); i++)
@@ -367,17 +385,22 @@ void PlayScene::update()
 			m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies[m_keys[0]], m_pObstacles);
 			m_pEnemies[m_keys[0]]->checkAgentLOSToTarget(m_pEnemies[m_keys[0]], m_pPlayer, m_pObstacles);
 		}
-			
+
 		if (m_pEnemies[m_keys[1]] != nullptr)
 		{
-			m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies[m_keys[1]], m_pObstacles);
-			m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles);
+			if (m_pPlayer->hasLOS() == false)
+			{
+				m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies[m_keys[1]], m_pObstacles);
+				m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles);
+			}
 		}
 	}
 	if (m_pEnemies[m_keys[1]] == nullptr && m_pEnemies[m_keys[0]] == nullptr)
 	{
 		TheGame::Instance().changeSceneState(END_SCENE);
 	}
+
+	std::cout << m_pPlayer->hasLOS() << std::endl;
 }
 
 void PlayScene::clean()
@@ -388,9 +411,7 @@ void PlayScene::clean()
 void PlayScene::handleEvents()
 {
 	EventManager::Instance().update();
-	//std::cout << m_pShields[0]->getHealth() << "\n";
 
-	/*m_pShields[0]->setHealth(m_pShields[0]->getHealth() - 34);*/
 	////////////////////// WASD ////////////////////// 
 	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_W))
 		if (CheckKeyList('W'))DeleteKeyList('W');
@@ -444,9 +465,9 @@ void PlayScene::handleEvents()
 	else if (key == 'R')
 	{
 		// isRange Range Possible
-		if ((CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[0]]->getTransform()->position, m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight()) <= 17000 && m_pPlayer->hasLOS())
-			|| (CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) <= 17000 && m_pPlayer->hasLOS()))
-			
+		//if ((CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[0]]->getTransform()->position, m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight()) <= 17000 && m_pPlayer->hasLOS())
+		//	|| (CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) <= 17000 && m_pPlayer->hasLOS()))
+		if (m_pPlayer->hasLOS())
 		{
 			if (isRight == false)
 			{
@@ -525,7 +546,7 @@ void PlayScene::handleEvents()
 		}
 		/* || (!m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_L))*/
 		// isMelee Range Possible
-		if(m_pEnemies.size() != 0)
+		if (m_pEnemies.size() != 0)
 		{
 			if (m_pEnemies[m_keys[0]] != nullptr && m_pEnemies[m_keys[0]]->getHealth() > 0)
 			{
@@ -557,23 +578,6 @@ void PlayScene::handleEvents()
 						m_pEnemies[m_keys[1]]->takeDamage(25);
 						m_pEnemies[m_keys[1]]->setIsHit(true);
 					}
-				}
-			}
-		}
-		//MeleeTime -= TheGame::Instance().getDeltaTime() * 1000;
-		//std::cout << "time: " << (int)(MeleeTime / 1000) % 60;
-		if (m_pShields.size() != 0)
-		{
-			float distancePtoS = Util::distance(m_pPlayer->getTransform()->position, m_pShields[0]->getTransform()->position);
-			if (((m_pPlayer->getIsRight() && distancePtoS <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distancePtoS <= MELEE_DISTANCE_L)))
-			{
-				m_pShields[0]->setHealth(0);
-				removeChild(m_pShields[0]);
-				/*time = 500;*/
-				if (!m_isHit)
-				{
-					m_isHit = true;
-					SoundManager::Instance().playSound("hit", 0, -1);
 				}
 			}
 		}
@@ -693,7 +697,7 @@ void PlayScene::handleEvents()
 	{
 		m_pEnemies[m_keys[1]]->takeDamage(-25);
 		if (m_pEnemies[m_keys[1]]->getIsRight() == true)
-		{					  
+		{
 			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_R);
 		}
 		else
@@ -742,7 +746,7 @@ void PlayScene::start()
 	m_guiTitle = "Play Scene";
 
 	m_isHit = false;
-	
+
 	m_pBG = new Background();
 	addChild(m_pBG);
 
@@ -945,7 +949,7 @@ void PlayScene::GUI_Function()
 
 	ImGui::Separator();
 
-	shipPosition[0] = m_pPlayer->getTransform()->position.x; 
+	shipPosition[0] = m_pPlayer->getTransform()->position.x;
 	shipPosition[1] = m_pPlayer->getTransform()->position.y;
 	if (ImGui::SliderInt2("Ship Position", shipPosition, 0, 800))
 	{
@@ -995,7 +999,7 @@ void PlayScene::GUI_Function()
 
 void PlayScene::m_clearNodes()
 {
-	m_pGrid.clear(); 
+	m_pGrid.clear();
 	for (auto object : getDisplayList())
 	{
 		if (object->getType() == PATH_NODE)
@@ -1050,20 +1054,20 @@ void PlayScene::m_toggleGrid(bool state)
 	for (auto path_node : m_pGrid)
 	{
 		path_node->setVisible(state);
-	} 
+	}
 }
 
-bool PlayScene::m_checkPathNodeLOS(PathNode* path_node, DisplayObject* target_object)
+bool PlayScene::m_checkPathNodeLOS(PathNode * path_node, DisplayObject * target_object)
 {
 	// check angle to target so we can still use LOS distance for path_nodes
 	auto targetDirection = target_object->getTransform()->position - path_node->getTransform()->position;
 	auto normalizedDirection = Util::normalize(targetDirection);
 	path_node->setCurrentDirection(normalizedDirection);
-	
+
 	return m_checkAgentLOS(path_node, target_object);
 }
 
-void PlayScene::m_checkAllNodesWithTarget(DisplayObject* target_object)
+void PlayScene::m_checkAllNodesWithTarget(DisplayObject * target_object)
 {
 	for (auto path_node : m_pGrid)
 	{
@@ -1073,25 +1077,29 @@ void PlayScene::m_checkAllNodesWithTarget(DisplayObject* target_object)
 
 void PlayScene::m_checkAllNodesWithBoth()
 {
-	//for (auto path_node : m_pGrid)
-	//{
-	//	bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
+	for (auto path_node : m_pGrid)
+	{
+		bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
 
-	//	if (m_pEnemies[m_keys[0]] != nullptr)
-	//	{
-	//		bool LOSWithCCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
-	//		path_node->setHasLOS((LOSWithSpaceShip && LOSWithCCE ? true : false));
-	//	}
+		if (m_pEnemies.size() > 0)
+		{
+			if (m_pEnemies[m_keys[0]] != nullptr)
+			{
+				bool LOSWithCCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
+				path_node->setHasLOS((LOSWithSpaceShip && LOSWithCCE ? true : false));
+			}
 
-	//	if (m_pEnemies[m_keys[1]] != nullptr)
-	//	{
-	//		bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[1]]);
-	//		path_node->setHasLOS((LOSWithSpaceShip && LOSWithRCE ? true : false));
-	//	}
-	//}
+			if (m_pEnemies[m_keys[1]] != nullptr)
+			{
+				bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[1]]);
+				path_node->setHasLOS((LOSWithSpaceShip && LOSWithRCE ? true : false));
+			}
+		}
+
+	}
 }
 
-bool PlayScene::m_checkAgentLOS(Agent* agent, DisplayObject* target_object)
+bool PlayScene::m_checkAgentLOS(Agent * agent, DisplayObject * target_object)
 {
 	bool hasLOS = false;
 	agent->setHasLOS(hasLOS);
