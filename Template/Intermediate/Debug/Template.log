@@ -1,28 +1,28 @@
 ﻿  PlayScene.cpp
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(153,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(813,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(814,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(986,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(159,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(819,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(820,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(992,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(987,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(993,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(990,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(996,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(991,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(997,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(995,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(998,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(1174,20): warning C4018: '<': signed/unsigned mismatch
-  Template.vcxproj -> C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(1001,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(1004,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(1180,20): warning C4018: '<': signed/unsigned mismatch
+  Template.vcxproj -> C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe

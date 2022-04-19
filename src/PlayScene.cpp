@@ -124,6 +124,12 @@ void PlayScene::update()
 
 	//std::cout << CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[0]]->getTransform()->position, m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight()) << std::endl;
 
+	if (m_pPlayer->getHealth() <= 0)
+	{
+		m_pPlayer->getTransform()->position = glm::vec2(110.f, 230.f); // y550
+		m_pPlayer->setHealth(100);
+	}
+
 	// Now for the path_nodes LOS
 	switch (m_LOSMode)
 	{
@@ -411,12 +417,12 @@ void PlayScene::update()
 			}
 		}
 	}
+
 	if (m_pEnemies[m_keys[1]] == nullptr && m_pEnemies[m_keys[0]] == nullptr)
 	{
 		TheGame::Instance().changeSceneState(END_SCENE);
 	}
 
-	std::cout << m_pPlayer->hasLOS() << std::endl;
 }
 
 void PlayScene::clean()
