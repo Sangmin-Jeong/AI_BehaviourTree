@@ -333,7 +333,7 @@ void PlayScene::update()
 			{
 				m_pPlayer->setAnimationState(PLAYER_HURT_L);
 				m_pPlayer->setHealth(m_pPlayer->getHealth()-25);
-				SoundManager::Instance().playSound("hit", 0, -1);
+				SoundManager::Instance().playSound("Hit");
 
 				removeChild(m_pEnemyDaggers[i]);
 				//delete m_pEnemyDaggers[i];
@@ -387,6 +387,7 @@ void PlayScene::update()
 	}
 	if (m_pEnemies[m_keys[1]] == nullptr && m_pEnemies[m_keys[0]] == nullptr)
 	{
+		SoundManager::Instance().playSound("win");
 		TheGame::Instance().changeSceneState(END_SCENE);
 	}
 }
@@ -461,7 +462,6 @@ void PlayScene::handleEvents()
 
 				if (knifeThrowingSound == false)
 				{
-					SoundManager::Instance().playSound("knifethrowing", 0, -1);
 					knifeThrowingSound = true;
 				}
 			}
@@ -470,7 +470,6 @@ void PlayScene::handleEvents()
 				m_pPlayer->setAnimationState(PLAYER_RANGE_R);
 				if (knifeThrowingSound == false)
 				{
-					SoundManager::Instance().playSound("knifethrowing", 0, -1);
 					knifeThrowingSound = true;
 				}
 			}
@@ -516,7 +515,7 @@ void PlayScene::handleEvents()
 			m_pPlayer->setAnimationState(PLAYER_MELEE_L);
 			if (knifeSound == false)
 			{
-				SoundManager::Instance().playSound("knife", 0, -1);
+				SoundManager::Instance().playSound("knife");
 				knifeSound = true;
 			}
 		}
@@ -526,7 +525,7 @@ void PlayScene::handleEvents()
 
 			if (knifeSound == false)
 			{
-				SoundManager::Instance().playSound("knife", 0, -1);
+				SoundManager::Instance().playSound("knife");
 				knifeSound = true;
 			}
 		}
@@ -537,6 +536,13 @@ void PlayScene::handleEvents()
 		std::cout << "distance: " << distanceCCE << " : " << " LOS: " << m_pPlayer->hasLOS() << "isRight" << m_pPlayer->getIsRight() << "\n";
 		if (((m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_L)))
 		{
+			if (!isHit)
+			{
+				isHit = true;
+				SoundManager::Instance().playSound("Hit");
+				m_pEnemies[m_keys[0]]->takeDamage(25);
+			}
+
 			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
 			/*time = 500;*/
 			m_pEnemies[m_keys[0]]->setIsHit(true);
@@ -544,6 +550,12 @@ void PlayScene::handleEvents()
 
 		if (((m_pPlayer->getIsRight() && distanceRCE <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distanceRCE <= MELEE_DISTANCE_L)))
 		{
+			if (!isHit)
+			{
+				isHit = true;
+				SoundManager::Instance().playSound("Hit");
+				m_pEnemies[m_keys[1]]->takeDamage(25);
+			}
 			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
 			/*time = 500;*/
 			m_pEnemies[m_keys[1]]->setIsHit(true);
@@ -559,6 +571,10 @@ void PlayScene::handleEvents()
 				{
 					knifeSound = false;
 				}
+				if (isHit == true)
+				{
+					isHit = false;
+				}
 			}
 			else if (isRight == true)
 			{
@@ -567,6 +583,10 @@ void PlayScene::handleEvents()
 				if (knifeSound == true)
 				{
 					knifeSound = false;
+				}
+				if (isHit == true)
+				{
+					isHit = false;
 				}
 			}
 			m_pPlayer->getAnimation("melee").current_frame = 0;
@@ -703,6 +723,8 @@ void PlayScene::start()
 
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
+
+	isHit = false;
 	
 	m_pBG = new Background();
 	addChild(m_pBG);
@@ -762,9 +784,9 @@ void PlayScene::start()
 	knifeThrowingSound = false;
 
 	SoundManager::Instance().load("../Assets/audio/Knife.flac", "knife", SOUND_SFX);
-	SoundManager::Instance().load("../Assets/audio/music.mp3", "music", SOUND_MUSIC);
-	SoundManager::Instance().load("../Assets/audio/music.mp3", "music", SOUND_MUSIC);
-	SoundManager::Instance().load("../Assets/audio/music.mp3", "music", SOUND_MUSIC);
+	SoundManager::Instance().load("../Assets/audio/KnifeThrow.mp3", "KnifeThrow", SOUND_SFX);
+	SoundManager::Instance().load("../Assets/audio/Hit.wav", "Hit", SOUND_SFX);
+	SoundManager::Instance().load("../Assets/audio/yay.ogg", "win", SOUND_SFX);
 
 	SoundManager::Instance().load("../Assets/audio/music.mp3", "music", SOUND_MUSIC);
 	SoundManager::Instance().playMusic("music");
@@ -784,6 +806,7 @@ void PlayScene::SpawnRangedAttack()
 	//steering_direction = Util::normalize(steering_direction);
 
 	// Spawn it
+	SoundManager::Instance().playSound("KnifeThrow");
 	m_pEnemyDaggers.push_back(new Weapon(m_pEnemies[m_keys[1]]->getTransform()->position + m_pEnemies[m_keys[1]]->getCurrentDirection() * 30.0f));
 	m_pEnemyDaggers.shrink_to_fit();
 	m_pEnemyDaggers.back()->setIsMoving(true);
