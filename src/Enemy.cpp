@@ -79,10 +79,14 @@ void Enemy::clean()
 void Enemy::drawEnemyLOS()
 {
 	// For detection radius
-	int radius = (int)getLOSDistance();
-	Util::DrawCircle(getTransform()->position, radius, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	if (this != nullptr)
+	{
+		int radius = (int)getLOSDistance();
+		Util::DrawCircle(getTransform()->position, radius, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	Util::DrawLine(getTransform()->position, getTransform()->position + getCurrentDirection() * getLOSDistance(), getLOSColour());
+		Util::DrawLine(getTransform()->position, getTransform()->position + getCurrentDirection() * getLOSDistance(), getLOSColour());
+
+	}
 }
 
 void Enemy::m_move()
