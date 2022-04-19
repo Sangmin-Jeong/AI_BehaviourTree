@@ -110,6 +110,9 @@ private:
 	glm::vec4 green = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
 	glm::vec4 blue = glm::vec4(0.0f, 0.0f, 1.0f, 0.0f);
 	glm::vec4 black = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);;
+
+	// Melee
+	float MeleeTime = 1 * 1000;
 };
 
 #endif /* defined (__PLAY_SCENE__) */
