@@ -122,21 +122,27 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	std::cout << randCoverTime << "\n";
-	float shieldPosX = m_pShields[0]->getTransform()->position.x;
-	float RangedCombatEnemyPosX = m_pEnemies[m_keys[1]]->getTransform()->position.x;
-	if (((RangedCombatEnemyPosX > shieldPosX + 30 && RangedCombatEnemyPosX < shieldPosX + 50) || (RangedCombatEnemyPosX < shieldPosX - 30 && RangedCombatEnemyPosX > shieldPosX - 50)) && m_pEnemies[m_keys[1]]->getIsCovered())
+	for (int i = 0; i < m_pEnemies.size(); i++)
 	{
-		randCoverTime -= TheGame::Instance().getDeltaTime() * 1000;
-		if (randCoverTime <= 0)
+		if (m_pEnemies[m_keys[1]] != nullptr)
 		{
-			if (m_pEnemies[m_keys[1]]->getIsCovered())
+			float shieldPosX = m_pShields[0]->getTransform()->position.x;
+			float RangedCombatEnemyPosX = m_pEnemies[m_keys[1]]->getTransform()->position.x;
+			if (((RangedCombatEnemyPosX > shieldPosX + 30 && RangedCombatEnemyPosX < shieldPosX + 50) || (RangedCombatEnemyPosX < shieldPosX - 30 && RangedCombatEnemyPosX > shieldPosX - 50)) && m_pEnemies[m_keys[1]]->getIsCovered())
 			{
-				m_pEnemies[m_keys[1]]->setIsHit(false);
+				randCoverTime -= TheGame::Instance().getDeltaTime() * 1000;
+				if (randCoverTime <= 0)
+				{
+					if (m_pEnemies[m_keys[1]]->getIsCovered())
+					{
+						m_pEnemies[m_keys[1]]->setIsHit(false);
 
+					}
+				}
 			}
 		}
 	}
+
 	if (m_pPlayer->getHealth() <= 0)
 	{
 		m_pPlayer->getTransform()->position = glm::vec2(110.f, 230.f); // y550
@@ -433,6 +439,7 @@ void PlayScene::update()
 
 	if (m_pEnemies[m_keys[1]] == nullptr && m_pEnemies[m_keys[0]] == nullptr)
 	{
+		SoundManager::Instance().playSound("win");
 		TheGame::Instance().changeSceneState(END_SCENE);
 	}
 
