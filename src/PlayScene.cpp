@@ -111,7 +111,7 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	std::cout << m_pPlayer->hasLOS() << std::endl;
+	//std::cout << CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) << std::endl;
 
 	/////////////////// Respawn///////////////////
 	for (int i = 0; i < m_pEnemies.size(); i++)
@@ -453,7 +453,9 @@ void PlayScene::handleEvents()
 	else if (key == 'R')
 	{
 		// isRange Range Possible
-		if (CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) <= 28 && m_pPlayer->hasLOS())
+		if ((CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[0]]->getTransform()->position, m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight()) <= 30000 && m_pPlayer->hasLOS())
+			|| (CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) <= 30000 && m_pPlayer->hasLOS()))
+			
 		{
 			if (isRight == false)
 			{
@@ -532,21 +534,31 @@ void PlayScene::handleEvents()
 		}
 		/* || (!m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_L))*/
 		// isMelee Range Possible
-		float distanceCCE = Util::distance(m_pPlayer->getTransform()->position, m_pEnemies[m_keys[0]]->getTransform()->position);
-		float distanceRCE = Util::distance(m_pPlayer->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position);
-		std::cout << "distance: " << distanceCCE << " : " << " LOS: " << m_pPlayer->hasLOS() << "isRight" << m_pPlayer->getIsRight() << "\n";
-		if (((m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_L)))
+		if(m_pEnemies.size() != 0)
 		{
-			m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
-			/*time = 500;*/
-			m_pEnemies[m_keys[0]]->setIsHit(true);
-		}
+			if (m_pEnemies[m_keys[0]] != nullptr && m_pEnemies[m_keys[0]]->getHealth() > 0)
+			{
+				float distanceCCE = Util::distance(m_pPlayer->getTransform()->position, m_pEnemies[m_keys[0]]->getTransform()->position);
+				if (((m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distanceCCE <= MELEE_DISTANCE_L)))
+				{
+					m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
+					/*time = 500;*/
+					m_pEnemies[m_keys[0]]->takeDamage(25);
+					m_pEnemies[m_keys[0]]->setIsHit(true);
 
-		if (((m_pPlayer->getIsRight() && distanceRCE <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distanceRCE <= MELEE_DISTANCE_L)))
-		{
-			m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
-			/*time = 500;*/
-			m_pEnemies[m_keys[1]]->setIsHit(true);
+				}
+			}
+			if (m_pEnemies[m_keys[1]] != nullptr && m_pEnemies[m_keys[1]]->getHealth() > 0)
+			{
+				float distanceRCE = Util::distance(m_pPlayer->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position);
+				if (((m_pPlayer->getIsRight() && distanceRCE <= MELEE_DISTANCE_R) || (!m_pPlayer->getIsRight() && distanceRCE <= MELEE_DISTANCE_L)))
+				{
+					m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
+					/*time = 500;*/
+					m_pEnemies[m_keys[1]]->takeDamage(25);
+					m_pEnemies[m_keys[1]]->setIsHit(true);
+				}
+			}
 		}
 
 		if (m_pPlayer->getAnimation("melee").current_frame == 5)

@@ -18,8 +18,8 @@
 
 #include "Weapon.h"
 
-#define MELEE_DISTANCE_L 45
-#define MELEE_DISTANCE_R 45
+#define MELEE_DISTANCE_L 50
+#define MELEE_DISTANCE_R 50
 
 class PlayScene : public Scene
 {
