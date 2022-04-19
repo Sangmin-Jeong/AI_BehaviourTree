@@ -111,14 +111,12 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	std::cout << CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) << std::endl;
+	//std::cout << CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[0]]->getTransform()->position, m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight()) << std::endl;
 
 	// Now for the path_nodes LOS
 	switch (m_LOSMode)
 	{
 	case 0:
-		m_checkAllNodesWithTarget(m_pEnemies[m_keys[0]]);
-		m_checkAllNodesWithTarget(m_pEnemies[m_keys[1]]); //TODO: need to separate
 		break;
 	case 1:
 		m_checkAllNodesWithTarget(m_pPlayer);
@@ -304,40 +302,60 @@ void PlayScene::update()
 	{
 		for (unsigned int i = 0; i < m_pPlayerDaggers.size(); i++)
 		{
-			// Guide Dagger to Enemy
-
-			// Player's Position -> PlayerClosest's position
-			if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pPlayerClosest->getTransform()->position) < 500)
+			if (m_pEnemies[m_keys[0]] != nullptr)
 			{
-				m_pPlayerDaggers[i]->setTargetPosition(m_pRCEClosest->getTransform()->position);
-			}
-			// PlayerClosest's position -> EnemyClosest's position
-			else if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pRCEClosest->getTransform()->position) < 1000)
-			{
-				m_pPlayerDaggers[i]->setTargetPosition(m_pEnemies[m_keys[1]]->getTransform()->position);
+				// Guide Dagger to Enemy
+				// Player's Position -> PlayerClosest's position
+				if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pPlayerClosest->getTransform()->position) < 500)
+				{
+					m_pPlayerDaggers[i]->setTargetPosition(m_pRCEClosest->getTransform()->position);
+				}
+				// PlayerClosest's position -> EnemyClosest's position
+				else if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pRCEClosest->getTransform()->position) < 1000)
+				{
+					m_pPlayerDaggers[i]->setTargetPosition(m_pEnemies[m_keys[0]]->getTransform()->position);
+				}
+
+				// Collision check
+				if (CollisionManager::AABBCheck(m_pPlayerDaggers[i], m_pEnemies[m_keys[0]]))
+				{
+					m_pEnemies[m_keys[0]]->setAnimationState(ENEMY_HURT_L);
+					m_pEnemies[m_keys[0]]->takeDamage(25);
+					SoundManager::Instance().playSound("hit", 0, -1);
+
+					removeChild(m_pPlayerDaggers[i]);
+					m_pPlayerDaggers[i] = nullptr;
+					m_pPlayerDaggers.erase(m_pPlayerDaggers.begin());
+				}
 			}
 
-			// Collision check
-			if (CollisionManager::AABBCheck(m_pPlayerDaggers[i], m_pEnemies[m_keys[1]]))
+			if (m_pEnemies[m_keys[1]] != nullptr)
 			{
-				m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
-				m_pEnemies[m_keys[1]]->takeDamage(25);
-				SoundManager::Instance().playSound("hit", 0, -1);
+				// Guide Dagger to Enemy
+				// Player's Position -> PlayerClosest's position
+				if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pPlayerClosest->getTransform()->position) < 500)
+				{
+					m_pPlayerDaggers[i]->setTargetPosition(m_pRCEClosest->getTransform()->position);
+				}
+				// PlayerClosest's position -> EnemyClosest's position
+				else if (CollisionManager::squaredDistance(m_pPlayerDaggers[i]->getTransform()->position, m_pRCEClosest->getTransform()->position) < 1000)
+				{
+					m_pPlayerDaggers[i]->setTargetPosition(m_pEnemies[m_keys[1]]->getTransform()->position);
+				}
 
-				removeChild(m_pPlayerDaggers[i]);
-				//delete m_pEnemyDaggers[i];
-				//m_pEnemyDaggers[i] = nullptr;
-				//m_pEnemyDaggers.erase(m_pEnemyDaggers.begin() + i);
-				//m_pEnemyDaggers.shrink_to_fit();
+				// Collision check
+				if (CollisionManager::AABBCheck(m_pPlayerDaggers[i], m_pEnemies[m_keys[1]]))
+				{
+					m_pEnemies[m_keys[1]]->setAnimationState(ENEMY_HURT_L);
+					m_pEnemies[m_keys[1]]->takeDamage(25);
+					SoundManager::Instance().playSound("hit", 0, -1);
+
+					removeChild(m_pPlayerDaggers[i]);
+					m_pPlayerDaggers[i] = nullptr;
+					m_pPlayerDaggers.erase(m_pPlayerDaggers.begin());
+				}
 			}
-			//If Dagger is away from Player so far, remove Dagger
-			//else if (CollisionManager::squaredDistance(m_pEnemyDaggers[i]->getTransform()->position, m_pEnemies[m_keys[1]]->getTransform()->position) > 50000)
-			//{
-			//	removeChild(m_pEnemyDaggers[i]);
-			///*	delete m_pEnemyDaggers[i];*/
-			///*	m_pEnemyDaggers[i] = nullptr;
-			//	m_pEnemyDaggers.shrink_to_fit();*/
-			//}
+
 		}
 	}
 
@@ -367,17 +385,22 @@ void PlayScene::update()
 			m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies[m_keys[0]], m_pObstacles);
 			m_pEnemies[m_keys[0]]->checkAgentLOSToTarget(m_pEnemies[m_keys[0]], m_pPlayer, m_pObstacles);
 		}
-			
+
 		if (m_pEnemies[m_keys[1]] != nullptr)
 		{
-			m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies[m_keys[1]], m_pObstacles);
-			m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles);
+			if (m_pPlayer->hasLOS() == false)
+			{
+				m_pPlayer->checkAgentLOSToTarget(m_pPlayer, m_pEnemies[m_keys[1]], m_pObstacles);
+				m_pEnemies[m_keys[1]]->checkAgentLOSToTarget(m_pEnemies[m_keys[1]], m_pPlayer, m_pObstacles);
+			}
 		}
 	}
 	if (m_pEnemies[m_keys[1]] == nullptr && m_pEnemies[m_keys[0]] == nullptr)
 	{
 		TheGame::Instance().changeSceneState(END_SCENE);
 	}
+
+	std::cout << m_pPlayer->hasLOS() << std::endl;
 }
 
 void PlayScene::clean()
@@ -442,9 +465,9 @@ void PlayScene::handleEvents()
 	else if (key == 'R')
 	{
 		// isRange Range Possible
-		if ((CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[0]]->getTransform()->position, m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight()) <= 17000 && m_pPlayer->hasLOS())
-			|| (CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) <= 17000 && m_pPlayer->hasLOS()))
-			
+		//if ((CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[0]]->getTransform()->position, m_pEnemies[m_keys[0]]->getWidth(), m_pEnemies[m_keys[0]]->getHeight()) <= 17000 && m_pPlayer->hasLOS())
+		//	|| (CollisionManager::circleAABBsquaredDistance(m_pPlayer->getTransform()->position, m_pPlayer->getLOSDistance(), m_pEnemies[m_keys[1]]->getTransform()->position, m_pEnemies[m_keys[1]]->getWidth(), m_pEnemies[m_keys[1]]->getHeight()) <= 17000 && m_pPlayer->hasLOS()))
+		if (m_pPlayer->hasLOS())
 		{
 			if (isRight == false)
 			{
@@ -1058,17 +1081,21 @@ void PlayScene::m_checkAllNodesWithBoth()
 	{
 		bool LOSWithSpaceShip = m_checkPathNodeLOS(path_node, m_pPlayer);
 
-		if (m_pEnemies[m_keys[0]] != nullptr)
+		if (m_pEnemies.size() > 0)
 		{
-			bool LOSWithCCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
-			path_node->setHasLOS((LOSWithSpaceShip && LOSWithCCE ? true : false));
+			if (m_pEnemies[m_keys[0]] != nullptr)
+			{
+				bool LOSWithCCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[0]]);
+				path_node->setHasLOS((LOSWithSpaceShip && LOSWithCCE ? true : false));
+			}
+
+			if (m_pEnemies[m_keys[1]] != nullptr)
+			{
+				bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[1]]);
+				path_node->setHasLOS((LOSWithSpaceShip && LOSWithRCE ? true : false));
+			}
 		}
 
-		if (m_pEnemies[m_keys[1]] != nullptr)
-		{
-			bool LOSWithRCE = m_checkPathNodeLOS(path_node, m_pEnemies[m_keys[1]]);
-			path_node->setHasLOS((LOSWithSpaceShip && LOSWithRCE ? true : false));
-		}
 	}
 }
 
