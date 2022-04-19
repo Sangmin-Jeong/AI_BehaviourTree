@@ -102,7 +102,7 @@ private:
 	bool DeleteKeyList(char c);
 	bool knifeSound;
 	bool knifeThrowingSound;
-	bool isHit;
+	bool m_isHit;
 
 	// Health color
 	glm::vec4 red = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);

@@ -1,31 +1,31 @@
 ﻿  PlayScene.cpp
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(114,121): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(132,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(445,114): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(446,114): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(737,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(738,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(909,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(114,121): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(132,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(445,114): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(446,114): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(756,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(757,23): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(929,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(910,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(930,55): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(913,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(933,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(914,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(934,57): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(918,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(921,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(1093,20): warning C4018: '<': signed/unsigned mismatch
-  Template.vcxproj -> C:\Users\serim\source\repos\W2022\A.I\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(938,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(941,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\src\PlayScene.cpp(1113,20): warning C4018: '<': signed/unsigned mismatch
+  Template.vcxproj -> C:\Users\Travor\Desktop\School\SEM 2\Game AI\GAME3001_A4\GAME3001_A4_BuiTravor_WooChaewan_JeongSangmin\bin\Debug\Template.exe
